@@ -1,0 +1,15 @@
+# datasource configuration
+quarkus:
+    datasource:
+        db-kind: postgresql
+        username: huojianying
+        password: 123456
+        jdbc:
+            url: jdbc:postgresql://127.0.0.1:5432/opensponsor
+            max-size: 16
+
+    # drop and create the database at startup (use `update` to only update the schema)
+    #drop-and-create
+    hibernate-orm:
+        database:
+            generation: drop-and-create
