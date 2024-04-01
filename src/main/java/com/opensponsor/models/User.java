@@ -1,12 +1,12 @@
 package com.opensponsor.models;
 
+import com.opensponsor.enums.E_SEX;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.*;
-import org.hibernate.validator.constraints.Length;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -22,18 +22,37 @@ public class User extends PanacheEntityBase {
     @Column(unique = true)
     public UUID id;
 
-    @Comment("username")
-    @Column(unique = true, length = 32)
+    @Comment("user name")
+    @Column(unique = true, length = 32, nullable = false)
     @Size(min = 2, max = 32)
-    public String username;
+    public String name;
 
-    @Column(unique = true, length = 32)
+    @Comment("legal name")
+    @Column(length = 32, nullable = false)
     @Size(min = 2, max = 32)
-    public String nickName;
+    public String legalName;
+
+    @Comment("User avatar")
+    @Column(length = 42)
+    @Size(max = 42)
+    public String avatar;
+
+    @Comment("User avatar")
+    @Enumerated
+    public E_SEX sex;
 
     @Comment("password")
-    @Column(length = 32)
+    @Column(length = 32, nullable = false)
     public String password;
+
+    @Column(length = 32)
+    @Size(min = 2, max = 10)
+    public String dialingCode;
+
+    @Column(unique = true, length = 32)
+    @Email
+    @Size(min = 4, max = 11)
+    public String phone;
 
     @Column(unique = true, length = 32)
     @Email
