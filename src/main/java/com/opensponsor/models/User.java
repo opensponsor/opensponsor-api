@@ -3,12 +3,15 @@ package com.opensponsor.models;
 import com.opensponsor.enums.E_SEX;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.*;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -58,6 +61,13 @@ public class User extends PanacheEntityBase {
     @Email
     @Size(min = 6, max = 32)
     public String email;
+
+    @OneToMany(
+        mappedBy = "user",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    public List<UserToken> userTokens = new ArrayList<>();;
 
     @CreationTimestamp
     public Instant whenCreated;
