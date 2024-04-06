@@ -67,7 +67,7 @@ public class User extends PanacheEntityBase {
         cascade = CascadeType.ALL,
         orphanRemoval = true
     )
-    public List<UserToken> userTokens = new ArrayList<>();;
+    public List<UserToken> userTokens = new ArrayList<>();
 
     @CreationTimestamp
     public Instant whenCreated;
