@@ -1,5 +1,6 @@
-package com.opensponsor.models;
+package com.opensponsor.entitys;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.opensponsor.enums.E_SEX;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
@@ -7,6 +8,10 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
+import io.quarkus.security.jpa.Password;
+import io.quarkus.security.jpa.Roles;
+import io.quarkus.security.jpa.UserDefinition;
+import io.quarkus.security.jpa.Username;
 import org.hibernate.annotations.*;
 
 import java.time.Instant;
@@ -18,7 +23,11 @@ import java.util.UUID;
  * user entity
  */
 @Entity
-@Table(name = "`user`")
+@Table(
+    name = "`user`"
+    // uniqueConstraints = @UniqueConstraint(name = "UniqueName", columnNames = {"name"})
+)
+@UserDefinition
 public class User extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -28,6 +37,7 @@ public class User extends PanacheEntityBase {
     @Comment("user name")
     @Column(unique = true, length = 32, nullable = false)
     @Size(min = 2, max = 32)
+    @Username
     public String name;
 
     @Comment("legal name")
@@ -44,8 +54,13 @@ public class User extends PanacheEntityBase {
     @Enumerated
     public E_SEX sex;
 
+    @Roles
+    public String role;
+
     @Comment("password")
-    @Column(length = 32, nullable = false)
+    @Column(length = 60, nullable = false)
+    @Password
+    @JsonIgnore
     public String password;
 
     @Column(length = 32)
@@ -67,6 +82,7 @@ public class User extends PanacheEntityBase {
         cascade = CascadeType.ALL,
         orphanRemoval = true
     )
+    @JsonIgnore
     public List<UserToken> userTokens = new ArrayList<>();
 
     @CreationTimestamp
@@ -76,4 +92,5 @@ public class User extends PanacheEntityBase {
     public Instant whenModified;
 
     public Instant whenDeleted;
+
 }

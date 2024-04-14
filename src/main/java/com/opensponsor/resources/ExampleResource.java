@@ -1,8 +1,8 @@
-package com.opensponsor;
+package com.opensponsor.resources;
 
-import com.opensponsor.models.FiscalHost;
-import com.opensponsor.models.User;
-import jakarta.annotation.security.RolesAllowed;
+import com.opensponsor.entitys.FiscalHost;
+import com.opensponsor.entitys.User;
+import com.opensponsor.payload.ResultOfArray;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -12,18 +12,14 @@ import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
-import org.eclipse.microprofile.openapi.annotations.extensions.Extension;
-import org.eclipse.microprofile.openapi.annotations.info.*;
+import org.eclipse.microprofile.openapi.annotations.info.Contact;
+import org.eclipse.microprofile.openapi.annotations.info.Info;
+import org.eclipse.microprofile.openapi.annotations.info.License;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.media.SchemaProperty;
-import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
-import org.eclipse.microprofile.openapi.annotations.responses.APIResponseSchema;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
-
-import java.util.List;
-import java.util.Map;
 
 @OpenAPIDefinition(
     tags = {
@@ -41,9 +37,8 @@ import java.util.Map;
             name = "Apache 2.0",
             url = "https://www.apache.org/licenses/LICENSE-2.0.html"))
 )
-@Path("/hello")
-public class GreetingResource {
-
+@Path("/example")
+public class ExampleResource {
     @Tag(name = "Hello", description = "Operations related to gaskets")
     @Operation(summary = "Update an existing pet")
     @APIResponse(
@@ -52,11 +47,9 @@ public class GreetingResource {
         content = @Content(
             mediaType = "application/json",
             schema = @Schema(
-                // type = SchemaType.OBJECT,
-                implementation = User.class,
+                implementation = ResultOfArray.class,
                 properties = {
-                    @SchemaProperty(name = "sss", type = SchemaType.ARRAY, implementation = User.class),
-                    @SchemaProperty(name = "sss2", type = SchemaType.ARRAY, implementation = User.class),
+                    @SchemaProperty(name = "list", type = SchemaType.ARRAY, implementation = User.class),
                 }
             )
         )

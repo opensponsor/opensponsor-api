@@ -1,4 +1,4 @@
-package com.opensponsor;
+package com.opensponsor.examples;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

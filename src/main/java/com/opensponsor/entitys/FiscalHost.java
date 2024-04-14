@@ -1,4 +1,4 @@
-package com.opensponsor.models;
+package com.opensponsor.entitys;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;

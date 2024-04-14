@@ -1,4 +1,4 @@
-package com.opensponsor.models;
+package com.opensponsor.entitys;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
@@ -16,12 +16,12 @@ public class UserToken extends PanacheEntityBase {
     @Column(unique = true)
     public UUID id;
 
-    @Column(unique = true, length = 36, nullable = false)
+    @Column(unique = true, length = 1000, nullable = false)
     public String token;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    public User user;
 
     @CreationTimestamp
     public Instant whenCreated;
