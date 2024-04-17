@@ -5,6 +5,7 @@ import com.opensponsor.enums.E_SEX;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
@@ -15,9 +16,7 @@ import io.quarkus.security.jpa.Username;
 import org.hibernate.annotations.*;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * user entity
@@ -77,13 +76,13 @@ public class User extends PanacheEntityBase {
     @Size(min = 6, max = 32)
     public String email;
 
-    @OneToMany(
+    @OneToOne(
         mappedBy = "user",
         cascade = CascadeType.ALL,
+        fetch = FetchType.EAGER,
         orphanRemoval = true
     )
-    @JsonIgnore
-    public List<UserToken> userTokens = new ArrayList<>();
+    public UserToken token = null;
 
     @CreationTimestamp
     public Instant whenCreated;

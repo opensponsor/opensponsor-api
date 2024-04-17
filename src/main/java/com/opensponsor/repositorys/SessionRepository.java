@@ -2,9 +2,13 @@ package com.opensponsor.repositorys;
 
 
 import com.opensponsor.entitys.User;
+import com.opensponsor.entitys.UserToken;
+import com.opensponsor.enums.E_SEX;
+import com.opensponsor.payload.LoginBody;
 import com.opensponsor.payload.RegisterBody;
 import com.opensponsor.utils.GenerateViolationReport;
 import com.opensponsor.utils.SecurityTools;
+import com.opensponsor.utils.TokenTools;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -13,7 +17,11 @@ import org.jboss.resteasy.api.validation.ConstraintType;
 import org.jboss.resteasy.api.validation.ResteasyConstraintViolation;
 import org.jboss.resteasy.api.validation.ViolationReport;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @ApplicationScoped
@@ -22,6 +30,8 @@ public class SessionRepository implements PanacheRepositoryBase<User, UUID> {
 
     @Inject
     SecurityTools securityTools;
+    @Inject
+    TokenTools tokenTools;
 
     @Transactional
     public User createUser(RegisterBody registerBody) {
@@ -57,6 +67,22 @@ public class SessionRepository implements PanacheRepositoryBase<User, UUID> {
             this.violationReport = generateViolationReport.build();
             return false;
         }
+    }
+
+    @Transactional
+    public User login(LoginBody loginBody) {
+        Optional<User> user = User.find("name", loginBody.passport).firstResultOptional();
+        if(user.isEmpty()) {
+            user = User.find("email", loginBody.passport).firstResultOptional();
+        }
+        if(user.isPresent()) {
+            if(securityTools.matches(loginBody.password, user.get().password)) {
+                User authUser = user.get();
+                tokenTools.generate(authUser, List.of("User"));
+                return authUser;
+            }
+        }
+        return null;
     }
 
     public ViolationReport getViolationReport() {

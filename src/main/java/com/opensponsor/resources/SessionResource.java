@@ -1,13 +1,14 @@
 package com.opensponsor.resources;
 
 import com.opensponsor.entitys.User;
+import com.opensponsor.entitys.UserToken;
+import com.opensponsor.enums.E_SEX;
 import com.opensponsor.payload.LoginBody;
 import com.opensponsor.payload.RegisterBody;
-import com.opensponsor.payload.ResultOfObject;
 import com.opensponsor.repositorys.SessionRepository;
 import com.opensponsor.repositorys.UserRepository;
+import com.opensponsor.utils.TokenTools;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.codec.http.HttpStatusClass;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -23,10 +24,8 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.media.SchemaProperty;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
-import org.jboss.resteasy.api.validation.ResteasyConstraintViolation;
-import org.jboss.resteasy.api.validation.ViolationReport;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @OpenAPIDefinition(
     info = @Info(title="Session API", version = "1.0.1")
@@ -36,6 +35,9 @@ import java.util.ArrayList;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes({MediaType.APPLICATION_JSON})
 public class SessionResource {
+
+    @Inject
+    TokenTools tokenTools;
 
     @Inject
     UserRepository userRepository;
@@ -51,7 +53,7 @@ public class SessionResource {
         description = "User List",
         content = @Content(
             schema = @Schema(
-                implementation = ResultOfObject.class,
+                implementation = LoginBody.class,
                 properties = {
                     @SchemaProperty(name = "list", type = SchemaType.ARRAY, implementation = User.class),
                 }
@@ -59,18 +61,20 @@ public class SessionResource {
         )
     )
     @APIResponse(responseCode = "400", description = "User not found")
-    @Transactional
     public Response login(@Valid LoginBody loginBody) {
-
-        return Response
-            .status(200)
-            .entity(
-                ResultOfObject
-                    .builder()
-                    .size(loginBody)
-                    .build()
-            )
-            .build();
+        User user = sessionRepository.login(loginBody);
+        if(user != null) {
+            return Response
+                .status(HttpResponseStatus.OK.code())
+                .entity(user)
+                .build();
+        } else {
+            return Response
+                .status(HttpResponseStatus.BAD_REQUEST.code())
+                .header("error", "user not found")
+                .entity(null)
+                .build();
+        }
     }
 
     @POST
@@ -80,7 +84,7 @@ public class SessionResource {
         if(sessionRepository.validOfRegister(registerBody)) {
             User user = sessionRepository.createUser(registerBody);
             return Response
-                .status(200)
+                .status(HttpResponseStatus.OK.code())
                 .entity(user)
                 .build();
         } else {
@@ -89,5 +93,15 @@ public class SessionResource {
                 .entity(sessionRepository.getViolationReport())
                 .build();
         }
+    }
+
+    @GET
+    @Path("test")
+    @Transactional
+    public Response test() {
+        User user2 = User.find("name", "!!").firstResult();
+        System.out.println(user2.token);
+
+        return Response.status(200).entity(user2).build();
     }
 }

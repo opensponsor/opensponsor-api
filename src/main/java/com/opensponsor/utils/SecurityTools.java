@@ -8,4 +8,8 @@ public class SecurityTools {
     public String generatePassword(String plaintext) {
         return BcryptUtil.bcryptHash(plaintext);
     }
+
+    public boolean matches(String plaintext, String passwordHash) {
+        return BcryptUtil.matches(plaintext, passwordHash);
+    }
 }
