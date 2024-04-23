@@ -11,20 +11,31 @@ import java.time.Instant;
 import java.util.UUID;
 
 /**
- * fiscal host entity, 公司的一种
+ *  公司的一种
  */
 @Entity
-@Table(name = "`fiscal_host`")
-public class FiscalHost extends PanacheEntityBase {
+@Table(name = "bank_account")
+public class BankAccount extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(unique = true)
     public UUID id;
 
-    @Comment("legal name")
+    @Comment("back name")
     @Column(length = 32, nullable = false)
     @Size(min = 2, max = 32)
-    public String legalName;
+    public String backName;
+
+    @Comment("back name")
+    @Column(length = 32, nullable = false)
+    @Size(min = 2, max = 32)
+    public String BankCardNumber;
+
+    // TODO 待定
+    @Comment("back name")
+    @Column(length = 32, nullable = false)
+    @Size(min = 2, max = 32)
+    public String reserveYourPhone;
 
     @CreationTimestamp
     public Instant whenCreated;

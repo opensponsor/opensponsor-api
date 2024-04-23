@@ -1,5 +1,6 @@
 package com.opensponsor.entitys;
 
+import com.opensponsor.enums.E_ORGANIZATION_TYPE;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
@@ -8,7 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "organization")
@@ -33,10 +34,21 @@ public class Organization extends PanacheEntityBase {
     @Size(min = 2, max = 32)
     public String slug;
 
-    @Comment("slug")
+    @Comment("introduce")
     @Column(length = 150)
     @Size(min = 2, max = 150)
     public String introduce;
+
+    @Comment("organization types")
+    @Enumerated
+    @Column()
+    @ElementCollection
+    public Set<E_ORGANIZATION_TYPE> types = new HashSet<>();
+
+    @Comment("tags")
+    @Column()
+    @ElementCollection
+    public Set<String> tags = new HashSet<>();
 
     @Comment("website")
     @Column(length = 32)

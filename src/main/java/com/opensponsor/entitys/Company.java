@@ -11,11 +11,11 @@ import java.time.Instant;
 import java.util.UUID;
 
 /**
- * fiscal host entity, 公司的一种
+ *  公司的一种
  */
 @Entity
-@Table(name = "`fiscal_host`")
-public class FiscalHost extends PanacheEntityBase {
+@Table(name = "company")
+public class Company extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(unique = true)
