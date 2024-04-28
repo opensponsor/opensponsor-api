@@ -7,6 +7,7 @@ import com.opensponsor.payload.LoginBody;
 import com.opensponsor.payload.RegisterBody;
 import com.opensponsor.repositorys.SessionRepository;
 import com.opensponsor.repositorys.UserRepository;
+import com.opensponsor.utils.GenerateViolationReport;
 import com.opensponsor.utils.TokenTools;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import jakarta.inject.Inject;
@@ -24,6 +25,9 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.media.SchemaProperty;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+import org.jboss.resteasy.api.validation.ConstraintType;
+import org.jboss.resteasy.api.validation.ResteasyConstraintViolation;
+import org.jboss.resteasy.api.validation.ViolationReport;
 
 import java.util.List;
 
@@ -35,6 +39,8 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes({MediaType.APPLICATION_JSON})
 public class SessionResource {
+    @Inject
+    GenerateViolationReport generateViolationReport;
 
     @Inject
     TokenTools tokenTools;
@@ -60,7 +66,15 @@ public class SessionResource {
             )
         )
     )
-    @APIResponse(responseCode = "400", description = "User not found")
+    @APIResponse(
+        responseCode = "400",
+        description = "User not found",
+        content = @Content(
+            schema = @Schema(
+                implementation = ViolationReport.class
+            )
+        )
+    )
     public Response login(@Valid LoginBody loginBody) {
         User user = sessionRepository.login(loginBody);
         if(user != null) {
@@ -71,8 +85,7 @@ public class SessionResource {
         } else {
             return Response
                 .status(HttpResponseStatus.BAD_REQUEST.code())
-                .header("error", "user not found")
-                .entity(null)
+                .entity(generateViolationReport.exception("用户不存在").build())
                 .build();
         }
     }
