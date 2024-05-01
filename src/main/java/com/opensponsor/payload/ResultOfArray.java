@@ -1,7 +1,10 @@
 package com.opensponsor.payload;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+
 import java.util.List;
 
+@Deprecated
 public class ResultOfArray {
 
     public int currentPageNumber;
@@ -9,7 +12,7 @@ public class ResultOfArray {
     public int pageSize;
     public long totalRecords;
     public String message;
-    public List<Object> records;
+    public List<?> records;
     public int code = 0;
 
 
@@ -18,7 +21,7 @@ public class ResultOfArray {
             return new ResultOfArray(this);
         }
 
-        public Builder data(List<Object> records) {
+        public Builder data(List<?> records) {
             this.records = records;
             return this;
         }
@@ -38,7 +41,7 @@ public class ResultOfArray {
         public int pageSize;
         public long totalRecords;
         public String message;
-        public List<Object> records;
+        public List<?> records;
         public int code = 0;
     }
 
