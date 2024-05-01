@@ -29,7 +29,7 @@ public class Organization extends PanacheEntityBase {
     @Size(min = 2, max = 32)
     public String legalName;
 
-    @Comment("slug")
+    @Comment("url slug")
     @Column(length = 32, nullable = false)
     @Size(min = 2, max = 32)
     public String slug;
