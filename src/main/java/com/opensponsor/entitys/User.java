@@ -5,7 +5,6 @@ import com.opensponsor.enums.E_SEX;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
@@ -37,7 +36,7 @@ public class User extends PanacheEntityBase {
     @Column(unique = true, length = 32, nullable = false)
     @Size(min = 2, max = 32)
     @Username
-    public String name;
+    public String username;
 
     @Comment("legal name")
     @Column(length = 32, nullable = false)
@@ -49,7 +48,7 @@ public class User extends PanacheEntityBase {
     @Size(max = 42)
     public String avatar;
 
-    @Comment("User avatar")
+    @Comment("User sex")
     @Enumerated
     public E_SEX sex;
 
@@ -62,14 +61,14 @@ public class User extends PanacheEntityBase {
     @JsonIgnore
     public String password;
 
-    @Column(length = 32)
-    @Size(min = 2, max = 10)
-    public String dialingCode;
+    @OneToOne(fetch = FetchType.EAGER)
+    @MapsId
+    public CountryCodes countryCode;
 
     @Column(unique = true, length = 32)
     @Email
     @Size(min = 4, max = 11)
-    public String phone;
+    public String phoneNumber;
 
     @Column(unique = true, length = 32)
     @Email
