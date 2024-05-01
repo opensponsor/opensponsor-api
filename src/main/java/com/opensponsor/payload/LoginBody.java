@@ -8,7 +8,7 @@ public class LoginBody {
     @NotBlank()
     @NotNull()
     @NotEmpty()
-    public String passport;
+    public String account;
 
     @Size(min = 6, max = 64)
     @NotBlank()

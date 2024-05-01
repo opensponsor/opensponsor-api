@@ -1,5 +1,6 @@
 package com.opensponsor.payload;
 
+import com.opensponsor.entitys.CountryCodes;
 import com.opensponsor.enums.E_SEX;
 import io.quarkus.runtime.annotations.IgnoreProperty;
 import jakarta.persistence.Column;
@@ -12,28 +13,31 @@ import org.hibernate.annotations.Comment;
 
 public class RegisterBody {
     @Comment("user name")
-    @Column(unique = true, length = 32, nullable = false)
     @Size(min = 2, max = 32)
     @NotBlank
     @NotEmpty
     @NotNull
-    public String name;
+    public String username;
+
 
     @Comment("legal name")
-    @Column(length = 32, nullable = false)
     @Size(min = 2, max = 32)
     @NotBlank
     @NotEmpty
     @NotNull
     public String legalName;
 
-    @Comment("User avatar")
+
+    @Comment("country code")
+    @NotNull
+    public CountryCodes countryCode;
+
+    @Comment("User Sex")
     @Enumerated
     public E_SEX sex;
 
     @Comment("password")
-    @Column(length = 32, nullable = false)
-    @Size(min = 6, max = 32)
+    @Size(min = 8, max = 32)
     @NotBlank
     @NotEmpty
     @NotNull

@@ -1,9 +1,8 @@
 package com.opensponsor.repositorys;
 
 
+import com.opensponsor.entitys.CountryCodes;
 import com.opensponsor.entitys.User;
-import com.opensponsor.entitys.UserToken;
-import com.opensponsor.enums.E_SEX;
 import com.opensponsor.payload.LoginBody;
 import com.opensponsor.payload.RegisterBody;
 import com.opensponsor.utils.GenerateViolationReport;
@@ -17,8 +16,6 @@ import org.jboss.resteasy.api.validation.ConstraintType;
 import org.jboss.resteasy.api.validation.ResteasyConstraintViolation;
 import org.jboss.resteasy.api.validation.ViolationReport;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,10 +32,10 @@ public class SessionRepository implements PanacheRepositoryBase<User, UUID> {
 
     @Transactional
     public User createUser(RegisterBody registerBody) {
-
         User user = new User();
-        user.name = registerBody.name;
+        user.username = registerBody.username;
         user.legalName = registerBody.legalName;
+        user.countryCode = CountryCodes.findById(registerBody.countryCode.id);
         user.sex = registerBody.sex;
         user.password = securityTools.generatePassword(registerBody.password);
 
@@ -54,14 +51,14 @@ public class SessionRepository implements PanacheRepositoryBase<User, UUID> {
     }
 
     public boolean validOfRegister(RegisterBody registerBody) {
-        long count = User.find("name", registerBody.name).count();
+        long count = User.find("username", registerBody.username).count();
         if(count == 0) {
             return true;
         } else {
             GenerateViolationReport generateViolationReport = new GenerateViolationReport();
             generateViolationReport.add(
                 new ResteasyConstraintViolation(
-                    ConstraintType.Type.PARAMETER, "name", "用户名已经存在", registerBody.name
+                    ConstraintType.Type.PARAMETER, "username", "用户名已经存在", registerBody.username
                 )
             );
             this.violationReport = generateViolationReport.build();
@@ -71,9 +68,9 @@ public class SessionRepository implements PanacheRepositoryBase<User, UUID> {
 
     @Transactional
     public User login(LoginBody loginBody) {
-        Optional<User> user = User.find("name", loginBody.passport).firstResultOptional();
+        Optional<User> user = User.find("username", loginBody.account).firstResultOptional();
         if(user.isEmpty()) {
-            user = User.find("email", loginBody.passport).firstResultOptional();
+            user = User.find("email", loginBody.account).firstResultOptional();
         }
         if(user.isPresent()) {
             if(securityTools.matches(loginBody.password, user.get().password)) {
