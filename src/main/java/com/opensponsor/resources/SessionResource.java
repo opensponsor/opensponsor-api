@@ -10,12 +10,14 @@ import com.opensponsor.repositorys.UserRepository;
 import com.opensponsor.utils.GenerateViolationReport;
 import com.opensponsor.utils.TokenTools;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.SecurityContext;
 import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
@@ -40,13 +42,10 @@ import java.util.List;
 @Consumes({MediaType.APPLICATION_JSON})
 public class SessionResource {
     @Inject
+    SecurityContext ctx;
+
+    @Inject
     GenerateViolationReport generateViolationReport;
-
-    @Inject
-    TokenTools tokenTools;
-
-    @Inject
-    UserRepository userRepository;
 
     @Inject
     SessionRepository sessionRepository;
@@ -109,12 +108,14 @@ public class SessionResource {
     }
 
     @GET
-    @Path("test")
+    @Path("user")
+    @Authenticated
     @Transactional
-    public Response test() {
-        User user2 = User.find("name", "!!").firstResult();
-        System.out.println(user2.token);
-
-        return Response.status(200).entity(user2).build();
+    public Response user() {
+        User user = null;
+        if(ctx.getUserPrincipal() != null) {
+            user = User.find("username", ctx.getUserPrincipal().getName()).firstResult();
+        }
+        return Response.status(200).entity(user).build();
     }
 }
