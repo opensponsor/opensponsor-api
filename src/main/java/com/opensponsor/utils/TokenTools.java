@@ -9,7 +9,6 @@ import org.eclipse.microprofile.jwt.Claims;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class TokenTools {
             .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
         String tokenString = Jwt.issuer("https://opensponsor.com")
-            .upn(user.name)
+            .upn(user.username)
             .groups(new HashSet<>(roles))
             .expiresIn(Duration.ofDays(30))
             // .expiresAt(now.plus(30, ChronoUnit.DAYS))
