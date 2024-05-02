@@ -3,10 +3,12 @@ package com.opensponsor.entitys;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.opensponsor.enums.E_SEX;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Size;
 import io.quarkus.security.jpa.Password;
 import io.quarkus.security.jpa.Roles;
@@ -40,7 +42,7 @@ public class User extends PanacheEntityBase {
 
     @Comment("legal name")
     @Column(length = 32)
-    @Size(min = 2, max = 32)
+    @Size(max = 32)
     public String legalName;
 
     @Comment("User avatar")

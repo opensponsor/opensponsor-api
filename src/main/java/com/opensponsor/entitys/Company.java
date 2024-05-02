@@ -23,7 +23,7 @@ public class Company extends PanacheEntityBase {
 
     @Comment("legal name")
     @Column(length = 32, nullable = false)
-    @Size(min = 2, max = 32)
+    @Size(max = 32)
     public String legalName;
 
     @CreationTimestamp
