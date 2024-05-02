@@ -9,7 +9,7 @@ public enum E_ORGANIZATION_TYPE {
     /**
      * common organization
      */
-    ORGANIZATION("ORGANIZATION");
+    COMMUNITY("COMMUNITY");
 
     public final String label;
 

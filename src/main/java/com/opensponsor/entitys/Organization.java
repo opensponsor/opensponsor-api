@@ -42,8 +42,7 @@ public class Organization extends PanacheEntityBase {
     @Comment("organization types")
     @Enumerated
     @Column()
-    @ElementCollection
-    public Set<E_ORGANIZATION_TYPE> types = new HashSet<>();
+    public E_ORGANIZATION_TYPE type;
 
     @Comment("tags")
     @Column()
