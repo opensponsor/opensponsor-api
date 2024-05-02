@@ -21,12 +21,7 @@ public class RegisterBody {
 
 
     @Comment("legal name")
-    @Size(min = 2, max = 32)
-    @NotBlank
-    @NotEmpty
-    @NotNull
     public String legalName;
-
 
     @Comment("country code")
     @NotNull
