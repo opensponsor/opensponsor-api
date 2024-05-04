@@ -4,10 +4,10 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Page;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
-public class ResultOfPaging {
-
+public class ResultOfPaging<T extends PanacheEntityBase> {
     public long currentPageNumber;
     public long lastPageNumber;
     public long pageSize;
@@ -15,10 +15,10 @@ public class ResultOfPaging {
     public String message = "ok";
 
     public Long code = 0L;
-    public List<PanacheEntityBase> records;
+    public List<T> records;
 
-    public ResultOfPaging(PanacheQuery<PanacheEntityBase> panacheQuery, Page page) {
-        PanacheQuery<PanacheEntityBase> query = panacheQuery.page(page);
+    public ResultOfPaging(PanacheQuery<T> panacheQuery, Page page) {
+        PanacheQuery<T> query = panacheQuery.page(page);
         currentPageNumber = page.index + 1;
         lastPageNumber = query.pageCount();
         pageSize = query.count();
@@ -26,12 +26,12 @@ public class ResultOfPaging {
         records = query.list();
     }
 
-    public ResultOfPaging code(long code) {
+    public ResultOfPaging<T> code(long code) {
         this.code = code;
         return this;
     }
 
-    public ResultOfPaging message(String message) {
+    public ResultOfPaging<T> message(String message) {
         this.message = message;
         return this;
     }
