@@ -63,7 +63,7 @@ public class CountryCodesResource {
         return Response
             .status(200)
             .entity(
-                new ResultOfPaging(CountryCodes.findAll(), Page.of(0, 10))
+                new ResultOfPaging<>(CountryCodes.findAll(), Page.of(0, 10))
             )
             .build();
     }
