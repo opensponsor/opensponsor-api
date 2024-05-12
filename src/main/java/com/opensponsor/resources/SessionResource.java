@@ -1,14 +1,11 @@
 package com.opensponsor.resources;
 
 import com.opensponsor.entitys.User;
-import com.opensponsor.entitys.UserToken;
-import com.opensponsor.enums.E_SEX;
 import com.opensponsor.payload.LoginBody;
 import com.opensponsor.payload.RegisterBody;
 import com.opensponsor.repositorys.SessionRepository;
 import com.opensponsor.repositorys.UserRepository;
 import com.opensponsor.utils.GenerateViolationReport;
-import com.opensponsor.utils.TokenTools;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
@@ -17,7 +14,6 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.SecurityContext;
 import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
@@ -27,11 +23,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.media.SchemaProperty;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
-import org.jboss.resteasy.api.validation.ConstraintType;
-import org.jboss.resteasy.api.validation.ResteasyConstraintViolation;
 import org.jboss.resteasy.api.validation.ViolationReport;
-
-import java.util.List;
 
 @OpenAPIDefinition(
     info = @Info(title="Session API", version = "1.0.1")
@@ -42,13 +34,13 @@ import java.util.List;
 @Consumes({MediaType.APPLICATION_JSON})
 public class SessionResource {
     @Inject
-    SecurityContext ctx;
+    protected UserRepository userRepository;
 
     @Inject
-    GenerateViolationReport generateViolationReport;
+    protected GenerateViolationReport generateViolationReport;
 
     @Inject
-    SessionRepository sessionRepository;
+    protected SessionRepository sessionRepository;
 
     @POST
     @Path("login")
@@ -69,6 +61,7 @@ public class SessionResource {
         responseCode = "400",
         description = "User not found",
         content = @Content(
+            mediaType = "application/json",
             schema = @Schema(
                 implementation = ViolationReport.class
             )
@@ -94,7 +87,7 @@ public class SessionResource {
     @Operation(summary = "User register")
     public Response register(@Valid RegisterBody registerBody) {
         if(sessionRepository.validOfRegister(registerBody)) {
-            User user = sessionRepository.createUser(registerBody);
+            User user = sessionRepository.create(registerBody);
             return Response
                 .status(HttpResponseStatus.OK.code())
                 .entity(user)
@@ -112,10 +105,7 @@ public class SessionResource {
     @Authenticated
     @Transactional
     public Response user() {
-        User user = null;
-        if(ctx.getUserPrincipal() != null) {
-            user = User.find("username", ctx.getUserPrincipal().getName()).firstResult();
-        }
+        User user = userRepository.authUser();
         return Response.status(200).entity(user).build();
     }
 }
