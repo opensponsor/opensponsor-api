@@ -4,6 +4,7 @@ import com.opensponsor.enums.E_ORGANIZATION_TYPE;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -53,6 +54,10 @@ public class Organization extends PanacheEntityBase {
     @Column(length = 32)
     @Size(min = 2, max = 32)
     public String website;
+
+    @Schema(description = "Organization Owner")
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    public User user;
 
     @CreationTimestamp
     public Instant whenCreated;
