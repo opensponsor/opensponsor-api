@@ -3,17 +3,16 @@ package com.opensponsor.entitys;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.opensponsor.enums.E_SEX;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Size;
 import io.quarkus.security.jpa.Password;
 import io.quarkus.security.jpa.Roles;
 import io.quarkus.security.jpa.UserDefinition;
 import io.quarkus.security.jpa.Username;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.*;
 
 import java.time.Instant;
@@ -63,8 +62,8 @@ public class User extends PanacheEntityBase {
     @JsonIgnore
     public String password;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @MapsId
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @Schema(description = "User country code")
     public CountryCodes countryCode;
 
     @Column(unique = true, length = 32)
