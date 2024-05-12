@@ -7,8 +7,10 @@ import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.jwt.Claims;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.List;
 
@@ -19,6 +21,7 @@ public class TokenTools {
             .plusYears(1)
             .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
+        Instant now = Instant.now();
         String tokenString = Jwt.issuer("https://opensponsor.com")
             .upn(user.username)
             .groups(new HashSet<>(roles))
