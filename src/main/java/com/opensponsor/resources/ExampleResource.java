@@ -20,6 +20,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.media.SchemaProperty;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+import org.jboss.resteasy.api.validation.ViolationReport;
 
 @OpenAPIDefinition(
     tags = {
@@ -56,7 +57,13 @@ public class ExampleResource {
     )
     @APIResponse(
         responseCode = "400",
-        description = "User not found"
+        description = "User not found",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                implementation = ViolationReport.class
+            )
+        )
     )
     @GET
     @Transactional
