@@ -31,7 +31,7 @@ public class SessionRepository implements PanacheRepositoryBase<User, UUID> {
     TokenTools tokenTools;
 
     @Transactional
-    public User createUser(RegisterBody registerBody) {
+    public User create(RegisterBody registerBody) {
         User user = new User();
         user.username = registerBody.username;
         user.legalName = registerBody.legalName;
