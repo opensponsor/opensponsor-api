@@ -55,6 +55,10 @@ public class Organization extends PanacheEntityBase {
     @Size(min = 2, max = 32)
     public String website;
 
+    @Schema(description = "捐助等级")
+    @OneToMany(fetch = FetchType.EAGER)
+    public List<Tier> tiers = new ArrayList<>();
+
     @Schema(description = "Organization Owner")
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     public User user;
