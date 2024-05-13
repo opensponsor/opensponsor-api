@@ -1,21 +1,19 @@
 package com.opensponsor.entitys;
 
 import com.opensponsor.enums.E_AMOUNT_TYPE;
+import com.opensponsor.enums.E_IBAN_CURRENCIES;
+import com.opensponsor.enums.E_INTERVAL;
 import com.opensponsor.enums.E_TIER_TYPE;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -39,28 +37,28 @@ public class Tier extends PanacheEntityBase {
 
     // public declare name: string;
     @Comment("tier name")
-    @Schema(description = "赞助等级名称")
+    @Schema(description = "捐助等级名称")
     @Column(length = 32, nullable = false)
     @Size(min = 2, max = 32)
     public String name;
 
     // public declare type: TierType;
     @Comment("tier type")
-    @Schema(description = "赞助等级类型")
+    @Schema(description = "捐助等级类型")
     @Column(nullable = false)
     @Enumerated
     public E_TIER_TYPE type;
 
     // public declare description: string;
     @Comment("description")
-    @Schema(description = "赞助等级类型")
+    @Schema(description = "捐助等级类型")
     @Column(length = 500, nullable = false, columnDefinition = "TEXT")
     @Size(max = 500)
     public String description;
 
     // public declare longDescription: string;
     @Comment("longDescription")
-    @Schema(description = "赞助等级类型")
+    @Schema(description = "捐助等级类型")
     @Column(columnDefinition = "TEXT")
     public String longDescription;
 
@@ -85,36 +83,57 @@ public class Tier extends PanacheEntityBase {
 
     // public declare amount: number;
     @Comment("amount")
-    @Schema(description = "赞助金额")
+    @Schema(description = "捐助金额")
     @Column(length = 10, nullable = false)
     @Size(min = 1, max = 90000)
     public Number amount;
 
     // public declare presets: number[];
     @Comment("presets")
-    @Schema(description = "赞助金额范围")
+    @Schema(description = "捐助金额范围")
     @Column()
     @ElementCollection
     public List<Number> presets = List.of();
 
     // public declare amountType: 'FIXED' | 'FLEXIBLE';
     @Comment("amount type")
-    @Schema(description = "赞助金额类型")
+    @Schema(description = "捐助金额类型")
     @Column()
     @Enumerated
     public E_AMOUNT_TYPE amountType;
 
     // public declare minimumAmount: number;
-    @Comment("amount")
+    @Comment("minimumAmount")
     @Schema(description = "最小金额")
     @Column(length = 10)
     @Size(min = 1, max = 90000)
     public Number minimumAmount;
 
     // public declare currency: SupportedCurrency;
-    // public declare interval: 'month' | 'year' | 'flexible';
+    @Comment("currency")
+    @Schema(description = "最小金额")
+    @Column()
+    @Enumerated
+    public E_IBAN_CURRENCIES currency;
+
+    // public declare interval: 'onetime' | 'month' | 'year' | 'flexible';
+    @Comment("interval")
+    @Schema(description = "捐助方式")
+    @Column()
+    @Enumerated
+    public E_INTERVAL interval;
+
     // public declare maxQuantity: number;
+    @Comment("max quantity")
+    @Schema(description = "库存")
+    @Column(length = 10)
+    public Number maxQuantity;
+
     // public declare goal: number;
+    @Comment("goal")
+    @Schema(description = "筹款目标")
+    @Column(length = 10)
+    public Number goal;
 
     @CreationTimestamp
     public Instant whenCreated;
