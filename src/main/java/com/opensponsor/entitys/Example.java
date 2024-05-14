@@ -3,6 +3,7 @@ package com.opensponsor.entitys;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SoftDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
@@ -13,6 +14,7 @@ import java.util.UUID;
  */
 // @Entity
 // @Table(name = "`fiscal_host`")
+// @SoftDelete(columnName = "whenDeleted")
 public class Example { // extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

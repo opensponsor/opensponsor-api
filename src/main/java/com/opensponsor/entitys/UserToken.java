@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SoftDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
@@ -11,6 +12,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "user_token")
+@SoftDelete(columnName = "whenDeleted")
 public class UserToken extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

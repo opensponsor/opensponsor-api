@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SoftDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
@@ -15,6 +16,7 @@ import java.util.UUID;
  */
 @Entity
 @Table(name = "company")
+@SoftDelete(columnName = "whenDeleted")
 public class Company extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

@@ -27,6 +27,7 @@ import java.util.*;
     // uniqueConstraints = @UniqueConstraint(name = "UniqueName", columnNames = {"name"})
 )
 @UserDefinition
+@SoftDelete(columnName = "whenDeleted")
 public class User extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -37,6 +38,7 @@ public class User extends PanacheEntityBase {
     @Column(unique = true, length = 32, nullable = false)
     @Size(min = 2, max = 32)
     @Username
+    @NaturalId
     public String username;
 
     @Comment("legal name")
@@ -74,6 +76,7 @@ public class User extends PanacheEntityBase {
     @Column(unique = true, length = 32)
     @Email
     @Size(min = 6, max = 32)
+    @NaturalId
     public String email;
 
     @OneToOne(
