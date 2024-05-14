@@ -16,7 +16,6 @@ import java.util.UUID;
  */
 @Entity
 @Table(name = "`fiscal_host`")
-@SoftDelete(columnName = "whenDeleted")
 public class FiscalHost extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -34,5 +33,7 @@ public class FiscalHost extends PanacheEntityBase {
     @UpdateTimestamp
     public Instant whenModified;
 
+    @SoftDelete
+    @Column(nullable = true)
     public Instant whenDeleted;
 }

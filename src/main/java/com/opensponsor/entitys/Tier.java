@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@SoftDelete(columnName = "whenDeleted")
 public class Tier extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -143,5 +142,7 @@ public class Tier extends PanacheEntityBase {
     @UpdateTimestamp
     public Instant whenModified;
 
+    @SoftDelete
+    @Column(nullable = true)
     public Instant whenDeleted;
 }

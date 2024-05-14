@@ -15,7 +15,6 @@ import java.util.*;
 
 @Entity
 @Table(name = "organization")
-@SoftDelete(columnName = "whenDeleted")
 public class Organization extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -71,5 +70,7 @@ public class Organization extends PanacheEntityBase {
     @UpdateTimestamp
     public Instant whenModified;
 
+    @SoftDelete
+    @Column(nullable = true)
     public Instant whenDeleted;
 }

@@ -27,7 +27,6 @@ import java.util.*;
     // uniqueConstraints = @UniqueConstraint(name = "UniqueName", columnNames = {"name"})
 )
 @UserDefinition
-@SoftDelete(columnName = "whenDeleted")
 public class User extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -93,6 +92,8 @@ public class User extends PanacheEntityBase {
     @UpdateTimestamp
     public Instant whenModified;
 
+    @SoftDelete
+    @Column(nullable = true)
     public Instant whenDeleted;
 
 }

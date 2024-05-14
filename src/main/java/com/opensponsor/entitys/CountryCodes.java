@@ -18,7 +18,6 @@ import java.util.UUID;
  */
 @Entity
 @Table(name = "country_codes")
-@SoftDelete(columnName = "whenDeleted")
 public class CountryCodes extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -66,5 +65,7 @@ public class CountryCodes extends PanacheEntityBase {
     @UpdateTimestamp
     public Instant whenModified;
 
+    @SoftDelete
+    @Column(nullable = true)
     public Instant whenDeleted;
 }

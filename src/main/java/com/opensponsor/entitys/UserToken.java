@@ -12,7 +12,6 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "user_token")
-@SoftDelete(columnName = "whenDeleted")
 public class UserToken extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -33,5 +32,7 @@ public class UserToken extends PanacheEntityBase {
     @UpdateTimestamp
     public Instant whenModified;
 
+    @SoftDelete
+    @Column(nullable = true)
     public Instant whenDeleted;
 }

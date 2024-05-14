@@ -14,7 +14,6 @@ import java.util.UUID;
  */
 // @Entity
 // @Table(name = "`fiscal_host`")
-// @SoftDelete(columnName = "whenDeleted")
 public class Example { // extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -27,6 +26,8 @@ public class Example { // extends PanacheEntityBase {
     @UpdateTimestamp
     public Instant whenModified;
 
+    @SoftDelete
+    @Column(nullable = true)
     public Instant whenDeleted;
 
     // 在实体管理器持久化操作之前执行 实际执行或级联。此调用与 持久化操作。
