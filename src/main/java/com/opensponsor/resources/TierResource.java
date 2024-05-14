@@ -36,7 +36,7 @@ import org.jboss.resteasy.api.validation.ViolationReport;
             url = "https://www.apache.org/licenses/LICENSE-2.0.html"))
 )
 @Path("/tier")
-public class TIerResource {
+public class TierResource {
     @Inject
     TierRepository tierRepository;
 
@@ -93,7 +93,7 @@ public class TIerResource {
             )
         )
     )
-    @POST
+    @PUT
     @Transactional
     @Produces(MediaType.APPLICATION_JSON)
     public Response update(@Valid Tier tier) {
