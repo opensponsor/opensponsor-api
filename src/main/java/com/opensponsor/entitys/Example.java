@@ -17,7 +17,7 @@ import java.util.UUID;
 public class Example { // extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     public UUID id;
 
     @CreationTimestamp

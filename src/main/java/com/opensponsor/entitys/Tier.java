@@ -21,7 +21,7 @@ import java.util.UUID;
 public class Tier extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     public UUID id;
 
     // public declare CollectiveId: number;
@@ -52,7 +52,7 @@ public class Tier extends PanacheEntityBase {
 
     // public declare description: string;
     @Comment("description")
-    @Schema(description = "捐助等级类型")
+    @Schema(description = "描述")
     @Column(length = 500, nullable = false, columnDefinition = "TEXT")
     @Size(max = 500)
     public String description;
@@ -112,7 +112,7 @@ public class Tier extends PanacheEntityBase {
 
     // public declare currency: SupportedCurrency;
     @Comment("currency")
-    @Schema(description = "最小金额")
+    @Schema(description = "货币")
     @Column()
     @Enumerated
     public E_IBAN_CURRENCIES currency;

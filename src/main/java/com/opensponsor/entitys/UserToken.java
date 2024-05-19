@@ -15,7 +15,7 @@ import java.util.UUID;
 public class UserToken extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     public UUID id;
 
     @Column(unique = true, length = 1000, nullable = false)

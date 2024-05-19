@@ -30,7 +30,7 @@ import java.util.*;
 public class User extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     public UUID id;
 
     @Comment("user name")

@@ -19,7 +19,7 @@ import java.util.UUID;
 public class BankAccount extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     public UUID id;
 
     @Comment("back name")

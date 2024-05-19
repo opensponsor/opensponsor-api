@@ -18,7 +18,7 @@ import java.util.*;
 public class Organization extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     public UUID id;
 
     @Comment("user name")
