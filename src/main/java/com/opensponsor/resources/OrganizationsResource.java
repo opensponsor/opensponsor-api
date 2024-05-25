@@ -9,10 +9,7 @@ import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;
@@ -94,6 +91,16 @@ public class OrganizationsResource {
         return Response
             .status(HttpResponseStatus.OK.code())
             .entity(new ResultOfPaging<>(organizationRepository.getAll(), new Page(0, 10)))
+            .build();
+    }
+
+    @GET
+    @Path("{name}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response detail(@PathParam("name") String name) {
+        return Response
+            .status(HttpResponseStatus.OK.code())
+            .entity(organizationRepository.find("name", name).firstResult())
             .build();
     }
 }
