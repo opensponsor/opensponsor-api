@@ -2,6 +2,8 @@ package com.opensponsor.resources;
 
 import com.opensponsor.entitys.Tier;
 import com.opensponsor.repositorys.TierRepository;
+import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -36,6 +38,7 @@ import org.jboss.resteasy.api.validation.ViolationReport;
             url = "https://www.apache.org/licenses/LICENSE-2.0.html"))
 )
 @Path("/tier")
+@RolesAllowed({ "User" })
 public class TierResource {
     @Inject
     TierRepository tierRepository;
