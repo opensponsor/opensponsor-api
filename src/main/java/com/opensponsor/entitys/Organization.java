@@ -48,7 +48,7 @@ public class Organization extends PanacheEntityBase {
 
     @Comment("tags")
     @Column()
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     public Set<String> tags = new HashSet<>();
 
     @Comment("website")
@@ -57,7 +57,7 @@ public class Organization extends PanacheEntityBase {
     public String website;
 
     @Schema(description = "捐助等级")
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "organization")
     public List<Tier> tiers = new ArrayList<>();
 
     @Schema(description = "Organization Owner")
