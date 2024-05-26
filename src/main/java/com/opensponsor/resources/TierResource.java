@@ -2,7 +2,6 @@ package com.opensponsor.resources;
 
 import com.opensponsor.entitys.Tier;
 import com.opensponsor.repositorys.TierRepository;
-import io.quarkus.security.Authenticated;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -101,7 +100,7 @@ public class TierResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response update(@Valid Tier tier) {
         if(tierRepository.checkOwnership(tier)) {
-            tier.persistAndFlush();
+            tierRepository.save(tier);
             return Response.ok(tier).build();
         } else {
             return Response.status(HttpStatus.SC_UNAUTHORIZED).build();
