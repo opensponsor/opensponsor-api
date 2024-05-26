@@ -1,6 +1,7 @@
 package com.opensponsor.entitys;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.opensponsor.enums.E_AMOUNT_TYPE;
 import com.opensponsor.enums.E_IBAN_CURRENCIES;
 import com.opensponsor.enums.E_INTERVAL;
@@ -29,14 +30,10 @@ public class Tier extends PanacheEntityBase {
     public UUID id;
 
     // public declare CollectiveId: number;
-    @Schema(description = "所属组织", hidden = true)
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JsonIgnore
+    @Schema(description = "所属组织", required = true)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public Organization organization;
-
-    @Schema(description = "所属组织ID")
-    @Transient
-    public UUID organizationId;
 
     // public declare slug: string;
     @Comment("url slug")
