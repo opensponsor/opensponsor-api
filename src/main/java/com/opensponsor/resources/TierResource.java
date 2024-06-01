@@ -2,6 +2,7 @@ package com.opensponsor.resources;
 
 import com.opensponsor.entitys.Tier;
 import com.opensponsor.repositorys.TierRepository;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -67,10 +68,10 @@ public class TierResource {
     @Transactional
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(@Valid Tier tier) {
-        if(tierRepository.checkOwnership(tier)) {
+        if(tierRepository.checkOwnership(tier.organization.user)) {
             return Response.ok(tierRepository.create(tier)).build();
         } else {
-            return Response.status(HttpStatus.SC_UNAUTHORIZED).build();
+            return Response.status(HttpResponseStatus.FORBIDDEN.code()).build();
         }
     }
 
@@ -99,11 +100,10 @@ public class TierResource {
     @Transactional
     @Produces(MediaType.APPLICATION_JSON)
     public Response update(@Valid Tier tier) {
-        if(tierRepository.checkOwnership(tier)) {
-            tierRepository.save(tier);
-            return Response.ok(tier).build();
+        if(tierRepository.checkOwnership(tier.organization.user)) {
+            return Response.ok(tierRepository.save(tier)).build();
         } else {
-            return Response.status(HttpStatus.SC_UNAUTHORIZED).build();
+            return Response.status(HttpResponseStatus.FORBIDDEN.code()).build();
         }
     }
 
@@ -132,11 +132,11 @@ public class TierResource {
     @Transactional
     @Produces(MediaType.APPLICATION_JSON)
     public Response delete(@Valid Tier tier) {
-        if(tierRepository.checkOwnership(tier)) {
+        if(tierRepository.checkOwnership(tier.organization.user)) {
             tierRepository.delete(tier);
             return Response.ok(true).build();
         } else {
-            return Response.status(HttpStatus.SC_UNAUTHORIZED).build();
+            return Response.status(HttpResponseStatus.FORBIDDEN.code()).build();
         }
     }
 }

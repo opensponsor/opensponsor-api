@@ -85,6 +85,30 @@ public class OrganizationsResource {
         }
     }
 
+    @PUT
+    @Transactional
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response update(@Valid Organization organization) {
+        if(organizationRepository.checkOwnership(organization.user)) {
+            Organization exist = Organization.findById(organization.id);
+            if(!exist.name.equals(organization.name)) {
+                return Response
+                    .status(HttpResponseStatus.FORBIDDEN.code())
+                    .build();
+            } else {
+                return Response
+                    .status(HttpResponseStatus.OK.code())
+                    .entity(organizationRepository.save(organization))
+                    .build();
+            }
+        } else {
+            return Response
+                .status(HttpResponseStatus.FORBIDDEN.code())
+                .entity(organizationRepository.getViolationReport())
+                .build();
+        }
+    }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response list() {

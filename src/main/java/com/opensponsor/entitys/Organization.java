@@ -4,12 +4,15 @@ import com.opensponsor.enums.E_ORGANIZATION_TYPE;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+import jakarta.ws.rs.core.Response;
+import org.apache.http.HttpException;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SoftDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.net.http.HttpResponse;
 import java.time.Instant;
 import java.util.*;
 
