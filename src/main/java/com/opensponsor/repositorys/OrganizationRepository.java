@@ -5,20 +5,15 @@ import com.opensponsor.entitys.Organization;
 import com.opensponsor.entitys.User;
 import com.opensponsor.utils.GenerateViolationReport;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
-import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.core.SecurityContext;
 import org.jboss.resteasy.api.validation.ConstraintType;
 import org.jboss.resteasy.api.validation.ResteasyConstraintViolation;
 import org.jboss.resteasy.api.validation.ViolationReport;
 
-import java.util.List;
-import java.util.UUID;
-
 @ApplicationScoped
-public class OrganizationRepository implements PanacheRepositoryBase<Organization, UUID> {
+public class OrganizationRepository extends RepositoryBase<Organization> {
     private ViolationReport violationReport;
 
     @Inject
