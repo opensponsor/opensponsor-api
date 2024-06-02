@@ -75,6 +75,10 @@ public class Organization extends PanacheEntityBase {
     @Schema(description = "所属用户", required = true)
     public User user;
 
+    @Schema(required = true, description = "members")
+    @OneToMany(mappedBy = "organization")
+    public Set<Member> members;
+
     @CreationTimestamp
     @Schema(description = "when created", required = true)
     public Instant whenCreated;
