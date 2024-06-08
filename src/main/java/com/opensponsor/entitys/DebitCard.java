@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.opensponsor.utils.CDIGetter;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.CreationTimestamp;
@@ -30,6 +31,15 @@ public class DebitCard extends PanacheEntityBase {
     @Size(min = 2, max = 16)
     @Schema(description = "legal name")
     public String legalName;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @Schema(description = "User country code")
+    public CountryCodes countryCode;
+
+    @Column(unique = true, length = 32)
+    @Email
+    @Size(min = 4, max = 11)
+    public String phoneNumber;
 
     @Column(length = 64)
     @Size(min = 2, max = 64)
