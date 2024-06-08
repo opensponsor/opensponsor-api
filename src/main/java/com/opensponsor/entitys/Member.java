@@ -1,6 +1,7 @@
 package com.opensponsor.entitys;
 
 import com.opensponsor.enums.E_ORGANIZATION_ROLE;
+import com.opensponsor.utils.CDIGetter;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -41,4 +42,11 @@ public class Member extends PanacheEntityBase {
     @SoftDelete
     @Column(nullable = true)
     public Instant whenDeleted;
+
+    @PrePersist
+    protected void prePersist() {
+        if(this.user == null) {
+            this.user = CDIGetter.getUserRepository().authUser();
+        }
+    }
 }

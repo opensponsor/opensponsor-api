@@ -1,6 +1,7 @@
 package com.opensponsor.entitys;
 
 import com.opensponsor.enums.E_ORGANIZATION_TYPE;
+import com.opensponsor.utils.CDIGetter;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
@@ -79,6 +80,10 @@ public class Organization extends PanacheEntityBase {
     @OneToMany(mappedBy = "organization")
     public Set<Member> members;
 
+    @OneToOne(mappedBy = "organization")
+    @Schema(description = "receiving-money debitCard")
+    public DebitCard debitCard;
+
     @CreationTimestamp
     @Schema(description = "when created", required = true)
     public Instant whenCreated;
@@ -91,4 +96,11 @@ public class Organization extends PanacheEntityBase {
     @Column(nullable = true)
     @Schema(description = "when deleted")
     public Instant whenDeleted;
+
+    @PrePersist
+    protected void prePersist() {
+        if(this.user == null) {
+            this.user = CDIGetter.getUserRepository().authUser();
+        }
+    }
 }
