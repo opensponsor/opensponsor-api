@@ -1,7 +1,6 @@
 package com.opensponsor.repositorys;
 
 import com.opensponsor.entitys.User;
-import com.opensponsor.enums.E_ORGANIZATION_TYPE;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Sort;
