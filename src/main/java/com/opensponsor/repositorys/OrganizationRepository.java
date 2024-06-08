@@ -21,7 +21,6 @@ public class OrganizationRepository extends RepositoryBase<Organization> {
 
     @Transactional
     public Organization create(Organization organization) {
-        organization.user = userRepository.authUser();
         organization.persistAndFlush();
         return organization;
     }
