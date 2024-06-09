@@ -37,7 +37,6 @@ public class DebitCard extends PanacheEntityBase {
     public CountryCodes countryCode;
 
     @Column(unique = true, length = 32)
-    @Email
     @Size(min = 4, max = 11)
     public String phoneNumber;
 
