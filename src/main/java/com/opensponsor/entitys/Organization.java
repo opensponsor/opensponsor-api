@@ -2,24 +2,20 @@ package com.opensponsor.entitys;
 
 import com.opensponsor.enums.E_ORGANIZATION_TYPE;
 import com.opensponsor.utils.CDIGetter;
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import jakarta.ws.rs.core.Response;
-import org.apache.http.HttpException;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SoftDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.net.http.HttpResponse;
 import java.time.Instant;
 import java.util.*;
 
 @Entity
 @Table(name = "organization")
-public class Organization extends PanacheEntityBase {
+public class Organization extends EntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(unique = true, nullable = false)

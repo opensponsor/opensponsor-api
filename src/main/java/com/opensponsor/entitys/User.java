@@ -2,21 +2,16 @@ package com.opensponsor.entitys;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.opensponsor.enums.E_SEX;
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import jakarta.persistence.*;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Size;
 import io.quarkus.security.jpa.Password;
 import io.quarkus.security.jpa.Roles;
 import io.quarkus.security.jpa.UserDefinition;
 import io.quarkus.security.jpa.Username;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
-import org.hibernate.annotations.*;
-
-import java.time.Instant;
-import java.util.*;
+import org.hibernate.annotations.Comment;
+import org.hibernate.annotations.NaturalId;
 
 /**
  * user entity
@@ -27,12 +22,7 @@ import java.util.*;
     // uniqueConstraints = @UniqueConstraint(name = "UniqueName", columnNames = {"name"})
 )
 @UserDefinition
-public class User extends PanacheEntityBase {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(unique = true, nullable = false)
-    public UUID id;
-
+public class User extends EntityBase {
     @Comment("user name")
     @Column(unique = true, length = 32, nullable = false)
     @Size(min = 2, max = 32)
@@ -84,15 +74,5 @@ public class User extends PanacheEntityBase {
         orphanRemoval = true
     )
     public UserToken token = null;
-
-    @CreationTimestamp
-    public Instant whenCreated;
-
-    @UpdateTimestamp
-    public Instant whenModified;
-
-    @SoftDelete
-    @Column(nullable = true)
-    public Instant whenDeleted;
 
 }
