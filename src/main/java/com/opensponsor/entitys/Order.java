@@ -1,17 +1,24 @@
 package com.opensponsor.entitys;
 
 import com.opensponsor.enums.E_ORDER_STATUS;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.ManyToOne;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SoftDelete;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
-public class Order extends EntityBase {
+public class Order extends PanacheEntityBase {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(unique = true, nullable = false)
+    public UUID id;
+
     @ManyToOne
     @Schema(description = "from by user")
     public User user;
@@ -59,4 +66,14 @@ public class Order extends EntityBase {
     @Column(nullable = false)
     @Schema(description = "order expires time")
     public Instant whenExpires;
+
+    @CreationTimestamp
+    public Instant whenCreated;
+
+    @UpdateTimestamp
+    public Instant whenModified;
+
+    @SoftDelete
+    @Column(nullable = true)
+    public Instant whenDeleted;
 }

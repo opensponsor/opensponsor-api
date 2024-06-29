@@ -2,6 +2,7 @@ package com.opensponsor.entitys;
 
 import com.opensponsor.enums.E_ORGANIZATION_TYPE;
 import com.opensponsor.utils.CDIGetter;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -15,7 +16,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "organization")
-public class Organization extends EntityBase {
+public class Organization extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(unique = true, nullable = false)

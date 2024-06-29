@@ -1,6 +1,7 @@
 package com.opensponsor.repositorys;
 
 import com.opensponsor.entitys.DebitCard;
+import com.opensponsor.entitys.Order;
 import com.opensponsor.entitys.Organization;
 import com.opensponsor.entitys.Tier;
 import jakarta.enterprise.context.ApplicationScoped;

@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "user_token")
-public class UserToken extends EntityBase {
+public class UserToken extends PanacheEntityBase {
     @Column(unique = true, length = 1000, nullable = false)
     public String token;
 

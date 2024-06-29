@@ -1,17 +1,27 @@
 package com.opensponsor.entitys;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.Comment;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SoftDelete;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.Instant;
+import java.util.UUID;
 
 /**
  *  公司的一种
  */
 @Entity
 @Table(name = "country_codes")
-public class CountryCodes extends EntityBase {
+public class CountryCodes extends PanacheEntityBase {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(unique = true, nullable = false)
+    public UUID id;
+
     @Comment("country calling code")
     @Column(length = 16, nullable = false)
     @Size(min = 2, max = 16)
@@ -46,4 +56,14 @@ public class CountryCodes extends EntityBase {
     @Column(length = 16, nullable = false)
     @Size(min = 1, max = 16)
     public String currencyAlphabeticCode;
+
+    @CreationTimestamp
+    public Instant whenCreated;
+
+    @UpdateTimestamp
+    public Instant whenModified;
+
+    @SoftDelete
+    @Column(nullable = true)
+    public Instant whenDeleted;
 }

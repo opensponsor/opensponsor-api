@@ -5,14 +5,20 @@ import com.opensponsor.enums.E_AMOUNT_TYPE;
 import com.opensponsor.enums.E_IBAN_CURRENCIES;
 import com.opensponsor.enums.E_INTERVAL;
 import com.opensponsor.enums.E_TIER_TYPE;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.Comment;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SoftDelete;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(
@@ -20,7 +26,12 @@ import java.util.List;
         @UniqueConstraint(columnNames = {"slug", "organization_id"})
     }
 )
-public class Tier extends EntityBase {
+public class Tier extends PanacheEntityBase {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(unique = true, nullable = false)
+    public UUID id;
+
     // public declare CollectiveId: number;
     @Schema(description = "所属组织", required = true)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -137,4 +148,14 @@ public class Tier extends EntityBase {
     @Schema(description = "筹款目标")
     @Column(length = 10)
     public Long goal;
+
+    @CreationTimestamp
+    public Instant whenCreated;
+
+    @UpdateTimestamp
+    public Instant whenModified;
+
+    @SoftDelete
+    @Column(nullable = true)
+    public Instant whenDeleted;
 }

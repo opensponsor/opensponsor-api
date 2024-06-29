@@ -25,6 +25,8 @@ dependencies {
     implementation 'io.quarkus:quarkus-smallrye-openapi'
     implementation 'io.quarkus:quarkus-smallrye-jwt-build'
     // implementation 'io.quarkus:quarkus-elytron-security-oauth2'
+
+    // implementation 'com.alipay.sdk:alipay-sdk-java:4.39.99.ALL'
     implementation 'io.quarkus:quarkus-arc'
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'

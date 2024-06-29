@@ -3,12 +3,24 @@ package com.opensponsor.entitys;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.opensponsor.utils.CDIGetter;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SoftDelete;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.Instant;
+import java.util.UUID;
 
 @Entity
-public class DebitCard extends EntityBase {
+public class DebitCard extends PanacheEntityBase {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(unique = true, nullable = false)
+    public UUID id;
+
     @Column(length = 22)
     @Size(min = 16, max = 22)
     @Schema(description = "Debit Card No")
@@ -41,7 +53,17 @@ public class DebitCard extends EntityBase {
     @Schema(description = "create by user")
     @JsonIgnore
     public User user;
-    
+
+    @CreationTimestamp
+    public Instant whenCreated;
+
+    @UpdateTimestamp
+    public Instant whenModified;
+
+    @SoftDelete
+    @Column(nullable = true)
+    public Instant whenDeleted;
+
     @PrePersist
     protected void prePersist() {
         if(this.user == null) {
