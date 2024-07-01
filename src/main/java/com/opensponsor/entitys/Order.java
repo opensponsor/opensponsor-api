@@ -13,6 +13,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
+@Table(name = "`table`")
 public class Order extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

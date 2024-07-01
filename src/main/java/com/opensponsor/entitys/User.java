@@ -21,6 +21,7 @@ import java.util.UUID;
 /**
  * user entity
  */
+@Entity
 @Table(
     name = "`user`"
     // uniqueConstraints = @UniqueConstraint(name = "UniqueName", columnNames = {"name"})

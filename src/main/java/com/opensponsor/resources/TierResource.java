@@ -10,7 +10,6 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.apache.http.HttpStatus;
 import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.info.Contact;
@@ -21,6 +20,8 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.api.validation.ViolationReport;
+
+import java.util.UUID;
 
 @OpenAPIDefinition(
     tags = {
@@ -38,7 +39,6 @@ import org.jboss.resteasy.api.validation.ViolationReport;
             url = "https://www.apache.org/licenses/LICENSE-2.0.html"))
 )
 @Path("/tier")
-@RolesAllowed({ "User" })
 public class TierResource {
     @Inject
     TierRepository tierRepository;
@@ -64,9 +64,40 @@ public class TierResource {
             )
         )
     )
+    @GET
+    @Path("{slugOrId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response get(@PathParam("slugOrId") String slugOrId) {
+        return Response.ok(
+            tierRepository.findByIdOptional(UUID.fromString(slugOrId)).orElseGet(tierRepository.find("slug", slugOrId).firstResult())
+        ).build();
+    }
+
+    @Operation(summary = "Create sponsor tiers")
+    @APIResponse(
+        responseCode = "200",
+        description = "create tier",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                implementation = Tier.class
+            )
+        )
+    )
+    @APIResponse(
+        responseCode = "400",
+        description = "User not found",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                implementation = ViolationReport.class
+            )
+        )
+    )
     @POST
     @Transactional
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({ "User" })
     public Response create(@Valid Tier tier) {
         if(tierRepository.checkOwnership(tier.organization.user)) {
             return Response.ok(tierRepository.create(tier)).build();
@@ -99,6 +130,7 @@ public class TierResource {
     @PUT
     @Transactional
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({ "User" })
     public Response update(@Valid Tier tier) {
         if(tierRepository.checkOwnership(tier.organization.user)) {
             return Response.ok(tierRepository.save(tier)).build();
@@ -131,6 +163,7 @@ public class TierResource {
     @DELETE
     @Transactional
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({ "User" })
     public Response delete(@Valid Tier tier) {
         if(tierRepository.checkOwnership(tier.organization.user)) {
             tierRepository.delete(tier);

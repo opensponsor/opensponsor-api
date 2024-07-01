@@ -38,19 +38,19 @@ public class Tier extends PanacheEntityBase {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public Organization organization;
 
-    // public declare slug: string;
-    @Comment("url slug")
-    @Schema(description = "url path", minLength = 2, maxLength = 32)
-    @Column(length = 32, nullable = false, unique = true)
-    @Size(min = 2, max = 32)
-    public String slug;
-
     // public declare name: string;
     @Comment("tier name")
     @Schema(description = "捐助等级名称", minLength = 2, maxLength = 32, required = true)
     @Column(length = 32, nullable = false)
     @Size(min = 2, max = 32)
     public String name;
+
+    // public declare slug: string;
+    @Comment("url slug")
+    @Schema(description = "url path", minLength = 2, maxLength = 32)
+    @Column(length = 32, nullable = false)
+    @Size(min = 2, max = 32)
+    public String slug;
 
     // public declare type: TierType;
     @Comment("tier type")
