@@ -1,5 +1,6 @@
 package com.opensponsor.resources;
 
+import com.opensponsor.entitys.Organization;
 import com.opensponsor.entitys.Tier;
 import com.opensponsor.repositorys.TierRepository;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -65,11 +66,12 @@ public class TierResource {
         )
     )
     @GET
-    @Path("{slugOrId}")
+    @Path("{organization}/{slug}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response get(@PathParam("slugOrId") String slugOrId) {
+    public Response get(@PathParam("organization") String organizationId, @PathParam("slug") String slug) {
+        Organization org = Organization.findById(UUID.fromString(organizationId));
         return Response.ok(
-            tierRepository.findByIdOptional(UUID.fromString(slugOrId)).orElseGet(tierRepository.find("slug", slugOrId).firstResult())
+            tierRepository.find("organization = ?1 and slug = ?2", org, slug).firstResult()
         ).build();
     }
 
