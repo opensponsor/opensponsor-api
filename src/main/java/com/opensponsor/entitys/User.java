@@ -39,29 +39,35 @@ public class User extends PanacheEntityBase {
     @Size(min = 2, max = 32)
     @Username
     @NaturalId
+    @Schema(description = "username", required = true)
     public String username;
 
     @Comment("legal name")
-    @Column(length = 32)
+    @Column(length = 32, nullable = false)
     @Size(max = 32)
+    @Schema(description = "legalName", required = true)
     public String legalName;
 
     @Comment("User avatar")
     @Column(length = 42)
     @Size(max = 42)
+    @Schema(description = "avatar")
     public String avatar;
 
     @Comment("User sex")
     @Enumerated
+    @Schema(description = "sex")
     public E_SEX sex;
 
     @Roles
+    @Schema(description = "role")
     public String role;
 
     @Comment("password")
     @Column(length = 60, nullable = false)
     @Password
     @JsonIgnore
+    @Schema(description = "password")
     public String password;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
@@ -70,12 +76,14 @@ public class User extends PanacheEntityBase {
 
     @Column(unique = true, length = 32)
     @Size(min = 4, max = 11)
+    @Schema(description = "phoneNumber")
     public String phoneNumber;
 
     @Column(unique = true, length = 32)
     @Email
     @Size(min = 6, max = 32)
     @NaturalId
+    @Schema(description = "email")
     public String email;
 
     @CreationTimestamp
