@@ -31,6 +31,7 @@ public class User extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(unique = true, nullable = false)
+    @Schema(required = true)
     public UUID id;
 
     @Comment("user name")
@@ -78,9 +79,11 @@ public class User extends PanacheEntityBase {
     public String email;
 
     @CreationTimestamp
+    @Schema(description = "when created", required = true)
     public Instant whenCreated;
 
     @UpdateTimestamp
+    @Schema(description = "when modified", required = true)
     public Instant whenModified;
 
     @SoftDelete

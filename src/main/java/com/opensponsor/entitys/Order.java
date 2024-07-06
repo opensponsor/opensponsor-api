@@ -18,6 +18,7 @@ public class Order extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(unique = true, nullable = false)
+    @Schema(required = true)
     public UUID id;
 
     @ManyToOne
@@ -69,9 +70,11 @@ public class Order extends PanacheEntityBase {
     public Instant whenExpires;
 
     @CreationTimestamp
+    @Schema(description = "when created", required = true)
     public Instant whenCreated;
 
     @UpdateTimestamp
+    @Schema(description = "when modified", required = true)
     public Instant whenModified;
 
     @SoftDelete

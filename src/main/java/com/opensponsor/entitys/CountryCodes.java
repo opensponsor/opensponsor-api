@@ -3,6 +3,7 @@ package com.opensponsor.entitys;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SoftDelete;
@@ -20,6 +21,7 @@ public class CountryCodes extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(unique = true, nullable = false)
+    @Schema(required = true)
     public UUID id;
 
     @Comment("country calling code")
@@ -58,9 +60,11 @@ public class CountryCodes extends PanacheEntityBase {
     public String currencyAlphabeticCode;
 
     @CreationTimestamp
+    @Schema(description = "when created", required = true)
     public Instant whenCreated;
 
     @UpdateTimestamp
+    @Schema(description = "when modified", required = true)
     public Instant whenModified;
 
     @SoftDelete

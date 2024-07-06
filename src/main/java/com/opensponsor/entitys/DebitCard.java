@@ -19,6 +19,7 @@ public class DebitCard extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(unique = true, nullable = false)
+    @Schema(required = true)
     public UUID id;
 
     @Column(length = 22)
@@ -55,9 +56,11 @@ public class DebitCard extends PanacheEntityBase {
     public User user;
 
     @CreationTimestamp
+    @Schema(description = "when created", required = true)
     public Instant whenCreated;
 
     @UpdateTimestamp
+    @Schema(description = "when modified", required = true)
     public Instant whenModified;
 
     @SoftDelete

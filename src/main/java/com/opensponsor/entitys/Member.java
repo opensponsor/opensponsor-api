@@ -18,6 +18,7 @@ public class Member extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(unique = true, nullable = false)
+    @Schema(required = true)
     public UUID id;
 
     @Schema(required = true, description = "user")
@@ -34,9 +35,11 @@ public class Member extends PanacheEntityBase {
     public E_ORGANIZATION_ROLE roles;
 
     @CreationTimestamp
+    @Schema(description = "when created", required = true)
     public Instant whenCreated;
 
     @UpdateTimestamp
+    @Schema(description = "when modified", required = true)
     public Instant whenModified;
 
     @SoftDelete
