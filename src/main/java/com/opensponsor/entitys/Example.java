@@ -26,11 +26,15 @@ import java.util.UUID;
     @FilterDef(name="example(<=age)", parameters = {
         @ParamDef(name="maxAge", type = Integer.class)
     }),
+    @FilterDef(name="example(likeName)", parameters = {
+        @ParamDef(name="likeName", type = String.class)
+    }),
 })
 @Filters({
     @Filter(name = "example(=age)", condition = "age = :age"),
     @Filter(name = "example(>=age)", condition = "age >= :minAge"),
     @Filter(name = "example(<=age)", condition = "age <= :maxAge"),
+    @Filter(name = "example(likeName)", condition = "name like :likeName"),
 })
 
 
@@ -45,6 +49,10 @@ public class Example extends PanacheEntityBase {
     @Schema(required = true)
     @QueryParam("name")
     public String name;
+
+    @QueryParam("likeName")
+    @Transient
+    public String likeName;
 
     @Column(unique = true, nullable = false)
     @Schema(required = true)

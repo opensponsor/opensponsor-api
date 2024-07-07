@@ -18,6 +18,12 @@ public class ExampleRepository  extends RepositoryBase<Example> {
         if(params.maxAge != null) {
             query.filter("example(<=age)", Parameters.with("maxAge", params.maxAge));
         }
+        if(params.likeName != null) {
+            query.filter(
+                "example(likeName)",
+                Parameters.with("likeName", String.join("", "%", params.likeName.trim(), "%"))
+            );
+        }
 
         return query;
     }
