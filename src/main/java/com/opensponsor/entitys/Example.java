@@ -2,10 +2,10 @@ package com.opensponsor.entitys;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
+import jakarta.persistence.Table;
+import jakarta.ws.rs.QueryParam;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SoftDelete;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -13,14 +13,52 @@ import java.util.UUID;
 /**
  * fiscal host entity
  */
-// @Entity
-// @Table(name = "`example`")
+@Entity
+@Table(name = "example")
+
+@FilterDefs({
+    @FilterDef(name="example(=age)", parameters = {
+        @ParamDef(name="age", type = Integer.class)
+    }),
+    @FilterDef(name="example(>=age)", parameters = {
+        @ParamDef(name="minAge", type = Integer.class)
+    }),
+    @FilterDef(name="example(<=age)", parameters = {
+        @ParamDef(name="maxAge", type = Integer.class)
+    }),
+})
+@Filters({
+    @Filter(name = "example(=age)", condition = "age = :age"),
+    @Filter(name = "example(>=age)", condition = "age >= :minAge"),
+    @Filter(name = "example(<=age)", condition = "age <= :maxAge"),
+})
+
+
 public class Example extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(unique = true, nullable = false)
     @Schema(required = true)
     public UUID id;
+
+    @Column(unique = true, nullable = false)
+    @Schema(required = true)
+    @QueryParam("name")
+    public String name;
+
+    @Column(unique = true, nullable = false)
+    @Schema(required = true)
+    @QueryParam("age")
+    public Integer age;
+
+    @QueryParam("minAge")
+    @Transient
+    public Integer minAge;
+
+    @QueryParam("maxAge")
+    @Transient
+    public Integer maxAge;
+
 
     @CreationTimestamp
     @Schema(description = "when created", required = true)

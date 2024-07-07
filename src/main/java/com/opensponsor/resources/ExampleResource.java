@@ -1,12 +1,16 @@
 package com.opensponsor.resources;
 
-import com.opensponsor.entitys.FiscalHost;
-import com.opensponsor.entitys.User;
-import com.opensponsor.payload.ResultOfArray;
+import com.opensponsor.entitys.Example;
+import com.opensponsor.payload.PageParams;
+import com.opensponsor.payload.ResultOfPaging;
+import com.opensponsor.repositorys.ExampleRepository;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import io.quarkus.panache.common.Page;
+import io.quarkus.panache.common.Parameters;
+import jakarta.annotation.Nullable;
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;
@@ -40,17 +44,21 @@ import org.jboss.resteasy.api.validation.ViolationReport;
 )
 @Path("/example")
 public class ExampleResource {
+
+    @Inject
+    public ExampleRepository exampleRepository;
+
     @Tag(name = "Hello", description = "Operations related to gaskets")
     @Operation(summary = "Update an existing pet")
     @APIResponse(
         responseCode = "200",
-        description = "User List",
+        description = "Example List",
         content = @Content(
             mediaType = "application/json",
             schema = @Schema(
-                implementation = ResultOfArray.class,
+                implementation = ResultOfPaging.class,
                 properties = {
-                    @SchemaProperty(name = "list", type = SchemaType.ARRAY, implementation = User.class),
+                    @SchemaProperty(name = "records", type = SchemaType.ARRAY, implementation = Example.class),
                 }
             )
         )
@@ -65,13 +73,13 @@ public class ExampleResource {
             )
         )
     )
-    @GET
+    @GET()
     @Transactional
     @Produces(MediaType.APPLICATION_JSON)
-    public Response hello() {
+    public Response hello(@BeanParam Example params, @BeanParam PageParams pageParams) {
         return Response
             .status(200)
-            .entity(FiscalHost.findAll().stream().toList())
+            .entity(new ResultOfPaging<>(this.exampleRepository.filter(params), PageParams.of(pageParams)))
             .build();
     }
 }

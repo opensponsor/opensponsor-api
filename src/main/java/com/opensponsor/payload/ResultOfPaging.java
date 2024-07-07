@@ -3,8 +3,8 @@ package com.opensponsor.payload;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Page;
+import org.hibernate.query.Query;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 public class ResultOfPaging<T extends PanacheEntityBase> {
@@ -18,8 +18,8 @@ public class ResultOfPaging<T extends PanacheEntityBase> {
     public List<T> records;
 
     public ResultOfPaging(PanacheQuery<T> panacheQuery, Page page) {
-        PanacheQuery<T> query = panacheQuery.page(page);
-        currentPageNumber = page.index + 1;
+        PanacheQuery<T> query = panacheQuery.page(page.index - 1, page.size);
+        currentPageNumber = page.index;
         lastPageNumber = query.pageCount();
         pageSize = query.count();
         totalRecords = panacheQuery.count();

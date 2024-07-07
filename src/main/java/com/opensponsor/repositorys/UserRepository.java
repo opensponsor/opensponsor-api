@@ -1,7 +1,6 @@
 package com.opensponsor.repositorys;
 
 import com.opensponsor.entitys.User;
-import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -12,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @ApplicationScoped
-public class UserRepository implements PanacheRepositoryBase<User, UUID> {
+public class UserRepository extends RepositoryBase<User> {
     @Inject
     SecurityContext ctx;
 

@@ -8,6 +8,7 @@ import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import org.hibernate.SessionFactory;
 
 import java.util.UUID;
 
@@ -15,6 +16,9 @@ public abstract class RepositoryBase<T extends PanacheEntityBase> implements Pan
 
     @Inject
     protected UserRepository userRepository;
+
+    @Inject
+    public SessionFactory sessionFactory;
 
     @Transactional
     public T create(T entity) {
