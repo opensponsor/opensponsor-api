@@ -2,22 +2,20 @@ package com.opensponsor.repositorys;
 
 
 import com.opensponsor.entitys.Organization;
-import com.opensponsor.entitys.User;
 import com.opensponsor.utils.GenerateViolationReport;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import io.quarkus.panache.common.Parameters;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.jboss.resteasy.api.validation.ConstraintType;
 import org.jboss.resteasy.api.validation.ResteasyConstraintViolation;
 import org.jboss.resteasy.api.validation.ViolationReport;
 
+import java.util.UUID;
+
 @ApplicationScoped
 public class OrganizationRepository extends RepositoryBase<Organization> {
     private ViolationReport violationReport;
-
-    @Inject
-    protected UserRepository userRepository;
 
     @Transactional
     public Organization create(Organization organization) {
@@ -25,9 +23,13 @@ public class OrganizationRepository extends RepositoryBase<Organization> {
         return organization;
     }
 
-    public PanacheQuery<Organization> getAll() {
-        User user = userRepository.authUser();
-        return this.find("user", user);
+    public PanacheQuery<Organization> filter(Organization params) {
+        PanacheQuery<Organization> query = Organization.findAll();
+        if(params.userId != null) {
+            query.filter("organization(=userId)", Parameters.with("userId", UUID.fromString(params.userId)));
+        }
+
+        return query;
     }
 
     public boolean validOfData(Organization organization) {

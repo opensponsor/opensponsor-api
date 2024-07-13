@@ -1,21 +1,29 @@
 package com.opensponsor.entitys;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.opensponsor.enums.E_ORGANIZATION_TYPE;
 import com.opensponsor.utils.CDIGetter;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
+import jakarta.ws.rs.QueryParam;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
-import org.hibernate.annotations.Comment;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SoftDelete;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
 
 import java.time.Instant;
 import java.util.*;
 
 @Entity
 @Table(name = "organization")
+@FilterDefs({
+    @FilterDef(name="organization(=userId)", parameters = {
+        @ParamDef(name="userId", type = UUID.class)
+    }),
+})
+@Filters({
+    @Filter(name = "organization(=userId)", condition = "user_id = :userId"),
+})
 public class Organization extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -68,6 +76,11 @@ public class Organization extends PanacheEntityBase {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "organization")
     @Schema(description = "捐助等级", required = true)
     public List<Tier> tiers = new ArrayList<>();
+
+    @QueryParam("userId")
+    @Schema(description = "filterable")
+    @Transient
+    public String userId;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @Schema(description = "所属用户", required = true)

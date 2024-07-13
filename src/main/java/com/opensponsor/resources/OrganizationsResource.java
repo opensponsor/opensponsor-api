@@ -1,10 +1,10 @@
 package com.opensponsor.resources;
 
 import com.opensponsor.entitys.Organization;
+import com.opensponsor.payload.PageParams;
 import com.opensponsor.payload.ResultOfPaging;
 import com.opensponsor.repositorys.OrganizationRepository;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import io.quarkus.panache.common.Page;
 import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -40,7 +40,6 @@ import org.jboss.resteasy.api.validation.ViolationReport;
             url = "https://www.apache.org/licenses/LICENSE-2.0.html"))
 )
 @Path("/organizations")
-@Authenticated
 public class OrganizationsResource {
 
     @Inject
@@ -71,6 +70,7 @@ public class OrganizationsResource {
     @POST
     @Transactional
     @Produces(MediaType.APPLICATION_JSON)
+    @Authenticated
     public Response create(@Valid Organization organization) {
         if(organizationRepository.validOfData(organization)) {
             return Response
@@ -88,6 +88,7 @@ public class OrganizationsResource {
     @PUT
     @Transactional
     @Produces(MediaType.APPLICATION_JSON)
+    @Authenticated
     public Response update(@Valid Organization organization) {
         if(organizationRepository.checkOwnership(organization.user)) {
             Organization exist = Organization.findById(organization.id);
@@ -111,10 +112,10 @@ public class OrganizationsResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response list() {
+    public Response list(@BeanParam Organization params, @BeanParam PageParams pageParams) {
         return Response
             .status(HttpResponseStatus.OK.code())
-            .entity(new ResultOfPaging<>(organizationRepository.getAll(), new Page(0, 10)))
+            .entity(new ResultOfPaging<>(organizationRepository.filter(params), PageParams.of(pageParams)))
             .build();
     }
 
