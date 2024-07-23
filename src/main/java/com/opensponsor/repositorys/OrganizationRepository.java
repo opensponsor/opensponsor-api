@@ -28,6 +28,9 @@ public class OrganizationRepository extends RepositoryBase<Organization> {
         if(params.userId != null) {
             query.filter("organization(=userId)", Parameters.with("userId", UUID.fromString(params.userId)));
         }
+        if(params.name != null) {
+            query.filter("organization(%name%)", Parameters.with("name", String.join("", "%", params.name, "%")));
+        }
 
         return query;
     }

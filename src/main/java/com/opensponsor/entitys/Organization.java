@@ -20,9 +20,13 @@ import java.util.*;
     @FilterDef(name="organization(=userId)", parameters = {
         @ParamDef(name="userId", type = UUID.class)
     }),
+    @FilterDef(name="organization(%name%)", parameters = {
+        @ParamDef(name="name", type = String.class)
+    }),
 })
 @Filters({
     @Filter(name = "organization(=userId)", condition = "user_id = :userId"),
+    @Filter(name = "organization(%name%)", condition = "name like :name"),
 })
 public class Organization extends PanacheEntityBase {
     @Id
@@ -31,6 +35,7 @@ public class Organization extends PanacheEntityBase {
     @Schema(required = true)
     public UUID id;
 
+    @QueryParam("name")
     @Comment("Organization name")
     @Column(unique = true, length = 32, nullable = false)
     @Size(min = 2, max = 32)
