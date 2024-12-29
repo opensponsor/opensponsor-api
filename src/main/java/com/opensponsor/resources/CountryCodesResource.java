@@ -1,9 +1,6 @@
 package com.opensponsor.resources;
 
 import com.opensponsor.entitys.CountryCodes;
-import com.opensponsor.entitys.FiscalHost;
-import com.opensponsor.entitys.User;
-import com.opensponsor.payload.ResultOfArray;
 import com.opensponsor.payload.ResultOfPaging;
 import io.quarkus.panache.common.Page;
 import jakarta.transaction.Transactional;
