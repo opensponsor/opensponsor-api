@@ -27,14 +27,6 @@ public class GithubClient {
     private final Gson gson = new Gson();
 
     /**
-     * {
-     *     "access_token": "ghu_NGjt9pBpxeaThFvH9FMAVO84LjOLcy3m30nj",
-     *     "refresh_token_expires_in": "15724800",
-     *     "refresh_token": "ghr_rFrbQLfupyZZ6RwcaroTx9hI75l96RvHLWXNaKIuUmxPp3h67e0Qz3j3zboP9EyNrp1t0h03XpHV",
-     *     "scope": "",
-     *     "token_type": "bearer",
-     *     "expires_in": "28800"
-     * }
      * @param code string
      * @return GithubAccessToken
      * @throws IOException github error
