@@ -30,8 +30,6 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.api.validation.ViolationReport;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @OpenAPIDefinition(
     tags = {
@@ -51,12 +49,6 @@ import java.util.List;
 )
 @Path("/example")
 public class ExampleResource {
-
-    @Inject
-    public ExampleRepository exampleRepository;
-
-    @Inject
-    public GithubClient githubClient;
 
     @Tag(name = "Hello", description = "Operations related to gaskets")
     @Operation(summary = "Update an existing pet")
