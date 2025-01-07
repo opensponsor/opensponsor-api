@@ -86,45 +86,9 @@ public class ExampleResource {
     @GET()
     @Produces(MediaType.APPLICATION_JSON)
     public Response hello(@BeanParam Example params, @BeanParam PageParams pageParams) throws IOException {
-//        if(token.error == null) {
-//            System.out.println(this.githubClient.listOrganizationRepositories("ghu_rvQxgHJMide5IPNuXEmq89kSsIga311ydtUM"));
-//        } else {
-//            System.out.println("token is invalidation");
-//        }
-
-//        System.out.println(this.githubClient.listOrganizations("ghu_rvQxgHJMide5IPNuXEmq89kSsIga311ydtUM"));
-
-        // scope=user:email,read:org,repo
-//        System.out.println(this.githubClient.getAccessToken("getAccessToken").access_token);
-
-        // https://github.com/login/oauth/authorize?client_id=Ov23liRlXfQF98hEmTpa&scope=public_repo%20read:org
-
-        // 二次授权
-        // https://github.com/settings/connections/applications/Ov23liRlXfQF98hEmTpa
-
-        /*this.githubClient.listOrgs("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").forEach(it -> {
-            System.out.println(it.toString());
-        });*/
-
-        String token = "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";
-
-        List<GithubRepoGroup> groups = new ArrayList<>();
-        GithubUser gu = this.githubClient.getAuthUser(token);
-        List<GithubRepo> reposForUser = this.githubClient.listUserRepos(token);
-        groups.add(new GithubRepoGroup(gu.login, "user", gu, reposForUser));
-
-        this.githubClient.listUserOrgs(token).forEach(org -> {
-            try {
-                List<GithubRepo> repos = githubClient.listOrgRepos(org.login, token);
-                groups.add(new GithubRepoGroup(org.login, "org", org, repos));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-
         return Response
             .status(200)
-            .entity(new ResultOfData<>(groups))
+            .entity("")
             .build();
     }
 }
