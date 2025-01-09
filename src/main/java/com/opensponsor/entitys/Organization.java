@@ -73,9 +73,9 @@ public class Organization extends PanacheEntityBase {
     public Set<String> tags = new HashSet<>();
 
     @Comment("website")
-    @Column(length = 32)
-    @Size(min = 2, max = 32)
-    @Schema(description = "website url", minLength = 2, maxLength = 150)
+    @Column(length = 128)
+    @Size(min = 2, max = 128)
+    @Schema(description = "website url", minLength = 2, maxLength = 128)
     public String website;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "organization")
@@ -94,6 +94,24 @@ public class Organization extends PanacheEntityBase {
     @Schema(required = true, description = "members")
     @OneToMany(mappedBy = "organization")
     public Set<Member> members;
+
+    @Schema(description = "开源协议")
+    @OneToOne(fetch = FetchType.LAZY)
+    public Licenses licenses;
+
+    @Column(length = 10)
+    @Schema(description = "团队人数")
+    public int amountOfMembers;
+
+    @Column(length = 1000)
+    @Size(max = 1000)
+    @Schema(description = "额外的协议信息")
+    public String additionalLicenses;
+
+    @Column(length = 1000)
+    @Size(max = 1000)
+    @Schema(description = "项目以往历史事件")
+    public String previousEvents;
 
     @OneToOne(mappedBy = "organization")
     @Schema(description = "receiving-money debitCard")
