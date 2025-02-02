@@ -23,6 +23,9 @@ import java.util.UUID;
 
 @ApplicationScoped
 public class SessionRepository implements PanacheRepositoryBase<User, UUID> {
+    @Inject
+    UserRepository userRepository;
+
     private ViolationReport violationReport;
 
     @Inject
@@ -34,12 +37,14 @@ public class SessionRepository implements PanacheRepositoryBase<User, UUID> {
     public User create(RegisterBody registerBody) {
         User user = new User();
         user.username = registerBody.username;
-        user.legalName = registerBody.legalName;
+        user.slug = registerBody.slug;
         user.countryCode = CountryCodes.findById(registerBody.countryCode.id);
         user.sex = registerBody.sex;
         user.password = securityTools.generatePassword(registerBody.password);
 
         user.persistAndFlush();
+        // 同时创建一个 organization
+        this.userRepository.transformToOrganizationAndPersist(user).persistAndFlush();
 
         ViolationReport violationReport = new ViolationReport();
         ArrayList<ResteasyConstraintViolation> list = new ArrayList<>(){{

@@ -9,6 +9,9 @@ repositories {
 }
 
 dependencies {
+    implementation 'io.quarkus:quarkus-container-image-docker'
+    implementation 'io.quarkus:quarkus-container-image-jib'
+    implementation 'io.quarkus:quarkus-resteasy-multipart'
     implementation 'io.quarkus:quarkus-apache-httpclient'
     implementation 'io.quarkus:quarkus-security-jpa'
     implementation 'io.quarkus:quarkus-elytron-security'
@@ -18,7 +21,6 @@ dependencies {
     implementation 'io.quarkus:quarkus-hibernate-orm-rest-data-panache'
     implementation 'io.quarkus:quarkus-hibernate-orm'
     implementation 'io.quarkus:quarkus-hibernate-validator'
-    // implementation 'io.quarkus:quarkus-resteasy-reactive'
     implementation 'io.quarkus:quarkus-resteasy-jackson'
     implementation 'io.quarkus:quarkus-reactive-pg-client'
     implementation 'io.quarkus:quarkus-smallrye-jwt'
@@ -29,11 +31,14 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.11.0'
     // implementation 'com.alipay.sdk:alipay-sdk-java:4.39.99.ALL'
     implementation 'io.quarkus:quarkus-arc'
+    implementation 'io.quarkus:quarkus-resteasy'
     // ali
     implementation 'com.alipay.sdk:alipay-sdk-java:4.39.246.ALL'
     implementation 'com.aliyun.oss:aliyun-sdk-oss:3.18.1'
     // https://mvnrepository.com/artifact/com.aliyun/dysmsapi20170525
     implementation 'com.aliyun:dysmsapi20170525:3.1.0'
+    // https://mvnrepository.com/artifact/com.bea.xml.stream/org.motechproject.com.bea.xml.stream
+    implementation 'stax:stax:1.2.0'
     // ali end
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'

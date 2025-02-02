@@ -24,3 +24,7 @@ Fiscal Host 财务主持人
   - 项目活动通知
 
 - 门票 Plan
+
+
+增加转换器
+将用户转换为org，并更新, type=User
