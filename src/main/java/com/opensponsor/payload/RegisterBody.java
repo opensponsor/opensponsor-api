@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.Comment;
 
 public class RegisterBody {
@@ -19,9 +20,8 @@ public class RegisterBody {
     @NotNull
     public String username;
 
-
-    @Comment("legal name")
-    public String legalName;
+    @Comment("url slug")
+    public String slug;
 
     @Comment("country code")
     @NotNull

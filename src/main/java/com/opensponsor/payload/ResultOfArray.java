@@ -11,13 +11,11 @@ public class ResultOfArray<T> {
 
     @Schema(required = true)
     public Long code = 200L;
-    public List<T> records = new ArrayList<>();
+    public List<T> records;
 
     public ResultOfArray(List<T> list) {
         this.records = list;
     }
-
-    public ResultOfArray() {}
 
     public ResultOfArray<T> code(long code) {
         this.code = code;

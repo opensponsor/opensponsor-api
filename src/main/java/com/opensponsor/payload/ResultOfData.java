@@ -8,13 +8,11 @@ public class ResultOfData<T> {
 
     @Schema(required = true)
     public Long code = 200L;
-    public T data = null;
+    public T data;
 
     public ResultOfData(T data) {
         this.data = data;
     }
-
-    public ResultOfData() {}
 
     public ResultOfData<T> code(long code) {
         this.code = code;
