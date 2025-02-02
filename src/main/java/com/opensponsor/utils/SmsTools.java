@@ -5,6 +5,7 @@ import com.aliyun.dysmsapi20170525.models.SendSmsRequest;
 import com.aliyun.dysmsapi20170525.models.SendSmsResponse;
 import com.aliyun.teaopenapi.models.Config;
 import com.opensponsor.entitys.SmsCode;
+import com.opensponsor.payload.SendCodeBody;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 
@@ -28,14 +29,14 @@ public class SmsTools {
     }
 
     @Transactional
-    public SendSmsResponse sendVerifyCode(String mobile) throws Exception {
+    public SendSmsResponse sendVerifyCode(SendCodeBody data) throws Exception {
         Random random = new Random();
         int r = random.nextInt(10000);
-        String code = String.format("%14d", r).trim();
+        String code = String.format("%4d", r).replace(' ', '0');
 
         Client client = this.getClient();
         SendSmsRequest sendSmsRequest = new SendSmsRequest()
-                .setPhoneNumbers(mobile)
+                .setPhoneNumbers(String.format("%s%s", data.countryCode.dial, data.phoneNumber))
                 .setSignName("微氏科技")
                 .setTemplateCode("SMS_306950179")
                 .setTemplateParam("{\"code\":\"" + code + "\"}");
@@ -43,7 +44,8 @@ public class SmsTools {
         SendSmsResponse sendSmsResponse = client.sendSms(sendSmsRequest);
         if(sendSmsResponse.getBody().getCode().equalsIgnoreCase("ok")) {
             SmsCode smsCode = new SmsCode();
-            smsCode.mobile = mobile;
+            smsCode.phoneNumber = data.phoneNumber;
+            smsCode.countryCode = data.countryCode;
             smsCode.code = code;
             smsCode.persistAndFlush();
         }
