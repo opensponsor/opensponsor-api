@@ -1,13 +1,10 @@
 package com.opensponsor.resources;
 
-import com.opensponsor.entitys.FiscalHost;
 import com.opensponsor.entitys.User;
 import com.opensponsor.payload.ResultOfPaging;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;
@@ -37,8 +34,6 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
             url = "https://www.apache.org/licenses/LICENSE-2.0.html"))
 )
 @Path("/hello")
-// @Logged()
-// @Authenticated
 @RequestScoped
 public class GreetingResource {
     @Tag(name = "Hello", description = "Operations related to gaskets")
@@ -63,12 +58,10 @@ public class GreetingResource {
     @GET
     @Transactional
     @Produces(MediaType.APPLICATION_JSON)
-    // @PermitAll
-    // @RolesAllowed({ "User" })
     public Response hello() {
         return Response
             .status(200)
-            .entity(FiscalHost.findAll().stream().toList())
+            .entity("Hello from RESTEasy Reactive")
             .build();
     }
 }
