@@ -45,13 +45,16 @@ public class SmsResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("verifyCode")
     public Response verifyCode(@Valid SendCodeBody body) throws Exception {
-        SendSmsResponse sendSmsResponse = smsTools.sendVerifyCode(body.mobile);
+        SendSmsResponse sendSmsResponse = smsTools.sendVerifyCode(body);
 
         int statusCode = Response.Status.OK.getStatusCode();
         String message = "发送成功, 请查收";
         if(sendSmsResponse.getBody().getCode().equals("isv.BUSINESS_LIMIT_CONTROL")) {
             message = "发送频繁, 请稍后发送";
             statusCode = Response.Status.TOO_MANY_REQUESTS.getStatusCode();
+        } else if(!sendSmsResponse.getBody().getCode().equalsIgnoreCase("ok")) {
+            message = "发送异常，" + sendSmsResponse.getBody().getCode();
+            statusCode = Response.Status.BAD_REQUEST.getStatusCode();
         }
 
         return Response

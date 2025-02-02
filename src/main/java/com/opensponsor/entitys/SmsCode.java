@@ -19,9 +19,13 @@ public class SmsCode extends PanacheEntityBase {
     @Schema(required = true)
     public UUID id;
 
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @Schema(description = "country code")
+    public CountryCode countryCode;
+
     @Column(length = 11, nullable = false)
     @Schema(required = true)
-    public String mobile;
+    public String phoneNumber;
 
     @Column(length = 4, nullable = false)
     @Schema(required = true)
