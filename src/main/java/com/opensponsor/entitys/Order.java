@@ -35,7 +35,7 @@ public class Order extends PanacheEntityBase {
 
     @ManyToOne(optional = false)
     @Schema(description = "使用的货币")
-    public CountryCodes currency;
+    public CountryCode currency;
 
     @ManyToOne(optional = false)
     @Schema(description = "usage tier")

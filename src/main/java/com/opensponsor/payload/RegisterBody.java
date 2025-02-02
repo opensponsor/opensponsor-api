@@ -1,15 +1,12 @@
 package com.opensponsor.payload;
 
-import com.opensponsor.entitys.CountryCodes;
+import com.opensponsor.entitys.CountryCode;
 import com.opensponsor.enums.E_SEX;
-import io.quarkus.runtime.annotations.IgnoreProperty;
-import jakarta.persistence.Column;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.Comment;
 
 public class RegisterBody {
@@ -25,7 +22,7 @@ public class RegisterBody {
 
     @Comment("country code")
     @NotNull
-    public CountryCodes countryCode;
+    public CountryCode countryCode;
 
     @Comment("User Sex")
     @Enumerated

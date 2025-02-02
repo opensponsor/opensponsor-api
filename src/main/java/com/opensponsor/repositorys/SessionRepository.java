@@ -1,7 +1,7 @@
 package com.opensponsor.repositorys;
 
 
-import com.opensponsor.entitys.CountryCodes;
+import com.opensponsor.entitys.CountryCode;
 import com.opensponsor.entitys.User;
 import com.opensponsor.payload.LoginBody;
 import com.opensponsor.payload.RegisterBody;
@@ -38,7 +38,7 @@ public class SessionRepository implements PanacheRepositoryBase<User, UUID> {
         User user = new User();
         user.username = registerBody.username;
         user.slug = registerBody.slug;
-        user.countryCode = CountryCodes.findById(registerBody.countryCode.id);
+        user.countryCode = CountryCode.findById(registerBody.countryCode.id);
         user.sex = registerBody.sex;
         user.password = securityTools.generatePassword(registerBody.password);
 

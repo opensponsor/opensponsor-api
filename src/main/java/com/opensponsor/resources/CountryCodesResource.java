@@ -1,9 +1,8 @@
 package com.opensponsor.resources;
 
-import com.opensponsor.entitys.CountryCodes;
+import com.opensponsor.entitys.CountryCode;
 import com.opensponsor.payload.ResultOfArray;
 import com.opensponsor.payload.ResultOfPaging;
-import io.quarkus.panache.common.Page;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -49,7 +48,7 @@ public class CountryCodesResource {
             schema = @Schema(
                 implementation = ResultOfPaging.class,
                 properties = {
-                    @SchemaProperty(name = "records", type = SchemaType.ARRAY, implementation = CountryCodes.class),
+                    @SchemaProperty(name = "records", type = SchemaType.ARRAY, implementation = CountryCode.class),
                 }
             )
         )
@@ -61,7 +60,7 @@ public class CountryCodesResource {
         return Response
             .status(200)
             .entity(
-                new ResultOfArray<>(CountryCodes.findAll().list())
+                new ResultOfArray<>(CountryCode.findAll().list())
             )
             .build();
     }

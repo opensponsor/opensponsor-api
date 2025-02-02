@@ -34,7 +34,7 @@ public class DebitCard extends PanacheEntityBase {
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @Schema(description = "User country code")
-    public CountryCodes countryCode;
+    public CountryCode countryCode;
 
     @Column(unique = true, length = 32)
     @Size(min = 4, max = 11)
