@@ -29,6 +29,12 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.11.0'
     // implementation 'com.alipay.sdk:alipay-sdk-java:4.39.99.ALL'
     implementation 'io.quarkus:quarkus-arc'
+    // ali
+    implementation 'com.alipay.sdk:alipay-sdk-java:4.39.246.ALL'
+    implementation 'com.aliyun.oss:aliyun-sdk-oss:3.18.1'
+    // https://mvnrepository.com/artifact/com.aliyun/dysmsapi20170525
+    implementation 'com.aliyun:dysmsapi20170525:3.1.0'
+    // ali end
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'
 }
