@@ -1,11 +1,11 @@
 package com.opensponsor.entitys;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.opensponsor.enums.E_ORGANIZATION_TYPE;
 import com.opensponsor.utils.CDIGetter;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import jakarta.ws.rs.QueryParam;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -49,7 +49,7 @@ public class Organization extends PanacheEntityBase {
     public String legalName;
 
     @Comment("url slug")
-    @Column(length = 32, nullable = false)
+    @Column(length = 32, nullable = false, unique = true)
     @Size(min = 2, max = 32)
     @Schema(description = "url slug", required = true, minLength = 2, maxLength = 32)
     public String slug;
@@ -78,6 +78,12 @@ public class Organization extends PanacheEntityBase {
     @Schema(description = "website url", minLength = 2, maxLength = 128)
     public String website;
 
+    @Comment("social")
+    @Column(length = 128)
+    @Size(min = 2, max = 128)
+    @Schema(description = "social url", minLength = 2, maxLength = 128)
+    public String social;
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "organization")
     @Schema(description = "捐助等级", required = true)
     public List<Tier> tiers = new ArrayList<>();
@@ -100,6 +106,7 @@ public class Organization extends PanacheEntityBase {
     public Licenses licenses;
 
     @Column(length = 10)
+    @NotNull
     @Schema(description = "团队人数")
     public int amountOfMembers;
 

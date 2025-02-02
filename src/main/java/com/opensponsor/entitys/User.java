@@ -42,11 +42,23 @@ public class User extends PanacheEntityBase {
     @Schema(description = "username", required = true)
     public String username;
 
-    @Comment("legal name")
-    @Column(length = 32, nullable = false)
-    @Size(max = 32)
-    @Schema(description = "legalName", required = true)
-    public String legalName;
+    @Comment("url slug")
+    @Column(length = 32, nullable = false, unique = true)
+    @Size(min = 2, max = 32)
+    @Schema(description = "url slug", required = true, minLength = 2, maxLength = 32)
+    public String slug;
+
+    @Comment("website")
+    @Column(length = 128)
+    @Size(min = 2, max = 128)
+    @Schema(description = "website url", minLength = 2, maxLength = 128)
+    public String website;
+
+    @Comment("social")
+    @Column(length = 128)
+    @Size(min = 2, max = 128)
+    @Schema(description = "social url", minLength = 2, maxLength = 128)
+    public String social;
 
     @Comment("User avatar")
     @Column(length = 42)
@@ -86,6 +98,14 @@ public class User extends PanacheEntityBase {
     @Schema(description = "email")
     public String email;
 
+    @OneToOne(
+        mappedBy = "user",
+        cascade = CascadeType.ALL,
+        fetch = FetchType.EAGER,
+        orphanRemoval = true
+    )
+    public UserToken token = null;
+
     @CreationTimestamp
     @Schema(description = "when created", required = true)
     public Instant whenCreated;
@@ -97,13 +117,4 @@ public class User extends PanacheEntityBase {
     @SoftDelete
     @Column(nullable = true)
     public Instant whenDeleted;
-
-    @OneToOne(
-        mappedBy = "user",
-        cascade = CascadeType.ALL,
-        fetch = FetchType.EAGER,
-        orphanRemoval = true
-    )
-    public UserToken token = null;
-
 }
