@@ -1,14 +1,11 @@
 package com.opensponsor.repositorys;
 
-import com.opensponsor.entitys.Organization;
-import com.opensponsor.entitys.Tier;
 import com.opensponsor.entitys.User;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
-import org.hibernate.SessionFactory;
 
 import java.util.UUID;
 
@@ -16,9 +13,6 @@ public abstract class RepositoryBase<T extends PanacheEntityBase> implements Pan
 
     @Inject
     protected UserRepository userRepository;
-
-    @Inject
-    public SessionFactory sessionFactory;
 
     @Transactional
     public T create(T entity) {
