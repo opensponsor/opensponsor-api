@@ -1,6 +1,7 @@
 package com.opensponsor.resources;
 
 import com.opensponsor.entitys.CountryCodes;
+import com.opensponsor.payload.ResultOfArray;
 import com.opensponsor.payload.ResultOfPaging;
 import io.quarkus.panache.common.Page;
 import jakarta.transaction.Transactional;
@@ -60,7 +61,7 @@ public class CountryCodesResource {
         return Response
             .status(200)
             .entity(
-                new ResultOfPaging<>(CountryCodes.findAll(), Page.of(0, 10))
+                new ResultOfArray<>(CountryCodes.findAll().list())
             )
             .build();
     }
