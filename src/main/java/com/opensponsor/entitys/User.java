@@ -67,7 +67,7 @@ public class User extends PanacheEntityBase {
     public String avatar;
 
     @Comment("User sex")
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Schema(description = "sex")
     public E_SEX sex;
 

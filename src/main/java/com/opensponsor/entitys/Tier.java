@@ -57,7 +57,7 @@ public class Tier extends PanacheEntityBase {
     @Comment("tier type")
     @Schema(description = "捐助等级类型")
     @Column(nullable = false)
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     public E_TIER_TYPE type;
 
     // public declare description: string;
@@ -111,7 +111,7 @@ public class Tier extends PanacheEntityBase {
     @Comment("amount type")
     @Schema(description = "捐助金额类型")
     @Column()
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     public E_AMOUNT_TYPE amountType;
 
     // public declare minimumAmount: number;
@@ -126,14 +126,14 @@ public class Tier extends PanacheEntityBase {
     @Comment("currency")
     @Schema(description = "货币")
     @Column()
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     public E_IBAN_CURRENCIES currency;
 
     // public declare interval: 'onetime' | 'month' | 'year' | 'flexible';
     @Comment("interval")
     @Schema(description = "捐助方式")
     @Column()
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     public E_INTERVAL interval;
 
     // public declare maxQuantity: number;

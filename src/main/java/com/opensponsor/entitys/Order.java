@@ -61,7 +61,7 @@ public class Order extends PanacheEntityBase {
     public Number quantity;
 
     @Column(nullable = false)
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Schema(description = "order status")
     public E_ORDER_STATUS status;
 

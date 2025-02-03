@@ -61,7 +61,7 @@ public class Organization extends PanacheEntityBase {
     public String introduce;
 
     @Comment("organization types")
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column()
     @Schema(description = "organization types", required = true, minLength = 2, maxLength = 150)
     public E_ORGANIZATION_TYPE type;

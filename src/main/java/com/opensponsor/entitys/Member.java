@@ -31,7 +31,7 @@ public class Member extends PanacheEntityBase {
 
     @Column(nullable = false)
     @Schema(required = true, description = "member role")
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     public E_ORGANIZATION_ROLE roles;
 
     @CreationTimestamp
