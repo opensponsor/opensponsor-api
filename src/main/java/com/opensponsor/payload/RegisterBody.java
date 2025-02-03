@@ -33,6 +33,13 @@ public class RegisterBody {
     @Schema(required = true, description = "phone number")
     public String phoneNumber;
 
+    @Comment("code")
+    @NotBlank
+    @NotEmpty
+    @NotNull
+    @Schema(required = true, description = "code")
+    public String code;
+
     @Comment("country code")
     @NotNull
     @Schema(required = true, description = "country code")
