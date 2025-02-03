@@ -18,7 +18,16 @@ public class RegisterBody {
     public String username;
 
     @Comment("url slug")
+    @NotBlank
+    @NotEmpty
+    @NotNull
     public String slug;
+
+    @Comment("phone number")
+    @NotBlank
+    @NotEmpty
+    @NotNull
+    public String phoneNumber;
 
     @Comment("country code")
     @NotNull
