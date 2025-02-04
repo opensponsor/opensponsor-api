@@ -68,7 +68,13 @@ public class SessionResource {
         )
     )
     public Response login(@Valid LoginBody loginBody) {
-        User user = sessionRepository.login(loginBody);
+        User user;
+        if (loginBody.email != null) {
+            user = sessionRepository.loginForEmail(loginBody);
+        } else {
+            user = sessionRepository.loginForPhoneNumber(loginBody);
+        }
+
         if(user != null) {
             return Response
                 .status(HttpResponseStatus.OK.code())
@@ -77,7 +83,7 @@ public class SessionResource {
         } else {
             return Response
                 .status(HttpResponseStatus.BAD_REQUEST.code())
-                .entity(generateViolationReport.exception("用户不存在").build())
+                .entity(generateViolationReport.exception("用户或者密码不正确").build())
                 .build();
         }
     }

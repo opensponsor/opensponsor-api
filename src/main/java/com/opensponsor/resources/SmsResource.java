@@ -3,6 +3,7 @@ package com.opensponsor.resources;
 import com.aliyun.dysmsapi20170525.models.SendSmsResponse;
 import com.opensponsor.payload.ResultOfData;
 import com.opensponsor.payload.SendCodeBody;
+import com.opensponsor.payload.SendSmsResponseAliyun;
 import com.opensponsor.utils.SmsTools;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -35,7 +36,7 @@ public class SmsResource {
             schema = @Schema(
                 implementation = ResultOfData.class,
                 properties = {
-                    @SchemaProperty(name = "data", type = SchemaType.STRING, implementation = String.class),
+                    @SchemaProperty(name = "data", type = SchemaType.OBJECT, implementation = SendSmsResponseAliyun.class),
                 }
             )
         )

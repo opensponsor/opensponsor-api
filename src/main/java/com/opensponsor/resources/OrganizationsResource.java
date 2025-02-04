@@ -2,6 +2,7 @@ package com.opensponsor.resources;
 
 import com.opensponsor.entitys.Organization;
 import com.opensponsor.payload.PageParams;
+import com.opensponsor.payload.ResultOfData;
 import com.opensponsor.payload.ResultOfPaging;
 import com.opensponsor.repositorys.OrganizationRepository;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -22,6 +23,8 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.api.validation.ViolationReport;
+
+import java.util.Optional;
 
 @OpenAPIDefinition(
     tags = {
@@ -120,12 +123,16 @@ public class OrganizationsResource {
     }
 
     @GET
-    @Path("{name}")
+    @Path("{slug}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response detail(@PathParam("name") String name) {
+    public Response detail(@PathParam("slug") String slug) {
+        Optional<Organization> organization = organizationRepository.find("slug", slug).firstResultOptional();
+        int statusCode = organization.isPresent() ? HttpResponseStatus.OK.code() : HttpResponseStatus.NOT_FOUND.code();
+        String message = organization.isPresent() ? "ok" : "not found organization";
+
         return Response
-            .status(HttpResponseStatus.OK.code())
-            .entity(organizationRepository.find("name", name).firstResult())
+            .status(statusCode)
+            .entity(new ResultOfData<>(organization.orElse(null)).code(statusCode).message(message))
             .build();
     }
 }

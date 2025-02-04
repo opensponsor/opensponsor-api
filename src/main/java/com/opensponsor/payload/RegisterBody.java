@@ -2,6 +2,7 @@ package com.opensponsor.payload;
 
 import com.opensponsor.entitys.CountryCode;
 import com.opensponsor.enums.E_SEX;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -46,7 +47,7 @@ public class RegisterBody {
     public CountryCode countryCode;
 
     @Comment("User Sex")
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Schema(required = true, description = "sex")
     public E_SEX sex;
 
