@@ -5,7 +5,6 @@ import com.opensponsor.entitys.CountryCode;
 import com.opensponsor.entitys.SmsCode;
 import com.opensponsor.entitys.User;
 import com.opensponsor.payload.LoginBody;
-import com.opensponsor.payload.LoginForSMSBody;
 import com.opensponsor.payload.RegisterBody;
 import com.opensponsor.utils.GenerateViolationReport;
 import com.opensponsor.utils.SecurityTools;
@@ -135,7 +134,7 @@ public class SessionRepository implements PanacheRepositoryBase<User, UUID> {
     }
 
     @Transactional
-    public User login(LoginForSMSBody loginBody) {
+    public User login(LoginBody loginBody) {
         Optional<User> user = User.find("username", loginBody.phoneNumber).firstResultOptional();
         Optional<SmsCode> code = SmsCode
             .find("phoneNumber = ?1 and code = ?2 and effective = true", loginBody.phoneNumber, loginBody.code)
