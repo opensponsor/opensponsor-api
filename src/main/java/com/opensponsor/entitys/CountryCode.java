@@ -13,10 +13,10 @@ import java.time.Instant;
 import java.util.UUID;
 
 /**
- *  公司的一种
+ *  国际区号
  */
 @Entity
-@Table(name = "country_codes")
+@Table(name = "country_code")
 public class CountryCode extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
