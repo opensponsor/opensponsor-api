@@ -3,6 +3,7 @@ package com.opensponsor.resources;
 import com.opensponsor.entitys.User;
 import com.opensponsor.payload.LoginBody;
 import com.opensponsor.payload.RegisterBody;
+import com.opensponsor.payload.ResultOfData;
 import com.opensponsor.repositorys.SessionRepository;
 import com.opensponsor.repositorys.UserRepository;
 import com.opensponsor.utils.GenerateViolationReport;
@@ -69,7 +70,7 @@ public class SessionResource {
     )
     public Response login(@Valid LoginBody loginBody) {
         User user;
-        if (loginBody.email != null) {
+        if (loginBody.email != null && !loginBody.email.isEmpty()) {
             user = sessionRepository.loginForEmail(loginBody);
         } else {
             user = sessionRepository.loginForPhoneNumber(loginBody);
@@ -78,7 +79,7 @@ public class SessionResource {
         if(user != null) {
             return Response
                 .status(HttpResponseStatus.OK.code())
-                .entity(user)
+                .entity(new ResultOfData<>(user))
                 .build();
         } else {
             return Response

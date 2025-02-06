@@ -17,7 +17,6 @@ import org.jboss.resteasy.api.validation.ConstraintType;
 import org.jboss.resteasy.api.validation.ResteasyConstraintViolation;
 import org.jboss.resteasy.api.validation.ViolationReport;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -100,7 +99,9 @@ public class SessionRepository implements PanacheRepositoryBase<User, UUID> {
     @Transactional
     public User loginForPhoneNumber(LoginBody loginBody) {
         Optional<User> user
-            = User.find("phoneNumber = ?1 and countryCode = ?2", loginBody.phoneNumber, loginBody.countryCode).firstResultOptional();
+            = User.find("phoneNumber = ?1 and countryCode = ?2", loginBody.phoneNumber, CountryCode.findById(loginBody.countryCode.id))
+            .firstResultOptional();
+
         if(user.isPresent()) {
             if(securityTools.matches(loginBody.password, user.get().password)) {
                 User authUser = user.get();

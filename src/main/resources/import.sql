@@ -2,9 +2,9 @@
 -- The commands are commented as their support depends of the database
 
 -- initialize country codes
-INSERT INTO public.country_codes (when_created, when_deleted, when_modified, country_code, currency_alphabetic_code, dial, id, languages, cldr_display_name, official_name_cn, official_name_en) VALUES ('2024-04-27 09:37:55.346630 +00:00', null, '2024-04-27 09:37:55.346672 +00:00', 'CN', 'CNY', '+86', '0466037a-b655-4629-a748-35ca3789d68f', 'zh-CN', 'China', '中华人民共和国', 'China');
+INSERT INTO public.country_code (when_created, when_deleted, when_modified, country_code, currency_alphabetic_code, dial, id, languages, cldr_display_name, official_name_cn, official_name_en) VALUES ('2024-04-27 09:37:55.346630 +00:00', null, '2024-04-27 09:37:55.346672 +00:00', 'CN', 'CNY', '+86', '0466037a-b655-4629-a748-35ca3789d68f', 'zh-CN', 'China', '中华人民共和国', 'China');
 
-INSERT INTO "public"."user" ("when_created", "when_deleted", "when_modified", "country_code_id", "id", "email", "phone_number", "slug", "username", "avatar", "password", "social", "website", "role", "sex") VALUES ('2025-02-03 17:44:45.519945+08', NULL, '2025-02-03 17:44:45.519952+08', '0466037a-b655-4629-a748-35ca3789d68f', '8327bd0a-a113-497a-8072-c91f0710a13c', NULL, NULL, 'huo4-jian4-ying2', '霍建营', NULL, '$2a$10$jqBI52BFWbOCPq1DsMlSYecOGclMme4Rxbb9052FZ8PJH8Gum5LSK', NULL, NULL, NULL, NULL);
+INSERT INTO "public"."user" ("when_created", "when_deleted", "when_modified", "country_code_id", "id", "email", "phone_number", "slug", "username", "avatar", "password", "social", "website", "role", "sex") VALUES ('2025-02-03 17:44:45.519945+08', NULL, '2025-02-03 17:44:45.519952+08', '0466037a-b655-4629-a748-35ca3789d68f', '8327bd0a-a113-497a-8072-c91f0710a13c', NULL, '16631132230', 'huo4-jian4-ying2', '霍建营', NULL, '$2a$10$jqBI52BFWbOCPq1DsMlSYecOGclMme4Rxbb9052FZ8PJH8Gum5LSK', NULL, NULL, NULL, NULL);
 
 INSERT INTO "public"."organization" ("amount_of_members", "when_created", "when_deleted", "when_modified", "id", "licenses_id", "user_id", "legal_name", "name", "slug", "social", "website", "introduce", "additional_licenses", "previous_events", "type") VALUES (1, '2025-02-03 17:44:45.525745+08', NULL, '2025-02-03 17:44:45.52575+08', 'a637f77e-961f-4bb4-8c75-d2326ac2fa60', NULL, '8327bd0a-a113-497a-8072-c91f0710a13c', NULL, '霍建营', 'huo4-jian4-ying2', NULL, NULL, NULL, NULL, NULL, 'USER');
 
