@@ -40,6 +40,7 @@ public class SessionRepository implements PanacheRepositoryBase<User, UUID> {
     public User create(RegisterBody registerBody) {
         User user = new User();
         user.username = registerBody.username;
+        user.phoneNumber = registerBody.phoneNumber;
         user.slug = registerBody.slug;
         user.countryCode = CountryCode.findById(registerBody.countryCode.id);
         user.sex = registerBody.sex;
