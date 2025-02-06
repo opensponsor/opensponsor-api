@@ -2,9 +2,6 @@ package com.opensponsor.payload;
 
 
 import com.opensponsor.entitys.CountryCode;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
@@ -22,14 +19,9 @@ public class LoginBody {
 
     @Size(min = 6, max = 64)
     @Schema(required = true, description = "password")
-    @NotNull
-    @NotBlank
     public String password;
 
     @Size(min = 4, max = 4)
-    @NotBlank()
-    @NotNull()
-    @NotEmpty()
     @Schema(required = true, description = "code")
     public String code;
 }
