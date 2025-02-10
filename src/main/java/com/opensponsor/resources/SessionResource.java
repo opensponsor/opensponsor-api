@@ -97,7 +97,7 @@ public class SessionResource {
             User user = sessionRepository.create(registerBody);
             return Response
                 .status(HttpResponseStatus.OK.code())
-                .entity(user)
+                .entity(new ResultOfData<>(user))
                 .build();
         } else {
             return Response
@@ -113,6 +113,8 @@ public class SessionResource {
     @Transactional
     public Response user() {
         User user = userRepository.authUser();
-        return Response.status(200).entity(user).build();
+        return Response.status(HttpResponseStatus.OK.code())
+            .entity(new ResultOfData<>(user))
+            .build();
     }
 }
