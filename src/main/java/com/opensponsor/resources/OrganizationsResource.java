@@ -1,6 +1,7 @@
 package com.opensponsor.resources;
 
 import com.opensponsor.entitys.Organization;
+import com.opensponsor.enums.E_ORGANIZATION_TYPE;
 import com.opensponsor.payload.PageParams;
 import com.opensponsor.payload.ResultOfData;
 import com.opensponsor.payload.ResultOfPaging;

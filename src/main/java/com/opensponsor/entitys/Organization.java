@@ -23,10 +23,18 @@ import java.util.*;
     @FilterDef(name="organization(%name%)", parameters = {
         @ParamDef(name="name", type = String.class)
     }),
+    @FilterDef(name="organization(=type)", parameters = {
+        @ParamDef(name="type", type = String.class)
+    }),
+    @FilterDef(name="organization(!=type)", parameters = {
+        @ParamDef(name="not_type", type = String.class)
+    }),
 })
 @Filters({
     @Filter(name = "organization(=userId)", condition = "user_id = :userId"),
     @Filter(name = "organization(%name%)", condition = "name like :name"),
+    @Filter(name = "organization(=type)", condition = "type = :type"),
+    @Filter(name = "organization(!=type)", condition = "type != :not_type"),
 })
 public class Organization extends PanacheEntityBase {
     @Id
