@@ -79,7 +79,7 @@ public class OrganizationsResource {
         if(organizationRepository.validOfData(organization)) {
             return Response
                 .status(HttpResponseStatus.OK.code())
-                .entity(organizationRepository.create(organization))
+                .entity(new ResultOfData<>(organizationRepository.create(organization)))
                 .build();
         } else {
             return Response

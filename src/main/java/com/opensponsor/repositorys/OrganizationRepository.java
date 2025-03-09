@@ -42,10 +42,21 @@ public class OrganizationRepository extends RepositoryBase<Organization> {
 
     public boolean validOfData(Organization organization) {
         long count = Organization.find("name", organization.name).count();
+        GenerateViolationReport generateViolationReport = new GenerateViolationReport();
         if(count == 0) {
+            if(organization.type.equals(E_ORGANIZATION_TYPE.ORGANIZATION)) {
+                if(organization.legalName.isEmpty()) {
+                    generateViolationReport.add(
+                        new ResteasyConstraintViolation(
+                            ConstraintType.Type.PARAMETER, "legalName", "请输入组织法定名称", organization.legalName
+                        )
+                    );
+                    this.violationReport = generateViolationReport.build();
+                    return false;
+                }
+            }
             return true;
         } else {
-            GenerateViolationReport generateViolationReport = new GenerateViolationReport();
             generateViolationReport.add(
                 new ResteasyConstraintViolation(
                     ConstraintType.Type.PARAMETER, "name", "名称已经存在", organization.name

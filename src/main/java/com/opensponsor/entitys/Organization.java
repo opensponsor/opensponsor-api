@@ -52,7 +52,6 @@ public class Organization extends PanacheEntityBase {
 
     @Comment("legal name")
     @Column(length = 32)
-    @Size(min = 2, max = 32)
     @Schema(description = "Organization legal name", minLength = 2, maxLength = 32)
     public String legalName;
 
