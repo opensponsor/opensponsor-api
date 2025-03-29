@@ -114,7 +114,7 @@ public class SessionResource {
     public Response user() {
         User user = userRepository.authUser();
         return Response.status(HttpResponseStatus.OK.code())
-            .entity(new ResultOfData<>(user))
+            .entity(new ResultOfData<>(user.token != null ? user : null))
             .build();
     }
 }
