@@ -4,7 +4,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 public enum E_SEX  {
     @Schema(description = "女性")
-    WOMEN("WOMEN"),
+    WOMAN("WOMAN"),
 
     @Schema(description = "男性")
     MAN("MAN");
