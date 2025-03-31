@@ -89,10 +89,12 @@ public class User extends PanacheEntityBase {
     @Column(unique = true, length = 32)
     @Size(min = 4, max = 11)
     @Schema(description = "phoneNumber")
+    @JsonIgnore
     public String phoneNumber;
 
     @Column(unique = true, length = 32)
     @Email
+    @JsonIgnore
     @Size(min = 6, max = 32)
     @NaturalId
     @Schema(description = "email")
@@ -104,6 +106,7 @@ public class User extends PanacheEntityBase {
         fetch = FetchType.EAGER,
         orphanRemoval = true
     )
+    @JsonIgnore
     public UserToken token = null;
 
     @CreationTimestamp
