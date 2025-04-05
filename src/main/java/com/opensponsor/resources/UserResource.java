@@ -1,8 +1,14 @@
 package com.opensponsor.resources;
 
+import com.opensponsor.constants.ResultMessage;
 import com.opensponsor.entitys.User;
 import com.opensponsor.payload.ResultOfData;
-import com.opensponsor.payload.SendSmsResponseAliyun;
+import com.opensponsor.payload.UpdateUser;
+import com.opensponsor.repositorys.UserRepository;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -19,7 +25,10 @@ import java.util.Optional;
 @Path("/user")
 public class UserResource {
 
-    @Tag(name = "User", description = "User entity")
+    @Inject
+    protected UserRepository userRepository;
+
+    @Tag(name = "User", description = "get User entity")
     @Operation(summary = "Get User")
     @APIResponse(
         responseCode = "200",
@@ -55,5 +64,38 @@ public class UserResource {
                 .entity(null)
                 .build();
         }
+    }
+
+    @Tag(name = "User", description = "update User entity")
+    @Operation(summary = "Update User")
+    @APIResponse(
+        responseCode = "200",
+        description = "update successful",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                implementation = ResultOfData.class,
+                properties = {
+                    @SchemaProperty(name = "data", type = SchemaType.OBJECT, implementation = User.class),
+                }
+            )
+        )
+    )
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    @RolesAllowed({"User"})
+    public Response update(@Valid UpdateUser data) {
+        User user = this.userRepository.authUser();
+        user.username = data.username;
+        user.sex = data.sex;
+        user.slug = data.slug;
+        user.website = data.website;
+
+        user.persistAndFlush();
+        return Response
+            .status(Response.Status.OK)
+            .entity(new ResultOfData<>(data).message(ResultMessage.UPDATE_SUCCESS))
+            .build();
     }
 }

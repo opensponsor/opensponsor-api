@@ -107,6 +107,7 @@ public class User extends PanacheEntityBase {
         orphanRemoval = true
     )
     @JsonIgnore
+    @Schema(description = "token")
     public UserToken token = null;
 
     @CreationTimestamp
