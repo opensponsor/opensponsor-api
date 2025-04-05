@@ -7,7 +7,6 @@ import com.opensponsor.payload.ResultOfData;
 import com.opensponsor.repositorys.SessionRepository;
 import com.opensponsor.repositorys.UserRepository;
 import com.opensponsor.utils.GenerateViolationReport;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -45,15 +44,15 @@ public class SessionResource {
 
     @POST
     @Path("login")
-    @Operation(summary = "Update an existing pet")
+    @Operation(summary = "user login")
     @APIResponse(
         responseCode = "200",
-        description = "User List",
+        description = "User data",
         content = @Content(
             schema = @Schema(
-                implementation = LoginBody.class,
+                implementation = User.class,
                 properties = {
-                    @SchemaProperty(name = "list", type = SchemaType.ARRAY, implementation = User.class),
+                    @SchemaProperty(name = "data", type = SchemaType.OBJECT, implementation = User.class),
                 }
             )
         )
@@ -78,12 +77,12 @@ public class SessionResource {
 
         if(user != null) {
             return Response
-                .status(HttpResponseStatus.OK.code())
+                .status(Response.Status.OK)
                 .entity(new ResultOfData<>(user))
                 .build();
         } else {
             return Response
-                .status(HttpResponseStatus.BAD_REQUEST.code())
+                .status(Response.Status.BAD_REQUEST)
                 .entity(generateViolationReport.exception("用户或者密码不正确").build())
                 .build();
         }
@@ -96,12 +95,12 @@ public class SessionResource {
         if(sessionRepository.validOfRegister(registerBody)) {
             User user = sessionRepository.create(registerBody);
             return Response
-                .status(HttpResponseStatus.OK.code())
+                .status(Response.Status.OK)
                 .entity(new ResultOfData<>(user))
                 .build();
         } else {
             return Response
-                .status(HttpResponseStatus.BAD_REQUEST.code())
+                .status(Response.Status.BAD_REQUEST)
                 .entity(sessionRepository.getViolationReport())
                 .build();
         }
@@ -113,8 +112,8 @@ public class SessionResource {
     @Transactional
     public Response user() {
         User user = userRepository.authUser();
-        return Response.status(HttpResponseStatus.OK.code())
-            .entity(new ResultOfData<>(user.token != null ? user : null))
+        return Response.status(Response.Status.OK)
+            .entity(new ResultOfData<>((user != null && user.token != null) ? user : null))
             .build();
     }
 }
