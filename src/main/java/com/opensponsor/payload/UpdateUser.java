@@ -5,9 +5,13 @@ import com.opensponsor.enums.E_SEX;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.Comment;
 
+@Getter
+@Setter
 public class UpdateUser {
     @Comment("user name")
     @Size(min = 2, max = 32)

@@ -6,7 +6,9 @@ import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import org.apache.commons.beanutils2.BeanUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
 
 public abstract class RepositoryBase<T extends PanacheEntityBase> implements PanacheRepositoryBase<T, UUID> {
@@ -30,6 +32,11 @@ public abstract class RepositoryBase<T extends PanacheEntityBase> implements Pan
             em.merge(entity);
         }
         return entity;
+    }
+
+    public void updateProperties (T dest, Object orig) throws InvocationTargetException, IllegalAccessException {
+        BeanUtils.copyProperties(dest, orig);
+        this.save(dest);
     }
 
     public boolean checkOwnership(User owner) {

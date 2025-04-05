@@ -39,9 +39,15 @@ dependencies {
     implementation 'com.aliyun:dysmsapi20170525:3.1.0'
     // https://mvnrepository.com/artifact/com.bea.xml.stream/org.motechproject.com.bea.xml.stream
     implementation 'stax:stax:1.2.0'
+    implementation 'org.apache.commons:commons-beanutils2:2.0.0-M1'
     // ali end
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'
+
+    compileOnly "org.projectlombok:lombok:1.18.38"
+    annotationProcessor "org.projectlombok:lombok:1.18.38"
+    testCompileOnly "org.projectlombok:lombok:1.18.38"
+    testAnnotationProcessor "org.projectlombok:lombok:1.18.38"
 }
 
 group 'com.opensponsor'

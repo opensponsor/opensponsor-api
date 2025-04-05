@@ -26,7 +26,7 @@ import java.util.UUID;
     name = "`user`"
     // uniqueConstraints = @UniqueConstraint(name = "UniqueName", columnNames = {"name"})
 )
-@UserDefinition
+//@UserDefinition
 public class User extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -37,8 +37,8 @@ public class User extends PanacheEntityBase {
     @Comment("user name")
     @Column(unique = true, length = 32, nullable = false)
     @Size(min = 2, max = 32)
-    @Username
-    @NaturalId
+    // @Username
+    // @NaturalId
     @Schema(description = "username", required = true)
     public String username;
 
@@ -106,7 +106,6 @@ public class User extends PanacheEntityBase {
         fetch = FetchType.EAGER,
         orphanRemoval = true
     )
-    @JsonIgnore
     @Schema(description = "token")
     public UserToken token = null;
 

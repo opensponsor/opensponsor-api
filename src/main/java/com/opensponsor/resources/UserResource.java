@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.apache.commons.beanutils2.BeanUtils;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
@@ -20,6 +21,7 @@ import org.eclipse.microprofile.openapi.annotations.media.SchemaProperty;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 
 @Path("/user")
@@ -85,14 +87,10 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     @RolesAllowed({"User"})
-    public Response update(@Valid UpdateUser data) {
+    public Response update(@Valid UpdateUser data) throws InvocationTargetException, IllegalAccessException {
         User user = this.userRepository.authUser();
-        user.username = data.username;
-        user.sex = data.sex;
-        user.slug = data.slug;
-        user.website = data.website;
+        this.userRepository.updateProperties(user, data);
 
-        user.persistAndFlush();
         return Response
             .status(Response.Status.OK)
             .entity(new ResultOfData<>(data).message(ResultMessage.UPDATE_SUCCESS))
