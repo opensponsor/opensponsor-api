@@ -2,6 +2,7 @@ package com.opensponsor.entitys;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.CreationTimestamp;
@@ -22,8 +23,17 @@ public class Tag extends PanacheEntityBase {
 
     @Column()
     @Size(min = 2, max = 32)
+    @NotNull
     @Schema(required = true, description = "tag name", minLength = 2, maxLength = 32)
     public String name;
+
+    @Column()
+    @Schema(required = true, description = "is official create")
+    public Boolean official = false;
+
+    @Column()
+    @Schema(required = true, description = "is popular")
+    public Boolean popular = false;
 
     @CreationTimestamp
     @Schema(description = "when created", required = true)
