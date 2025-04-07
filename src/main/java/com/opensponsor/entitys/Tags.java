@@ -13,8 +13,8 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "tag")
-public class Tag extends PanacheEntityBase {
+@Table(name = "tags")
+public class Tags extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(unique = true, nullable = false)
@@ -22,7 +22,7 @@ public class Tag extends PanacheEntityBase {
     public UUID id;
 
     @Column()
-    @Size(min = 2, max = 32)
+    @Size(min = 1, max = 32)
     @NotNull
     @Schema(required = true, description = "tag name", minLength = 2, maxLength = 32)
     public String name;

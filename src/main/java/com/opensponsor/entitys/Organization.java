@@ -74,10 +74,9 @@ public class Organization extends PanacheEntityBase {
     public E_ORGANIZATION_TYPE type;
 
     @Comment("tags")
-    @Column()
-    @ElementCollection(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     @Schema(description = "organization tags", required = true)
-    public Set<String> tags = new HashSet<>();
+    public Set<Tags> tags = new HashSet<>();
 
     @Comment("website")
     @Column(length = 128)
