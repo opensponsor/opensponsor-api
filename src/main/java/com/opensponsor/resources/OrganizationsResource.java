@@ -1,11 +1,11 @@
 package com.opensponsor.resources;
 
 import com.opensponsor.entitys.Organization;
-import com.opensponsor.enums.E_ORGANIZATION_TYPE;
 import com.opensponsor.payload.PageParams;
 import com.opensponsor.payload.ResultOfData;
 import com.opensponsor.payload.ResultOfPaging;
 import com.opensponsor.repositorys.OrganizationRepository;
+import com.opensponsor.repositorys.TagsRepository;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
@@ -49,6 +49,9 @@ public class OrganizationsResource {
     @Inject
     OrganizationRepository organizationRepository;
 
+    @Inject
+    TagsRepository tagsRepository;
+
     @Tag(name = "Hello", description = "Operations related to gaskets")
     @Operation(summary = "Update an existing pet")
     @APIResponse(
@@ -76,6 +79,8 @@ public class OrganizationsResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Authenticated
     public Response create(@Valid Organization organization) {
+        organization.tags = this.tagsRepository.createAll(organization.tags);
+
         if(organizationRepository.validOfData(organization)) {
             return Response
                 .status(HttpResponseStatus.OK.code())
