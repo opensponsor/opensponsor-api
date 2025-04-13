@@ -47,7 +47,6 @@ public class UserRepository extends RepositoryBase<User> {
         org.slug = user.slug;
         org.website = user.website;
         org.social = user.social;
-        org.amountOfMembers = 1;
         org.type = E_ORGANIZATION_TYPE.USER;
         org.user = user;
 

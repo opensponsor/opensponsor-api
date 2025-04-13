@@ -111,11 +111,6 @@ public class Organization extends PanacheEntityBase {
     @OneToOne(fetch = FetchType.LAZY)
     public Licenses licenses;
 
-    @Column(length = 10)
-    @NotNull
-    @Schema(description = "团队人数")
-    public int amountOfMembers;
-
     @Column(length = 1000)
     @Size(max = 1000)
     @Schema(description = "额外的协议信息")
@@ -139,7 +134,7 @@ public class Organization extends PanacheEntityBase {
     public Instant whenModified;
 
     @SoftDelete
-    @Column(nullable = true)
+    @Column()
     @Schema(description = "when deleted")
     public Instant whenDeleted;
 
