@@ -1,5 +1,6 @@
 package com.opensponsor.entitys;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.opensponsor.enums.E_ORGANIZATION_ROLE;
 import com.opensponsor.utils.CDIGetter;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
@@ -24,6 +25,11 @@ public class Member extends PanacheEntityBase {
     @Schema(required = true, description = "user")
     @OneToOne(optional = false)
     public User user;
+
+    @Schema(required = true, description = "organization")
+    @ManyToOne(optional = false)
+    @JsonIgnore
+    public Organization organization;
 
     @Column(nullable = false)
     @Schema(required = true, description = "member role")

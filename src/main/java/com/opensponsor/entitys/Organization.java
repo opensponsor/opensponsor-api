@@ -105,7 +105,7 @@ public class Organization extends PanacheEntityBase {
 
     @Schema(required = true, description = "members")
     @OneToMany(mappedBy = "organization")
-    public Set<Member> members;
+    public Set<Member> members = new HashSet<>();
 
     @Schema(description = "开源协议")
     @OneToOne(fetch = FetchType.LAZY)

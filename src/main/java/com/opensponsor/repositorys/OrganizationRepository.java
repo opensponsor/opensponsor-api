@@ -1,7 +1,9 @@
 package com.opensponsor.repositorys;
 
 
+import com.opensponsor.entitys.Member;
 import com.opensponsor.entitys.Organization;
+import com.opensponsor.enums.E_ORGANIZATION_ROLE;
 import com.opensponsor.enums.E_ORGANIZATION_TYPE;
 import com.opensponsor.utils.GenerateViolationReport;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
@@ -21,7 +23,18 @@ public class OrganizationRepository extends RepositoryBase<Organization> {
     @Transactional
     public Organization create(Organization organization) {
         organization.persistAndFlush();
+        this.addMembers(organization);
         return organization;
+    }
+
+    private void addMembers(Organization organization) {
+        if(organization.members.isEmpty()) {
+            Member member = new Member();
+            member.user = organization.user;
+            member.roles = E_ORGANIZATION_ROLE.ADMIN;
+            member.organization = organization;
+            member.persist();
+        }
     }
 
     public PanacheQuery<Organization> filter(Organization params) {
