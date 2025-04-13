@@ -25,10 +25,6 @@ public class Member extends PanacheEntityBase {
     @OneToOne(optional = false)
     public User user;
 
-    @Schema(required = true, description = "organization")
-    @ManyToOne(optional = false)
-    public Organization organization;
-
     @Column(nullable = false)
     @Schema(required = true, description = "member role")
     @Enumerated(EnumType.STRING)
