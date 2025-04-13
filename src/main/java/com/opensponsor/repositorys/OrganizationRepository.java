@@ -31,7 +31,7 @@ public class OrganizationRepository extends RepositoryBase<Organization> {
         if(organization.members.isEmpty()) {
             Member member = new Member();
             member.user = organization.user;
-            member.roles = E_ORGANIZATION_ROLE.ADMIN;
+            member.role = E_ORGANIZATION_ROLE.ADMIN;
             member.organization = organization;
             member.persist();
         }
