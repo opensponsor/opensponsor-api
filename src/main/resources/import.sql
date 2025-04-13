@@ -13,8 +13,6 @@ INSERT INTO "public"."member" ("when_created", "when_deleted", "when_modified", 
 
 INSERT INTO "public"."tags" ("official", "popular", "when_created", "when_deleted", "when_modified", "id", "name") VALUES ('t', 'f', '2025-04-07 20:11:49.514478+08', NULL, '2025-04-07 20:11:49.5145+08', '4209f5db-595b-4e69-b961-8a3cc9725fbe', 'test tag');
 
--- INSERT INTO public.tier (amount_type, currency, interval, type, use_standalone_page, goal, when_created, when_deleted, when_modified, amount, max_quantity, minimum_amount, button, id, organization_id, name, slug, description, long_description, video_url) VALUES (0, 33, 1, 2, false, null, '2024-05-24 13:28:27.825842 +00:00', null, '2024-05-24 13:28:27.825877 +00:00', E'\\xACED0005737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000064', null, null, '贡献', 'e76290e4-4fce-4c19-9cee-01e5fdbf3678', '790f4325-8a70-4428-a433-4361359872c1', '捐赠', 'tier-1', '', null, null);
-
 -- example data
 INSERT INTO public.example (age, when_created, when_deleted, when_modified, id, name) VALUES (10, null, null, null, '45b31a02-9c2e-48ac-b722-6ed3abb3a4be', 'name1');
 INSERT INTO public.example (age, when_created, when_deleted, when_modified, id, name) VALUES (20, null, null, null, '45b31a02-9c2e-48ac-b722-6ed3abb3a4ce', 'name2');
