@@ -14,13 +14,19 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "member")
-public class Member extends PanacheEntityBase {
+@Table(name = "invite_user")
+public class InviteUser extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(unique = true, nullable = false)
     @Schema(required = true)
     public UUID id;
+
+    @Schema(description = "邀请链接")
+    public String link;
+
+    @Schema(description = "过期时间")
+    public String whenExpire;
 
     @Schema(required = true, description = "user")
     @OneToOne(optional = false)

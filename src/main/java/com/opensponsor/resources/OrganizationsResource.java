@@ -6,7 +6,6 @@ import com.opensponsor.payload.ResultOfData;
 import com.opensponsor.payload.ResultOfPaging;
 import com.opensponsor.repositorys.OrganizationRepository;
 import com.opensponsor.repositorys.TagsRepository;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -16,9 +15,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;
 import org.eclipse.microprofile.openapi.annotations.Operation;
-import org.eclipse.microprofile.openapi.annotations.info.Contact;
 import org.eclipse.microprofile.openapi.annotations.info.Info;
-import org.eclipse.microprofile.openapi.annotations.info.License;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
@@ -34,14 +31,8 @@ import java.util.Optional;
     },
     info = @Info(
         title="Example API",
-        version = "1.0.1",
-        contact = @Contact(
-            name = "Example API Support",
-            url = "http://exampleurl.com/contact",
-            email = "techsupport@example.com"),
-        license = @License(
-            name = "Apache 2.0",
-            url = "https://www.apache.org/licenses/LICENSE-2.0.html"))
+        version = "1.0.1"
+    )
 )
 @Path("/organizations")
 public class OrganizationsResource {
@@ -52,7 +43,7 @@ public class OrganizationsResource {
     @Inject
     TagsRepository tagsRepository;
 
-    @Tag(name = "Hello", description = "Operations related to gaskets")
+    @Tag(name = "Create Organization", description = "Operations related to gaskets")
     @Operation(summary = "Update an existing pet")
     @APIResponse(
         responseCode = "200",
@@ -83,12 +74,12 @@ public class OrganizationsResource {
 
         if(organizationRepository.validOfData(organization)) {
             return Response
-                .status(HttpResponseStatus.OK.code())
+                .status(Response.Status.OK)
                 .entity(new ResultOfData<>(organizationRepository.create(organization)))
                 .build();
         } else {
             return Response
-                .status(HttpResponseStatus.BAD_REQUEST.code())
+                .status(Response.Status.BAD_REQUEST)
                 .entity(organizationRepository.getViolationReport())
                 .build();
         }
@@ -103,17 +94,17 @@ public class OrganizationsResource {
             Organization exist = Organization.findById(organization.id);
             if(!exist.name.equals(organization.name)) {
                 return Response
-                    .status(HttpResponseStatus.FORBIDDEN.code())
+                    .status(Response.Status.FORBIDDEN)
                     .build();
             } else {
                 return Response
-                    .status(HttpResponseStatus.OK.code())
+                    .status(Response.Status.OK)
                     .entity(organizationRepository.save(organization))
                     .build();
             }
         } else {
             return Response
-                .status(HttpResponseStatus.FORBIDDEN.code())
+                .status(Response.Status.FORBIDDEN)
                 .entity(organizationRepository.getViolationReport())
                 .build();
         }
@@ -123,7 +114,7 @@ public class OrganizationsResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response list(@BeanParam Organization params, @BeanParam PageParams pageParams) {
         return Response
-            .status(HttpResponseStatus.OK.code())
+            .status(Response.Status.OK)
             .entity(new ResultOfPaging<>(organizationRepository.filter(params), PageParams.of(pageParams)))
             .build();
     }
@@ -133,12 +124,12 @@ public class OrganizationsResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response detail(@PathParam("slug") String slug) {
         Optional<Organization> organization = organizationRepository.find("slug", slug).firstResultOptional();
-        int statusCode = organization.isPresent() ? HttpResponseStatus.OK.code() : HttpResponseStatus.NOT_FOUND.code();
+        Response.Status statusCode = organization.isPresent() ? Response.Status.OK : Response.Status.NOT_FOUND;
         String message = organization.isPresent() ? "ok" : "not found organization";
 
         return Response
             .status(statusCode)
-            .entity(new ResultOfData<>(organization.orElse(null)).code(statusCode).message(message))
+            .entity(new ResultOfData<>(organization.orElse(null)).code(statusCode.getStatusCode()).message(message))
             .build();
     }
 }
