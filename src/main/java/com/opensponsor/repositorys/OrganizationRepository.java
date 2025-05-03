@@ -5,21 +5,17 @@ import com.opensponsor.entitys.Member;
 import com.opensponsor.entitys.Organization;
 import com.opensponsor.enums.E_ORGANIZATION_ROLE;
 import com.opensponsor.enums.E_ORGANIZATION_TYPE;
-import com.opensponsor.utils.GenerateViolationReport;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Parameters;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import org.jboss.resteasy.api.validation.ConstraintType;
 import org.jboss.resteasy.api.validation.ResteasyConstraintViolation;
-import org.jboss.resteasy.api.validation.ViolationReport;
 
 import java.util.UUID;
 
 @ApplicationScoped
 public class OrganizationRepository extends RepositoryBase<Organization> {
-    private ViolationReport violationReport;
-
     @Transactional
     public Organization create(Organization organization) {
         organization.persistAndFlush();
@@ -55,7 +51,6 @@ public class OrganizationRepository extends RepositoryBase<Organization> {
 
     public boolean validOfData(Organization organization) {
         long count = Organization.find("name", organization.name).count();
-        GenerateViolationReport generateViolationReport = new GenerateViolationReport();
         if(count == 0) {
             if(organization.type.equals(E_ORGANIZATION_TYPE.ORGANIZATION)) {
                 if(organization.legalName.isEmpty()) {
@@ -78,9 +73,5 @@ public class OrganizationRepository extends RepositoryBase<Organization> {
             this.violationReport = generateViolationReport.build();
             return false;
         }
-    }
-
-    public ViolationReport getViolationReport() {
-        return violationReport;
     }
 }
