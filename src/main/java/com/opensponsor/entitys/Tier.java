@@ -22,8 +22,10 @@ import java.util.UUID;
 
 @Entity
 @Table(
+    name = "tier",
     uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"slug", "organization_id"})
+        @UniqueConstraint(columnNames = {"name", "organization_id"}),
+        @UniqueConstraint(columnNames = {"slug", "organization_id"}),
     }
 )
 public class Tier extends PanacheEntityBase {
@@ -33,51 +35,44 @@ public class Tier extends PanacheEntityBase {
     @Schema(required = true)
     public UUID id;
 
-    // public declare CollectiveId: number;
     @Schema(description = "所属组织", required = true)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public Organization organization;
 
-    // public declare name: string;
     @Comment("tier name")
     @Schema(description = "捐助等级名称", minLength = 2, maxLength = 32, required = true)
     @Column(length = 32, nullable = false)
     @Size(min = 2, max = 32)
     public String name;
 
-    // public declare slug: string;
     @Comment("url slug")
-    @Schema(description = "url path", minLength = 2, maxLength = 32)
+    @Schema(description = "url path", minLength = 2, maxLength = 32, required = true)
     @Column(length = 32, nullable = false)
     @Size(min = 2, max = 32)
     public String slug;
 
-    // public declare type: TierType;
     @Comment("tier type")
-    @Schema(description = "捐助等级类型")
+    @Schema(description = "捐助等级类型", required = true)
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     public E_TIER_TYPE type;
 
-    // public declare description: string;
     @Comment("description")
     @Schema(description = "描述", maxLength = 500, required = true)
     @Column(length = 500, nullable = false, columnDefinition = "TEXT")
     @Size(max = 500)
     public String description;
 
-    // public declare longDescription: string;
     @Comment("longDescription")
-    @Schema(description = "捐助等级类型", maxLength = 1000, required = false)
+    @Schema(description = "完整的描述", maxLength = 1000)
     @Column(columnDefinition = "TEXT")
     public String longDescription;
 
-    // public declare useStandalonePage: boolean;
     @Comment("enable Standalone Page")
     @Schema(description = "是否使用独立页面", required = true)
     @Column()
-    public boolean useStandalonePage;
+    public boolean useStandalonePage = false;
 
     // public declare videoUrl: string;
     @Comment("video url")
@@ -87,32 +82,30 @@ public class Tier extends PanacheEntityBase {
 
     // public declare button: string;
     @Comment("button text")
-    @Schema(description = "按钮文字")
+    @Schema(description = "按钮文字", required = true)
     @Column(length = 16)
     @Size(max = 16)
     public String button;
 
     // public declare amount: number;
     @Comment("amount")
-    @Schema(description = "捐助金额")
+    @Schema(description = "捐助金额", required = true)
     @Column(length = 10, nullable = false)
     @Min(1)
     @Max(100000)
     public Number amount;
 
-    // public declare presets: number[];
     @Comment("presets")
-    @Schema(description = "捐助金额范围")
+    @Schema(description = "捐助金额范围", required = true)
     @Column()
     @ElementCollection(fetch = FetchType.EAGER)
     public List<Number> presets = List.of();
 
-    // public declare amountType: 'FIXED' | 'FLEXIBLE';
     @Comment("amount type")
-    @Schema(description = "捐助金额类型")
+    @Schema(description = "捐助金额类型", required = true)
     @Column()
     @Enumerated(EnumType.STRING)
-    public E_AMOUNT_TYPE amountType;
+    public E_AMOUNT_TYPE amountType = E_AMOUNT_TYPE.FIXED;
 
     // public declare minimumAmount: number;
     @Comment("minimumAmount")
@@ -124,19 +117,18 @@ public class Tier extends PanacheEntityBase {
 
     // public declare currency: SupportedCurrency;
     @Comment("currency")
-    @Schema(description = "货币")
+    @Schema(description = "货币", required = true)
     @Column()
     @Enumerated(EnumType.STRING)
-    public E_IBAN_CURRENCIES currency;
+    public E_IBAN_CURRENCIES currency = E_IBAN_CURRENCIES.CNY;
 
     // public declare interval: 'onetime' | 'month' | 'year' | 'flexible';
     @Comment("interval")
-    @Schema(description = "捐助方式")
+    @Schema(description = "捐助方式", required = true)
     @Column()
     @Enumerated(EnumType.STRING)
-    public E_INTERVAL interval;
+    public E_INTERVAL interval = E_INTERVAL.MONTH;
 
-    // public declare maxQuantity: number;
     @Comment("max quantity")
     @Schema(description = "库存")
     @Column(length = 10)
@@ -144,7 +136,6 @@ public class Tier extends PanacheEntityBase {
     @Max(100000)
     public Number maxQuantity;
 
-    // public declare goal: number;
     @Comment("goal")
     @Schema(description = "筹款目标")
     @Column(length = 10)
@@ -159,6 +150,6 @@ public class Tier extends PanacheEntityBase {
     public Instant whenModified;
 
     @SoftDelete
-    @Column(nullable = true)
+    @Column()
     public Instant whenDeleted;
 }

@@ -2,6 +2,7 @@ package com.opensponsor.resources;
 
 import com.opensponsor.entitys.Organization;
 import com.opensponsor.entitys.Tier;
+import com.opensponsor.payload.ResultOfData;
 import com.opensponsor.repositorys.TierRepository;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import jakarta.annotation.security.RolesAllowed;
@@ -71,7 +72,7 @@ public class TierResource {
     public Response get(@PathParam("organization") String organizationId, @PathParam("slug") String slug) {
         Organization org = Organization.findById(UUID.fromString(organizationId));
         return Response.ok(
-            tierRepository.find("organization = ?1 and slug = ?2", org, slug).firstResult()
+            new ResultOfData<>(tierRepository.find("organization = ?1 and slug = ?2", org, slug).firstResult())
         ).build();
     }
 
@@ -102,7 +103,11 @@ public class TierResource {
     @RolesAllowed({ "User" })
     public Response create(@Valid Tier tier) {
         if(tierRepository.checkOwnership(tier.organization.user)) {
-            return Response.ok(tierRepository.create(tier)).build();
+            if(this.tierRepository.validOfData(tier)) {
+                return Response.ok(new ResultOfData<>(tierRepository.create(tier))).build();
+            } else {
+                return Response.status(Response.Status.BAD_REQUEST).entity(this.tierRepository.getViolationReport()).build();
+            }
         } else {
             return Response.status(HttpResponseStatus.FORBIDDEN.code()).build();
         }
@@ -135,7 +140,7 @@ public class TierResource {
     @RolesAllowed({ "User" })
     public Response update(@Valid Tier tier) {
         if(tierRepository.checkOwnership(tier.organization.user)) {
-            return Response.ok(tierRepository.save(tier)).build();
+            return Response.ok(new ResultOfData<>(tierRepository.save(tier))).build();
         } else {
             return Response.status(HttpResponseStatus.FORBIDDEN.code()).build();
         }
