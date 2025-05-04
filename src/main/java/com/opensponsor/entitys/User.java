@@ -12,6 +12,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.*;
 
@@ -22,9 +24,10 @@ import java.util.UUID;
  * user entity
  */
 @Entity
+@Getter
+@Setter
 @Table(
     name = "`user`"
-    // uniqueConstraints = @UniqueConstraint(name = "UniqueName", columnNames = {"name"})
 )
 //@UserDefinition
 public class User extends PanacheEntityBase {
@@ -37,8 +40,6 @@ public class User extends PanacheEntityBase {
     @Comment("user name")
     @Column(unique = true, length = 32, nullable = false)
     @Size(min = 2, max = 32)
-    // @Username
-    // @NaturalId
     @Schema(description = "username", required = true)
     public String username;
 

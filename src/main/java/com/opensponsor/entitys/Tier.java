@@ -10,6 +10,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.CreationTimestamp;
@@ -21,6 +23,8 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Getter
+@Setter
 @Table(
     name = "tier",
     uniqueConstraints = {

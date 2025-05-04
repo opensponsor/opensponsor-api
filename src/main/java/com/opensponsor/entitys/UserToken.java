@@ -3,6 +3,8 @@ package com.opensponsor.entitys;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SoftDelete;
@@ -12,6 +14,8 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "user_token")
 public class UserToken extends PanacheEntityBase {
     @Id

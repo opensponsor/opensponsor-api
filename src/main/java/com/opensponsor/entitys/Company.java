@@ -3,6 +3,8 @@ package com.opensponsor.entitys;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.CreationTimestamp;
@@ -16,6 +18,8 @@ import java.util.UUID;
  * 公司的一种
  */
 @Entity
+@Getter
+@Setter
 @Table(name = "company")
 public class Company extends PanacheEntityBase {
     @Id

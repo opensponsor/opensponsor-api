@@ -8,6 +8,8 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import jakarta.ws.rs.QueryParam;
+import lombok.Getter;
+import lombok.Setter;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.*;
 
@@ -36,6 +38,8 @@ import java.util.*;
     @Filter(name = "organization(=type)", condition = "type = :type"),
     @Filter(name = "organization(!=type)", condition = "type != :not_type"),
 })
+@Getter
+@Setter
 public class Organization extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

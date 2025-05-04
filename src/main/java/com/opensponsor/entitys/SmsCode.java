@@ -2,6 +2,8 @@ package com.opensponsor.entitys;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SoftDelete;
@@ -11,6 +13,8 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "sms_code")
 public class SmsCode extends PanacheEntityBase {
     @Id

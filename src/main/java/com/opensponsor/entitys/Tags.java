@@ -4,6 +4,8 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SoftDelete;
@@ -13,6 +15,8 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "tags")
 public class Tags extends PanacheEntityBase {
     @Id
