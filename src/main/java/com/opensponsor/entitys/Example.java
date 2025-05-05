@@ -77,7 +77,7 @@ public class Example extends PanacheEntityBase {
     public Instant whenModified;
 
     @SoftDelete
-    @Column(nullable = true)
+    @Column()
     public Instant whenDeleted;
 
     // 在实体管理器持久化操作之前执行 实际执行或级联。此调用与 持久化操作。

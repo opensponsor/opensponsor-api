@@ -119,6 +119,6 @@ public class User extends PanacheEntityBase {
     public Instant whenModified;
 
     @SoftDelete
-    @Column(nullable = true)
+    @Column()
     public Instant whenDeleted;
 }
