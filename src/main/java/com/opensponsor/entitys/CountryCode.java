@@ -1,5 +1,6 @@
 package com.opensponsor.entitys;
 
+import com.opensponsor.enums.E_IBAN_CURRENCIES;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
@@ -66,9 +67,9 @@ public class CountryCode extends PanacheEntityBase {
 
     @Comment("currency alphabetic code")
     @Column(length = 16, nullable = false)
-    @Size(min = 1, max = 16)
     @Schema(description = "currency alphabetic code", required = true)
-    public String currencyAlphabeticCode;
+    @Enumerated(EnumType.STRING)
+    public E_IBAN_CURRENCIES currencyAlphabeticCode;
 
     @CreationTimestamp
     @Schema(description = "when created", required = true)
