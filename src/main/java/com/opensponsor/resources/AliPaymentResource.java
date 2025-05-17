@@ -26,7 +26,7 @@ import org.jboss.resteasy.annotations.Form;
 
 import java.util.Optional;
 
-@Path("/payment")
+@Path("/payment-ali")
 public class AliPaymentResource {
 
     @Inject
@@ -74,10 +74,12 @@ public class AliPaymentResource {
     @Transactional
     @RolesAllowed({"User"})
     @Produces(MediaType.APPLICATION_JSON)
-    public Response pay(@Valid Tier body) throws AlipayApiException {
+    public Response pay(@Valid Tier tier) throws AlipayApiException {
         return Response
             .status(Response.Status.OK.getStatusCode())
-            .entity(new ResultOfData<>(alipayTradePay.generateOrder( String.valueOf(body.amount), userRepository.authUser() )))
+            .entity(new ResultOfData<>(
+                alipayTradePay.generateOrder( Tier.findById(tier.id), userRepository.authUser() )
+            ))
             .build();
     }
 

@@ -12,7 +12,10 @@ import com.alipay.api.response.AlipayTradePagePayResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.opensponsor.config.AlipayProperties;
 import com.opensponsor.entitys.Order;
+import com.opensponsor.entitys.Tier;
 import com.opensponsor.entitys.User;
+import com.opensponsor.enums.E_ORDER_STATUS;
+import com.opensponsor.enums.E_PAYMENT_METHOD;
 import com.opensponsor.payload.TradePagePayBodyForAliPay;
 import com.opensponsor.utils.FileTools;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -21,6 +24,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 
 @ApplicationScoped
@@ -30,7 +35,9 @@ public class AlipayTradePay {
 
     private static final Logger log = LoggerFactory.getLogger(AlipayTradePay.class);
 
-    public String generateOrder(String num, User user) throws AlipayApiException {
+    public String generateOrder(Tier tier, User user) throws AlipayApiException {
+        String num = String.valueOf(tier.amount);
+
         AlipayClient alipayClient = new DefaultAlipayClient(AlipayTradePay.getAlipayConfig());
         AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
         AlipayTradePagePayModel model = new AlipayTradePagePayModel();
@@ -54,12 +61,19 @@ public class AlipayTradePay {
         // AlipayTradePagePayResponse response = alipayClient.pageExecute(request, "GET");
         String pageRedirectionData = response.getBody();
         if (response.isSuccess()) {
-            Order trade = new Order();
-            trade.tradeNo = tradeNo;
-            trade.payStatus = false;
-            trade.user = user;
-            trade.totalAmount = BigDecimal.valueOf(Long.parseLong(num));
-            trade.persistAndFlush();
+            Duration eightHours = Duration.ofHours(8);
+            Order order = new Order();
+            order.tradeNo = tradeNo;
+            order.payStatus = false;
+            order.paymentMethod = E_PAYMENT_METHOD.ALI_PAY;
+            order.user = user;
+            order.status = E_ORDER_STATUS.NEW;
+            order.currency = tier.currency;
+            order.organization = tier.organization;
+            order.tier = tier;
+            order.whenExpires = Instant.now().plus(eightHours);
+            order.totalAmount = BigDecimal.valueOf(Long.parseLong(num));
+            order.persistAndFlush();
 
             return pageRedirectionData;
         } else {

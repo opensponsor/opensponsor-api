@@ -119,14 +119,11 @@ public class Tier extends PanacheEntityBase {
     @Max(100000)
     public Number minimumAmount;
 
-    // public declare currency: SupportedCurrency;
+    @ManyToOne(optional = false)
     @Comment("currency")
     @Schema(description = "货币", required = true)
-    @Column()
-    @Enumerated(EnumType.STRING)
-    public E_IBAN_CURRENCIES currency = E_IBAN_CURRENCIES.CNY;
+    public CountryCode currency;
 
-    // public declare interval: 'onetime' | 'month' | 'year' | 'flexible';
     @Comment("interval")
     @Schema(description = "捐助方式", required = true)
     @Column()

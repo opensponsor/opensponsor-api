@@ -43,3 +43,4 @@ nb-configuration.xml
 *.pem
 
 **/resources/aliyun
+**/resources/alipay
