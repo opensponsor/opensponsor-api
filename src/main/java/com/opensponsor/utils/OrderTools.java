@@ -1,4 +1,4 @@
-package com.opensponsor.utils.alipay;
+package com.opensponsor.utils;
 
 import java.time.Instant;
 import java.time.LocalDate;

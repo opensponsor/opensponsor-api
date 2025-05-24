@@ -92,8 +92,8 @@ public class StorageForOSS {
         // 填写Bucket所在地域。以华东1（杭州）为例，Region填写为cn-hangzhou。
         String region = "cn-beijing";
 
-        String accessKeyId = FileTools.getResource("alioss/accessKeyId.txt");
-        String accessKeySecret = FileTools.getResource("alioss/accessKeySecret.txt");
+        String accessKeyId = FileTools.getUserHomeConfig("alioss/accessKeyId.txt");
+        String accessKeySecret = FileTools.getUserHomeConfig("alioss/accessKeySecret.txt");
 
         assert accessKeyId != null;
         assert accessKeySecret != null;

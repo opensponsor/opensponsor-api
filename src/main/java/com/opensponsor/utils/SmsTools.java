@@ -15,8 +15,8 @@ import java.util.Random;
 @ApplicationScoped
 public class SmsTools {
     private Client getClient() throws Exception {
-        String accessKeyId = FileTools.getResource("aliyun/accessKeyId.txt");
-        String accessKeySecret = FileTools.getResource("aliyun/accessKeySecret.txt");
+        String accessKeyId = FileTools.getUserHomeConfig("aliyun/accessKeyId.txt");
+        String accessKeySecret = FileTools.getUserHomeConfig("aliyun/accessKeySecret.txt");
         Config config = new Config()
                 // 配置 AccessKey ID，请确保代码运行环境设置了环境变量 ALIBABA_CLOUD_ACCESS_KEY_ID。
                 .setAccessKeyId(accessKeyId)

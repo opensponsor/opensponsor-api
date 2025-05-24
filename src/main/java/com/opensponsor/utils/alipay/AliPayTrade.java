@@ -18,6 +18,7 @@ import com.opensponsor.enums.E_ORDER_STATUS;
 import com.opensponsor.enums.E_PAYMENT_METHOD;
 import com.opensponsor.payload.TradePagePayBodyForAliPay;
 import com.opensponsor.utils.FileTools;
+import com.opensponsor.utils.OrderTools;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.slf4j.Logger;
@@ -29,16 +30,16 @@ import java.time.Instant;
 import java.util.List;
 
 @ApplicationScoped
-public class AlipayTradePay {
+public class AliPayTrade {
     @Inject
     AlipayProperties alipayProperties;
 
-    private static final Logger log = LoggerFactory.getLogger(AlipayTradePay.class);
+    private static final Logger log = LoggerFactory.getLogger(AliPayTrade.class);
 
     public String generateOrder(Tier tier, User user) throws AlipayApiException {
         String num = String.valueOf(tier.amount);
 
-        AlipayClient alipayClient = new DefaultAlipayClient(AlipayTradePay.getAlipayConfig());
+        AlipayClient alipayClient = new DefaultAlipayClient(AliPayTrade.getConfig());
         AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
         AlipayTradePagePayModel model = new AlipayTradePagePayModel();
         String tradeNo = OrderTools.generateOrderNo();
@@ -86,7 +87,7 @@ public class AlipayTradePay {
 
      public static AlipayTradeQueryResponse queryTrade(TradePagePayBodyForAliPay data) throws AlipayApiException {
          // 初始化SDK
-         AlipayClient alipayClient = new DefaultAlipayClient(getAlipayConfig());
+         AlipayClient alipayClient = new DefaultAlipayClient(getConfig());
 
          // 构造请求参数以调用接口
          AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
@@ -109,12 +110,12 @@ public class AlipayTradePay {
          return response;
      }
 
-    private static AlipayConfig getAlipayConfig() {
-        String privateKey  = FileTools.getResource("alipay/applicationPrivateKey.txt");
-        String alipayPublicKey = FileTools.getResource("alipay/alipayPublicKey_RSA2.txt");
+    private static AlipayConfig getConfig() {
+        String privateKey  = FileTools.getUserHomeConfig("alipay/applicationPrivateKey.txt");
+        String alipayPublicKey = FileTools.getUserHomeConfig("alipay/alipayPublicKey_RSA2.txt");
         AlipayConfig alipayConfig = new AlipayConfig();
         alipayConfig.setServerUrl("https://openapi.alipay.com/gateway.do");
-        alipayConfig.setAppId(FileTools.getResource("alipay/appId.txt"));
+        alipayConfig.setAppId(FileTools.getUserHomeConfig("alipay/appId.txt"));
         alipayConfig.setPrivateKey(privateKey);
         alipayConfig.setFormat("json");
         alipayConfig.setAlipayPublicKey(alipayPublicKey);

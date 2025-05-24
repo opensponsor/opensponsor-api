@@ -7,6 +7,7 @@ import com.opensponsor.payload.ResultOfData;
 import com.opensponsor.payload.TradePagePayBodyForAliPay;
 import com.opensponsor.repositorys.UserRepository;
 import com.opensponsor.utils.alipay.AliPayTrade;
+import com.opensponsor.utils.wechat.WechatPayTrade;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -26,14 +27,14 @@ import org.jboss.resteasy.annotations.Form;
 
 import java.util.Optional;
 
-@Path("/payment-ali")
-public class AliPaymentResource {
+@Path("/payment-wechat")
+public class WechatPaymentResource {
 
     @Inject
     public UserRepository userRepository;
 
     @Inject
-    public AliPayTrade alipayTradePay;
+    public WechatPayTrade wechatPayTrade;
 
     @Transactional
     protected Order checkTrade(TradePagePayBodyForAliPay data)  throws AlipayApiException {
@@ -74,37 +75,12 @@ public class AliPaymentResource {
     @Transactional
     @RolesAllowed({"User"})
     @Produces(MediaType.APPLICATION_JSON)
-    public Response pay(@Valid Tier tier) throws AlipayApiException {
+    public Response pay(@Valid Tier tier) {
         return Response
             .status(Response.Status.OK.getStatusCode())
             .entity(new ResultOfData<>(
-                alipayTradePay.generateOrder( Tier.findById(tier.id), userRepository.authUser() )
+                wechatPayTrade.generateOrder( Tier.findById(tier.id), userRepository.authUser() )
             ))
-            .build();
-    }
-
-    @APIResponse(
-        responseCode = "200",
-        description = "Example List",
-        content = @Content(
-            mediaType = "application/json",
-            schema = @Schema(
-                implementation = ResultOfData.class,
-                properties = {
-                    @SchemaProperty(name = "data", type = SchemaType.OBJECT, implementation = Order.class),
-                }
-            )
-        )
-    )
-    @POST()
-    @Path("callback")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response callback(@Valid TradePagePayBodyForAliPay data) throws AlipayApiException {
-        Order t = checkTrade(data);
-
-        return Response
-            .status(Response.Status.OK.getStatusCode())
-            .entity(new ResultOfData<>(t))
             .build();
     }
 

@@ -41,6 +41,8 @@ dependencies {
     implementation 'stax:stax:1.2.0'
     implementation 'org.apache.commons:commons-beanutils2:2.0.0-M1'
     // ali end
+    implementation 'com.github.wechatpay-apiv3:wechatpay-java:0.2.17'
+
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'
 

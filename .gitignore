@@ -41,6 +41,3 @@ nb-configuration.xml
 .$design.drawio.bkp
 
 *.pem
-
-**/resources/aliyun
-**/resources/alipay
