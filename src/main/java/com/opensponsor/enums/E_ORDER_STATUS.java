@@ -4,7 +4,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 public enum E_ORDER_STATUS {
     // New default state since August 2020
-    @Schema(description = "自 2020 年 8 月以来的新默认状态")
+    @Schema(description = "默认状态")
     NEW("NEW"),
 
     // For Strong Customer Authentication ("3D Secure")
