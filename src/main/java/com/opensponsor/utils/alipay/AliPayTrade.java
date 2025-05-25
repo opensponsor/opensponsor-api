@@ -38,14 +38,14 @@ public class AliPayTrade {
 
     public String generateOrder(Tier tier, User user) throws AlipayApiException {
         String num = String.valueOf(tier.amount);
+        String tradeNo = OrderTools.persistOrder(tier, E_PAYMENT_METHOD.ALI_PAY, user);
 
         AlipayClient alipayClient = new DefaultAlipayClient(AliPayTrade.getConfig());
         AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
         AlipayTradePagePayModel model = new AlipayTradePagePayModel();
-        String tradeNo = OrderTools.generateOrderNo();
         model.setOutTradeNo(tradeNo);
         model.setTotalAmount(num);
-        model.setSubject(String.join("", "充值:", num, "元"));
+        model.setSubject(tier.name);
         model.setProductCode("FAST_INSTANT_TRADE_PAY");
         ExtUserInfo extUserInfo = new ExtUserInfo();
         extUserInfo.setMobile(user.phoneNumber);
@@ -62,20 +62,6 @@ public class AliPayTrade {
         // AlipayTradePagePayResponse response = alipayClient.pageExecute(request, "GET");
         String pageRedirectionData = response.getBody();
         if (response.isSuccess()) {
-            Duration eightHours = Duration.ofHours(8);
-            Order order = new Order();
-            order.tradeNo = tradeNo;
-            order.payStatus = false;
-            order.paymentMethod = E_PAYMENT_METHOD.ALI_PAY;
-            order.user = user;
-            order.status = E_ORDER_STATUS.NEW;
-            order.currency = tier.currency;
-            order.organization = tier.organization;
-            order.tier = tier;
-            order.whenExpires = Instant.now().plus(eightHours);
-            order.totalAmount = BigDecimal.valueOf(Long.parseLong(num));
-            order.persistAndFlush();
-
             return pageRedirectionData;
         } else {
             // sdk版本是"4.38.0.ALL"及以上,可以参考下面的示例获取诊断链接

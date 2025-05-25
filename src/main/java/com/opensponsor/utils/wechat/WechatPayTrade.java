@@ -1,8 +1,12 @@
 package com.opensponsor.utils.wechat;
 
+import com.alipay.api.diagnosis.DiagnosisUtils;
 import com.opensponsor.config.WechatPayProperties;
+import com.opensponsor.entitys.Order;
 import com.opensponsor.entitys.Tier;
 import com.opensponsor.entitys.User;
+import com.opensponsor.enums.E_ORDER_STATUS;
+import com.opensponsor.enums.E_PAYMENT_METHOD;
 import com.opensponsor.utils.FileTools;
 import com.opensponsor.utils.OrderTools;
 import com.wechat.pay.java.core.Config;
@@ -18,6 +22,10 @@ import org.slf4j.LoggerFactory;
 import com.wechat.pay.java.service.payments.nativepay.model.Amount;
 import com.wechat.pay.java.service.payments.nativepay.model.PrepayResponse;
 
+import java.math.BigDecimal;
+import java.time.Duration;
+import java.time.Instant;
+
 @ApplicationScoped
 public class WechatPayTrade {
     @Inject
@@ -28,6 +36,7 @@ public class WechatPayTrade {
     public String generateOrder(Tier tier, User user) {
         String merchantId = FileTools.getUserHomeConfig("wechatPay/merchantId.txt");
         String appId = FileTools.getUserHomeConfig("wechatPay/appId.txt");
+        String tradeNo = OrderTools.persistOrder(tier, E_PAYMENT_METHOD.WE_CHAT_PAY, user);
 
         // 构建service
         NativePayService service = new NativePayService.Builder().config(getConfig()).build();
@@ -40,9 +49,10 @@ public class WechatPayTrade {
         request.setMchid(merchantId);
         request.setDescription(tier.name);
         request.setNotifyUrl(wechatPayProperties.notifyUrl());
-        request.setOutTradeNo(OrderTools.generateOrderNo());
+        request.setOutTradeNo(tradeNo);
         // 调用下单方法，得到应答
         PrepayResponse response = service.prepay(request);
+
         // 使用微信扫描 code_url 对应的二维码，即可体验Native支付
         return response.getCodeUrl();
     }
