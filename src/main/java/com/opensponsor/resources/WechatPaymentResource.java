@@ -84,6 +84,12 @@ public class WechatPaymentResource {
             .build();
     }
 
+    /**
+     * 验证签名 https://pay.weixin.qq.com/doc/global/v3/zh/4012354989
+     * @param data
+     * @return String
+     * @throws AlipayApiException
+     */
     @POST()
     @Path("notify")
     @Consumes({MediaType.APPLICATION_FORM_URLENCODED})

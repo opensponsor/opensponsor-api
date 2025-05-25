@@ -48,6 +48,7 @@ public class WechatPayTrade {
         request.setAppid(appId);
         request.setMchid(merchantId);
         request.setDescription(tier.name);
+        // 报文文档 POST：https://pay.weixin.qq.com/doc/global/v3/zh/4012354579?from=https%3A%2F%2Fpay.weixin.qq.com%2Fwiki%2Fdoc%2Fapi_external%2Fch%2Fapis%2Fchapter3_5_11.shtml
         request.setNotifyUrl(wechatPayProperties.notifyUrl());
         request.setOutTradeNo(tradeNo);
         // 调用下单方法，得到应答
@@ -60,9 +61,7 @@ public class WechatPayTrade {
     private Config getConfig() {
         return new RSAAutoCertificateConfig.Builder()
             .merchantId(FileTools.getUserHomeConfig("wechatPay/merchantId.txt"))
-            .privateKeyFromPath(
-                 String.format("%s/.opensponsor/%s", System.getenv("HOME"), "wechatPay/apiclient_key.pem")
-            )
+            .privateKey(FileTools.getUserHomeConfig("wechatPay/apiclient_key.pem"))
             .merchantSerialNumber(FileTools.getUserHomeConfig("wechatPay/merchantSerialNumber.txt"))
             .apiV3Key(FileTools.getUserHomeConfig("wechatPay/apiV3Key.txt"))
             .build();
