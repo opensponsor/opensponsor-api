@@ -12,22 +12,39 @@ import com.opensponsor.utils.OrderTools;
 import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.core.RSAAutoCertificateConfig;
 import com.wechat.pay.java.core.util.PemUtil;
+import com.wechat.pay.java.service.payments.jsapi.JsapiServiceExtension;
+import com.wechat.pay.java.service.payments.jsapi.model.QueryOrderByOutTradeNoRequest;
+import com.wechat.pay.java.service.payments.model.Transaction;
 import com.wechat.pay.java.service.payments.nativepay.model.PrepayRequest;
 import com.wechat.pay.java.service.payments.nativepay.NativePayService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.wechat.pay.java.service.payments.nativepay.model.Amount;
 import com.wechat.pay.java.service.payments.nativepay.model.PrepayResponse;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.Optional;
 
 @ApplicationScoped
 public class WechatPayTrade {
+    private static final String merchantId = FileTools.getUserHomeConfig("wechatPay/merchantId.txt");
+
+    private static final HttpClient httpClient = HttpClientBuilder.create().build();
+
     @Inject
     WechatPayProperties wechatPayProperties;
 
@@ -54,13 +71,49 @@ public class WechatPayTrade {
         // 调用下单方法，得到应答
         PrepayResponse response = service.prepay(request);
 
+        log.info("getCodeUrl");
+        log.info(response.getCodeUrl());
         // 使用微信扫描 code_url 对应的二维码，即可体验Native支付
         return response.getCodeUrl();
     }
 
+    @Transactional
+    public boolean queryOrderForOutTradeNo (String outTradeNo) {
+        String merchantId = FileTools.getUserHomeConfig("wechatPay/merchantId.txt");
+        String appId = FileTools.getUserHomeConfig("wechatPay/appId.txt");
+
+        // 构建service
+        JsapiServiceExtension service =
+            new JsapiServiceExtension.Builder()
+                .config(getConfig())
+                .signType("RSA") // 不填默认为RSA
+                .build();
+
+        // request.setXxx(val)设置所需参数，具体参数可见Request定义
+        QueryOrderByOutTradeNoRequest request = new QueryOrderByOutTradeNoRequest();
+        request.setMchid(merchantId);
+        request.setOutTradeNo(outTradeNo);
+        Transaction response = service.queryOrderByOutTradeNo(request);
+
+        if(response.getTradeState().equals(Transaction.TradeStateEnum.SUCCESS)) {
+            Optional<Order> orderO = Order.find("outTradeNo = ?1", outTradeNo).firstResultOptional();
+            if(orderO.isPresent()) {
+                Order order = orderO.get();
+                order.tradeNo = response.getTransactionId();
+                order.status = E_ORDER_STATUS.PAID;
+                order.persistAndFlush();
+            } else {
+                // not find order
+                return false;
+            }
+        }
+
+        return response.getTradeState().equals(Transaction.TradeStateEnum.SUCCESS);
+    }
+
     private Config getConfig() {
         return new RSAAutoCertificateConfig.Builder()
-            .merchantId(FileTools.getUserHomeConfig("wechatPay/merchantId.txt"))
+            .merchantId(WechatPayTrade.merchantId)
             .privateKey(FileTools.getUserHomeConfig("wechatPay/apiclient_key.pem"))
             .merchantSerialNumber(FileTools.getUserHomeConfig("wechatPay/merchantSerialNumber.txt"))
             .apiV3Key(FileTools.getUserHomeConfig("wechatPay/apiV3Key.txt"))

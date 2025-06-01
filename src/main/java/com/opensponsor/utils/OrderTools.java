@@ -35,7 +35,7 @@ public class OrderTools {
             String tradeNo = generateOrderNo();
             Duration eightHours = Duration.ofHours(8);
             Order order = new Order();
-            order.tradeNo = tradeNo;
+            order.outTradeNo = tradeNo;
             order.payStatus = false;
             order.paymentMethod = method;
             order.user = user;

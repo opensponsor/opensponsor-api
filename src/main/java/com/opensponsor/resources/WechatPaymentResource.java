@@ -12,10 +12,7 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
@@ -103,4 +100,28 @@ public class WechatPaymentResource {
             return "fail";
         }
     }
+
+    @APIResponse(
+        responseCode = "200",
+        description = "Query wechatpay order status",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                implementation = ResultOfData.class,
+                properties = {
+                    @SchemaProperty(name = "data", type = SchemaType.BOOLEAN, implementation = Boolean.class),
+                }
+            )
+        )
+    )
+    @GET
+    @Path("queryOrder")
+    @RolesAllowed({"User"})
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response queryOrder(@QueryParam("outTradeNo") String outTradeNo) {
+        return Response.status(Response.Status.OK)
+            .entity(new ResultOfData<>(wechatPayTrade.queryOrderForOutTradeNo(outTradeNo)))
+            .build();
+    }
+
 }
