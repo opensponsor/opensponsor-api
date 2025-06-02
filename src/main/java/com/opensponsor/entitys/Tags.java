@@ -18,6 +18,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Table(name = "tags")
+@Schema
 public class Tags extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

@@ -15,6 +15,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@Schema
 public class OrderSnapshot extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

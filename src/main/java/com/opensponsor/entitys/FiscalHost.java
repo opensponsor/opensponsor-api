@@ -21,6 +21,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Table(name = "`fiscal_host`")
+@Schema
 public class FiscalHost extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

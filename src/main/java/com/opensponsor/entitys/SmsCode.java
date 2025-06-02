@@ -16,6 +16,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Table(name = "sms_code")
+@Schema
 public class SmsCode extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

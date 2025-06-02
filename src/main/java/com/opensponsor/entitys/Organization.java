@@ -40,6 +40,7 @@ import java.util.*;
 })
 @Getter
 @Setter
+@Schema
 public class Organization extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

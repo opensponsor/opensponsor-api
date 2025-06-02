@@ -32,6 +32,7 @@ import java.util.UUID;
         @UniqueConstraint(columnNames = {"slug", "organization_id"}),
     }
 )
+@Schema
 public class Tier extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

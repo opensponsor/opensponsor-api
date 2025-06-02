@@ -19,6 +19,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Table(name = "member")
+@Schema
 public class Member extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

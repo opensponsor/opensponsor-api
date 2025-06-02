@@ -30,6 +30,7 @@ import java.util.UUID;
     name = "`user`"
 )
 //@UserDefinition
+@Schema
 public class User extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

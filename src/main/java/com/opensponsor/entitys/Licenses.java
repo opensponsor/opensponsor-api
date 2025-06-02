@@ -18,6 +18,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Table(name = "`licenses`")
+@Schema
 public class Licenses extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

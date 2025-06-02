@@ -22,6 +22,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Table(name = "country_code")
+@Schema
 public class CountryCode extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

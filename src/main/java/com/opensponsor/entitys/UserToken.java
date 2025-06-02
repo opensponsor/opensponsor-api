@@ -17,6 +17,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Table(name = "user_token")
+@Schema
 public class UserToken extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

@@ -21,6 +21,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Table(name = "company")
+@Schema
 public class Company extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
