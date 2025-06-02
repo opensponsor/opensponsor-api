@@ -80,11 +80,11 @@ public class Order extends PanacheEntityBase {
     @Schema(description = "支付方式")
     public E_PAYMENT_METHOD paymentMethod;
 
-    @Column(length = 32, nullable = false)
+    @Column(length = 32)
     @Schema(description = "trade no", required = true)
     public String tradeNo;
 
-    @Column(length = 32)
+    @Column(length = 32, nullable = false)
     @Schema(description = "out trade no")
     public String outTradeNo;
 
