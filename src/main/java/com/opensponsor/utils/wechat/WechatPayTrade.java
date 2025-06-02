@@ -7,6 +7,7 @@ import com.opensponsor.entitys.Tier;
 import com.opensponsor.entitys.User;
 import com.opensponsor.enums.E_ORDER_STATUS;
 import com.opensponsor.enums.E_PAYMENT_METHOD;
+import com.opensponsor.payload.WechatPayOrderResult;
 import com.opensponsor.utils.FileTools;
 import com.opensponsor.utils.OrderTools;
 import com.wechat.pay.java.core.Config;
@@ -37,6 +38,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Optional;
 
 @ApplicationScoped
@@ -50,7 +52,7 @@ public class WechatPayTrade {
 
     private static final Logger log = LoggerFactory.getLogger(WechatPayTrade.class);
 
-    public String generateOrder(Tier tier, User user) {
+    public WechatPayOrderResult generateOrder(Tier tier, User user) {
         String merchantId = FileTools.getUserHomeConfig("wechatPay/merchantId.txt");
         String appId = FileTools.getUserHomeConfig("wechatPay/appId.txt");
         String tradeNo = OrderTools.persistOrder(tier, E_PAYMENT_METHOD.WE_CHAT_PAY, user);
@@ -74,7 +76,8 @@ public class WechatPayTrade {
         log.info("getCodeUrl");
         log.info(response.getCodeUrl());
         // 使用微信扫描 code_url 对应的二维码，即可体验Native支付
-        return response.getCodeUrl();
+        // tradeNo
+        return new WechatPayOrderResult(response.getCodeUrl(), tradeNo);
     }
 
     /**
@@ -83,7 +86,7 @@ public class WechatPayTrade {
      * @return
      */
     @Transactional
-    public boolean queryOrderForOutTradeNo (String outTradeNo) {
+    public Transaction.TradeStateEnum queryOrderForOutTradeNo (String outTradeNo) {
         String merchantId = FileTools.getUserHomeConfig("wechatPay/merchantId.txt");
         String appId = FileTools.getUserHomeConfig("wechatPay/appId.txt");
 
@@ -107,13 +110,10 @@ public class WechatPayTrade {
                 order.tradeNo = response.getTransactionId();
                 order.status = E_ORDER_STATUS.PAID;
                 order.persistAndFlush();
-            } else {
-                // not find order
-                return false;
             }
         }
 
-        return response.getTradeState().equals(Transaction.TradeStateEnum.SUCCESS);
+        return response.getTradeState();
     }
 
     private Config getConfig() {

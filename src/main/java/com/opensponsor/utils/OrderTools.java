@@ -30,7 +30,7 @@ public class OrderTools {
     public static String persistOrder(Tier tier, E_PAYMENT_METHOD method, User user) {
         Optional<Order> hasOrder = Order.find("tier = ?1 AND user = ?2 AND status = ?3", tier, user, E_ORDER_STATUS.NEW).firstResultOptional();
         if(hasOrder.isPresent()) {
-            return hasOrder.get().getTradeNo();
+            return hasOrder.get().getOutTradeNo();
         } else {
             String tradeNo = generateOrderNo();
             Duration eightHours = Duration.ofHours(8);

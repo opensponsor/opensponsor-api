@@ -5,6 +5,8 @@ import com.opensponsor.entitys.Order;
 import com.opensponsor.entitys.Tier;
 import com.opensponsor.payload.ResultOfData;
 import com.opensponsor.payload.TradePagePayBodyForAliPay;
+import com.opensponsor.payload.WechatPayOrderResult;
+import com.opensponsor.payload.WechatTradeState;
 import com.opensponsor.repositorys.UserRepository;
 import com.opensponsor.utils.alipay.AliPayTrade;
 import com.opensponsor.utils.wechat.WechatPayTrade;
@@ -63,7 +65,7 @@ public class WechatPaymentResource {
             schema = @Schema(
                 implementation = ResultOfData.class,
                 properties = {
-                    @SchemaProperty(name = "data", type = SchemaType.OBJECT, implementation = String.class),
+                    @SchemaProperty(name = "data", type = SchemaType.OBJECT, implementation = WechatPayOrderResult.class),
                 }
             )
         )
@@ -113,7 +115,7 @@ public class WechatPaymentResource {
             schema = @Schema(
                 implementation = ResultOfData.class,
                 properties = {
-                    @SchemaProperty(name = "data", type = SchemaType.BOOLEAN, implementation = Boolean.class),
+                    @SchemaProperty(name = "data", type = SchemaType.STRING, implementation = WechatTradeState.TradeStateEnum.class),
                 }
             )
         )
