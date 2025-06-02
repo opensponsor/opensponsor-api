@@ -76,7 +76,7 @@ public class AliPaymentResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response pay(@Valid Tier tier) throws AlipayApiException {
         return Response
-            .status(Response.Status.OK.getStatusCode())
+            .status(Response.Status.OK)
             .entity(new ResultOfData<>(
                 alipayTradePay.generateOrder( Tier.findById(tier.id), userRepository.authUser() )
             ))
@@ -103,7 +103,7 @@ public class AliPaymentResource {
         Order t = checkTrade(data);
 
         return Response
-            .status(Response.Status.OK.getStatusCode())
+            .status(Response.Status.OK)
             .entity(new ResultOfData<>(t))
             .build();
     }
