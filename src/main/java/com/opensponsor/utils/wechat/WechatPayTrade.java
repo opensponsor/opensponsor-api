@@ -77,6 +77,11 @@ public class WechatPayTrade {
         return response.getCodeUrl();
     }
 
+    /**
+     * 查询订单 https://pay.weixin.qq.com/doc/global/v3/zh/4012354570#2.-%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0
+     * @param outTradeNo
+     * @return
+     */
     @Transactional
     public boolean queryOrderForOutTradeNo (String outTradeNo) {
         String merchantId = FileTools.getUserHomeConfig("wechatPay/merchantId.txt");

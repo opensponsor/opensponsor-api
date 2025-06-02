@@ -86,6 +86,10 @@ public class WechatPaymentResource {
      * @param data
      * @return String
      * @throws AlipayApiException
+     * @docs
+     * https://pay.weixin.qq.com/doc/v3/merchant/4012075420
+     * https://pay.weixin.qq.com/doc/global/v3/zh/4012354579?from=https%3A%2F%2Fpay.weixin.qq.com%2Fwiki%2Fdoc%2Fapi_external%2Fch%2Fapis%2Fchapter3_5_11.shtml
+     *
      */
     @POST()
     @Path("notify")
