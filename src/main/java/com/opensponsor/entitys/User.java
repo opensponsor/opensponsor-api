@@ -24,7 +24,7 @@ import java.util.UUID;
  * user entity
  */
 @Entity
-@Getter
+@Getter()
 @Setter
 @Table(
     name = "`user`"
@@ -90,9 +90,20 @@ public class User extends PanacheEntityBase {
 
     @Column(unique = true, length = 32)
     @Size(min = 4, max = 11)
-    @Schema(description = "phoneNumber")
-    @JsonIgnore
+    @Schema(description = "phoneNumber", required = true)
     public String phoneNumber;
+
+    public String getPhoneNumber() {
+        return String.format("%s****%s", this.phoneNumber.substring(0, 3), this.phoneNumber.substring(7, 11));
+    }
+
+    public String getPhoneNumber(boolean isFull) {
+        if(isFull) {
+            return this.phoneNumber;
+        } else {
+            return this.getPhoneNumber();
+        }
+    }
 
     @Column(unique = true, length = 32)
     @Email
