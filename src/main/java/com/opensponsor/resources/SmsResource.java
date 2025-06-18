@@ -1,10 +1,13 @@
 package com.opensponsor.resources;
 
 import com.aliyun.dysmsapi20170525.models.SendSmsResponse;
+import com.opensponsor.entitys.User;
 import com.opensponsor.payload.ResultOfData;
 import com.opensponsor.payload.SendCodeBody;
 import com.opensponsor.payload.SendSmsResponseAliyun;
+import com.opensponsor.repositorys.UserRepository;
 import com.opensponsor.utils.SmsTools;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
@@ -25,6 +28,9 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 public class SmsResource {
     @Inject
     SmsTools smsTools;
+
+    @Inject
+    UserRepository userRepository;
 
     @Tag(name = "sms", description = "send sms")
     @Operation(summary = "send verification code")
@@ -62,5 +68,20 @@ public class SmsResource {
                 .status(sendSmsResponse.getStatusCode())
                 .entity(new ResultOfData<>(sendSmsResponse).code(statusCode).message(message))
                 .build();
+    }
+
+
+    @POST()
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("verifyCodeToSelf")
+    @RolesAllowed({"User"})
+    public Response verifyCodeToSelf() throws Exception {
+        SendCodeBody body = new SendCodeBody();
+        User u = this.userRepository.authUser(true);
+        body.phoneNumber = u.phoneNumber;
+        body.countryCode = u.countryCode;
+
+        return this.verifyCode(body);
     }
 }

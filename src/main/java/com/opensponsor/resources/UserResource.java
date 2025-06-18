@@ -1,9 +1,11 @@
 package com.opensponsor.resources;
 
+import com.google.gson.Gson;
 import com.opensponsor.constants.ResultMessage;
 import com.opensponsor.entitys.User;
 import com.opensponsor.payload.ResultOfData;
 import com.opensponsor.payload.UpdateUser;
+import com.opensponsor.payload.UpdateUserPassword;
 import com.opensponsor.repositorys.UserRepository;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -88,6 +90,9 @@ public class UserResource {
     @Transactional
     @RolesAllowed({"User"})
     public Response update(@Valid UpdateUser data) throws InvocationTargetException, IllegalAccessException {
+        Gson gson = new Gson();
+        System.out.println(gson.toJson(data));
+
         User user = this.userRepository.authUser();
         this.userRepository.updateProperties(user, data);
 
@@ -95,5 +100,36 @@ public class UserResource {
             .status(Response.Status.OK)
             .entity(new ResultOfData<>(data).message(ResultMessage.UPDATE_SUCCESS))
             .build();
+    }
+
+    @Tag(name = "User", description = "update User password")
+    @Operation(summary = "Update User Password")
+    @APIResponse(
+        responseCode = "200",
+        description = "update successful",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                implementation = ResultOfData.class
+            )
+        )
+    )
+    @PUT
+    @Path("updatePassword")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    @RolesAllowed({"User"})
+    public Response updatePassword(@Valid UpdateUserPassword data) throws InvocationTargetException, IllegalAccessException {
+        if(this.userRepository.updatePassword(data)) {
+            return Response
+                .status(Response.Status.OK)
+                .entity(new ResultOfData<>(data).message(ResultMessage.UPDATE_SUCCESS))
+                .build();
+        } else {
+            return Response
+                .status(Response.Status.FORBIDDEN)
+                .entity(this.userRepository.getViolationReport())
+                .build();
+        }
     }
 }

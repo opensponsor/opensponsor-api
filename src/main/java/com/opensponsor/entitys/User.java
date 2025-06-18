@@ -5,8 +5,6 @@ import com.opensponsor.enums.E_SEX;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.security.jpa.Password;
 import io.quarkus.security.jpa.Roles;
-import io.quarkus.security.jpa.UserDefinition;
-import io.quarkus.security.jpa.Username;
 import jakarta.persistence.*;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Table;
@@ -32,6 +30,18 @@ import java.util.UUID;
 //@UserDefinition
 @Schema
 public class User extends PanacheEntityBase {
+    @Transient
+    @JsonIgnore
+    public boolean isFullData = false;
+
+    /**
+     * 设置后用于获取用户真实信息
+     * @param fullData boolean
+     */
+    public void setGetFullData(boolean fullData) {
+        this.isFullData = fullData;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(unique = true, nullable = false)
@@ -93,15 +103,15 @@ public class User extends PanacheEntityBase {
     @Schema(description = "phoneNumber", required = true)
     public String phoneNumber;
 
-    public String getPhoneNumber() {
-        return String.format("%s****%s", this.phoneNumber.substring(0, 3), this.phoneNumber.substring(7, 11));
-    }
+//    public String getPhoneNumber() {
+//        return String.format("%s****%s", this.phoneNumber.substring(0, 3), this.phoneNumber.substring(7, 11));
+//    }
 
-    public String getPhoneNumber(boolean isFull) {
-        if(isFull) {
+    public String getPhoneNumber() {
+        if(this.isFullData) {
             return this.phoneNumber;
         } else {
-            return this.getPhoneNumber();
+            return String.format("%s****%s", this.phoneNumber.substring(0, 3), this.phoneNumber.substring(7, 11));
         }
     }
 

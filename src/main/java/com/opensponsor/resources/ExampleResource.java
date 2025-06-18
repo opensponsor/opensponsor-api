@@ -1,6 +1,8 @@
 package com.opensponsor.resources;
 
+import com.opensponsor.entitys.CountryCode;
 import com.opensponsor.entitys.Example;
+import com.opensponsor.entitys.SmsCode;
 import com.opensponsor.payload.PageParams;
 import com.opensponsor.payload.ResultOfData;
 import com.opensponsor.payload.github.*;
@@ -21,6 +23,8 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.api.validation.ViolationReport;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.util.Optional;
 
 @OpenAPIDefinition(
     tags = {
@@ -69,9 +73,19 @@ public class ExampleResource {
     @GET()
     @Produces(MediaType.APPLICATION_JSON)
     public Response hello(@BeanParam Example params, @BeanParam PageParams pageParams) throws IOException {
+
+
+        CountryCode cc = CountryCode.findAll().firstResult();
+        System.out.println(cc.countryCode);
+
+        Optional<SmsCode> smsCode = SmsCode
+            .find("countryCode = ?1 and phoneNumber = ?2 and code = ?3 and effective = true", cc,  "16631132230", "1318")
+            .firstResultOptional();
+
+
         return Response
             .status(200)
-            .entity("")
+            .entity("-")
             .build();
     }
 }

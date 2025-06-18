@@ -13,12 +13,12 @@ import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import lombok.Getter;
 import org.jboss.resteasy.api.validation.ConstraintType;
 import org.jboss.resteasy.api.validation.ResteasyConstraintViolation;
 import org.jboss.resteasy.api.validation.ViolationReport;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -28,10 +28,12 @@ public class SessionRepository implements PanacheRepositoryBase<User, UUID> {
     @Inject
     UserRepository userRepository;
 
+    @Getter
     private ViolationReport violationReport;
 
     @Inject
     SecurityTools securityTools;
+
     @Inject
     TokenTools tokenTools;
 
@@ -49,11 +51,11 @@ public class SessionRepository implements PanacheRepositoryBase<User, UUID> {
         // 同时创建一个 organization
         this.userRepository.transformToOrganizationAndPersist(user).persistAndFlush();
 
-        ViolationReport violationReport = new ViolationReport();
-        ArrayList<ResteasyConstraintViolation> list = new ArrayList<>(){{
-            add(new ResteasyConstraintViolation());
-        }};
-        violationReport.setPropertyViolations(list);
+//        ViolationReport violationReport = new ViolationReport();
+//        ArrayList<ResteasyConstraintViolation> list = new ArrayList<>(){{
+//            add(new ResteasyConstraintViolation());
+//        }};
+//        violationReport.setPropertyViolations(list);
 
         return user;
     }
@@ -125,14 +127,21 @@ public class SessionRepository implements PanacheRepositoryBase<User, UUID> {
         return null;
     }
 
-    private boolean verifySmsCode(CountryCode countryCode, String phoneNumber, String code) {
+    public boolean verifySmsCode(CountryCode countryCode, String phoneNumber, String code) {
         CountryCode country = CountryCode.findById(countryCode.id);
         Optional<SmsCode> smsCode = SmsCode
             .find("countryCode = ?1 and phoneNumber = ?2 and code = ?3 and effective = true", country,  phoneNumber, code)
             .firstResultOptional();
         Instant now = Instant.now();
+        SmsCode t;
+        if(smsCode.isPresent()) {
+            t = smsCode.get();
+            t.effective = false;
+            t.persistAndFlush();
+            return now.getEpochSecond() - t.whenCreated.getEpochSecond() < 120;
+        }
 
-        return smsCode.isPresent() && smsCode.get().whenCreated.getEpochSecond() - now.getEpochSecond() < 120;
+        return false;
     }
 
     @Transactional
@@ -172,7 +181,4 @@ public class SessionRepository implements PanacheRepositoryBase<User, UUID> {
         }
     }
 
-    public ViolationReport getViolationReport() {
-        return violationReport;
-    }
 }

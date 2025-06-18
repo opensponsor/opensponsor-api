@@ -35,3 +35,7 @@ insert into licenses(id, name, key, spdx_id, url, when_created, when_modified) v
 insert into licenses(id, name, key, spdx_id, url, when_created, when_modified) values('f9db7611-8a74-4f0e-8831-aea1947da03a', 'Mozilla Public License 2.0', 'mpl-2.0', 'MPL-2.0', 'https://api.github.com/licenses/mpl-2.0', 'Tue, 07 Jan 2025 11:42:46 GMT', 'Tue, 07 Jan 2025 11:42:46 GMT');
 insert into licenses(id, name, key, spdx_id, url, when_created, when_modified) values('b74d18d0-58cf-4e06-b97c-cb8c8f4208ea', 'The Unlicense', 'unlicense', 'Unlicense', 'https://api.github.com/licenses/unlicense', 'Tue, 07 Jan 2025 11:42:46 GMT', 'Tue, 07 Jan 2025 11:42:46 GMT');
 -- end licenses
+
+
+
+INSERT INTO "public"."sms_code" ("code", "effective", "when_created", "when_deleted", "when_modified", "phone_number", "country_code_id", "id") VALUES ('1318', 't', '2025-06-18 05:27:50.263+08', NULL, '2025-06-17 21:25:00.263431+08', '16631132230', '0466037a-b655-4629-a748-35ca3789d68f', '14b208c8-ac68-42f6-8db8-71c3589b6820');
