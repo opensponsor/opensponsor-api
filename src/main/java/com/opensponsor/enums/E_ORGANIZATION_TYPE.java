@@ -11,6 +11,7 @@ public enum E_ORGANIZATION_TYPE {
 
     /**
      * common organization
+     * 通常用于接收捐款
      */
     @Schema(description = "通用社区")
     COMMUNITY("COMMUNITY"),
@@ -23,6 +24,7 @@ public enum E_ORGANIZATION_TYPE {
 
     /**
      * organization
+     * 区别于个人，组织通常代表公司
      */
     @Schema(description = "组织")
     ORGANIZATION("ORGANIZATION"),
@@ -53,6 +55,7 @@ public enum E_ORGANIZATION_TYPE {
 
     /**
      * user
+     * 个人用户
      */
     @Schema(description = "用户")
     USER("USER");
