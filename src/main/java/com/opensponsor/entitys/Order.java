@@ -31,7 +31,7 @@ public class Order extends PanacheEntityBase {
     public UUID id;
 
     @ManyToOne
-    @Schema(description = "create by user", required = true)
+    @Schema(description = "donation from user", required = true)
     public User user;
 
     // TODO
@@ -42,7 +42,7 @@ public class Order extends PanacheEntityBase {
     public OrderTax tax;*/
 
     @ManyToOne(optional = false)
-    @Schema(description = "from by organization", required = true)
+    @Schema(description = "donation to organization", required = true)
     public Organization organization;
 
     @ManyToOne(optional = false)
