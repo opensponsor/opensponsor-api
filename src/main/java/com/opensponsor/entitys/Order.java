@@ -4,21 +4,44 @@ import com.opensponsor.enums.E_ORDER_STATUS;
 import com.opensponsor.enums.E_PAYMENT_METHOD;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Size;
+import jakarta.ws.rs.QueryParam;
 import lombok.Getter;
 import lombok.Setter;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SoftDelete;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
 @Entity
+@FilterDefs({
+    @FilterDef(name="order(=userId)", parameters = {
+        @ParamDef(name="userId", type = UUID.class)
+    }),
+    @FilterDef(name="order(=organizationId)", parameters = {
+        @ParamDef(name="organizationId", type = UUID.class)
+    }),
+    @FilterDef(name="order(=payStatus)", parameters = {
+        @ParamDef(name="payStatus", type = Boolean.class)
+    }),
+    @FilterDef(name="order(=status)", parameters = {
+        @ParamDef(name="status", type = String.class)
+    }),
+    @FilterDef(name="order(inDateRange)", parameters = {
+        @ParamDef(name="startDate", type = String.class),
+        @ParamDef(name="endDate", type = String.class)
+    }),
+})
+@Filters({
+    @Filter(name = "order(=userId)", condition = "user_id = :userId"),
+    @Filter(name = "order(=organizationId)", condition = "organization_id = :organizationId"),
+    @Filter(name = "order(=payStatus)", condition = "pay_status = :payStatus"),
+    @Filter(name = "order(=status)", condition = "status = :status"),
+    @Filter(name = "order(inDateRange)", condition = "when_modified >= :startDate AND when_modified <= :endDate"),
+})
 @Getter
 @Setter
 @Table(name = "`order`")
@@ -33,6 +56,26 @@ public class Order extends PanacheEntityBase {
     @ManyToOne
     @Schema(description = "donation from user", required = true)
     public User user;
+
+    @QueryParam("userId")
+    @Schema(description = "filterable")
+    @Transient
+    public String userId;
+
+    @QueryParam("organizationId")
+    @Schema(description = "filterable")
+    @Transient
+    public String organizationId;
+
+    @QueryParam("startDate")
+    @Schema(description = "filterable")
+    @Transient
+    public String startDate;
+
+    @QueryParam("endDate")
+    @Schema(description = "filterable")
+    @Transient
+    public String endDate;
 
     // TODO
     // https://github.com/opencollective/opencollective-api/blob/263cee41cc4f34465eacb1b1bbe97a2a0e6a3d4f/server/lib/tax-forms/opencollective.ts#L74
