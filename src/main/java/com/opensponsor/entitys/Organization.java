@@ -5,7 +5,6 @@ import com.opensponsor.utils.CDIGetter;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import jakarta.ws.rs.QueryParam;
 import lombok.Getter;
