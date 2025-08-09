@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+export PATH="/usr/local/opt/openjdk@21/bin:$PATH"
+export CPPFLAGS="-I/usr/local/opt/openjdk@21/include"
+
 export githubAppClientId=$(cat  ~/.gitapp/opensponsor/client_id)
 export githubAppClientSecret=$(cat  ~/.gitapp/opensponsor/client_secret)
 
