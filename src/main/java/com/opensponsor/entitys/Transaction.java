@@ -26,59 +26,79 @@ public class Transaction extends PanacheEntityBase {
     public UUID id;
 
     @Column(nullable = false)
-    @Schema(required = true)
+    @Schema(required = true, description = "交易类型")
     @Enumerated(EnumType.STRING)
     public E_TRANSACTION_TYPES type;
-    // declare type: TransactionTypes | `${TransactionTypes}`;
 
     @Column(nullable = false)
-    @Schema(required = true)
+    @Schema(required = true ,description = "交易分类")
     @Enumerated(EnumType.STRING)
     public E_TRANSACTION_KIND kind;
-    // declare kind: TransactionKind;
 
     @Column(nullable = false)
-    @Schema(required = true)
+    @Schema(required = true, description = "描述交易")
     @NotNull
     public String description;
-    // declare description: string;
 
     @Column(nullable = false)
     @Schema(required = true, description = "交易金额。贷方交易记录具有正值，借方交易记录具有负值。")
     @NotNull
     public BigDecimal amount;
-    // declare amount: number;
 
     @Column(nullable = false)
-    @Schema(required = true)
+    @Schema(required = true, description = "交易货币")
     @NotNull
     @Enumerated(EnumType.STRING)
     public E_IBAN_CURRENCIES currency = E_IBAN_CURRENCIES.CNY;
-    // declare currency: SupportedCurrency;
 
-    // 财务主机支持的货币
-    // declare hostCurrency: SupportedCurrency;
+    @Column(nullable = false)
+    @Schema(required = true, description = "财务主机支持的货币")
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    public E_IBAN_CURRENCIES hostCurrency = E_IBAN_CURRENCIES.CNY;
 
     // 财务主机货币汇率
-    // declare hostCurrencyFxRate: number;
+    // 交易发生时汇率
+    @Column(nullable = false)
+    @Schema(required = true, description = "财务主机货币汇率")
+    @NotNull
+    public int hostCurrencyFxRate;
 
     // 集体货币净额
-    // declare netAmountInCollectiveCurrency: number;
+    @Column(nullable = false)
+    @Schema(required = true, description = "集体货币净额（余额？）")
+    @NotNull
+    public int netAmountInCollectiveCurrency;
 
     // 金额以东道国货币计
-    // declare amountInHostCurrency: number;
+    @Column(nullable = false)
+    @Schema(required = true, description = "金额以东道国货币计")
+    @NotNull
+    public int amountInHostCurrency;
 
     // 财政主机费用以东道国货币计
-    // declare hostFeeInHostCurrency: number | null;
+    @Column(nullable = false)
+    @Schema(required = true, description = "财政主机费用以东道国货币计")
+    @NotNull
+    public int hostFeeInHostCurrency;
 
     // 支付处理费用(以东道国货币计价)
-    // declare paymentProcessorFeeInHostCurrency: number | null;
+    @Column(nullable = false)
+    @Schema(required = true, description = "财政主机费用以东道国货币计")
+    @NotNull
+    public int paymentProcessorFeeInHostCurrency;
 
     // 平台费用(以东道国货币计价)
-    // declare platformFeeInHostCurrency: number | null;
+    @Column(nullable = false)
+    @Schema(required = true, description = "平台费用(以东道国货币计价)")
+    @NotNull
+    public int platformFeeInHostCurrency;
 
     // 税额
-    // declare taxAmount: number | null;
+    @Column(nullable = false)
+    @Schema(required = true, description = "税额")
+    @NotNull
+    public int taxAmount;
 
 
     @Column(nullable = false)
@@ -87,19 +107,15 @@ public class Transaction extends PanacheEntityBase {
     @NotEmpty
     @NotBlank
     public UUID transactionGroup;
-    // declare TransactionGroup: string;
 
 
     @Column(nullable = false)
     @Schema(required = true, description = "是否退款")
     public Boolean isRefund = false;
-    // declare isRefund: boolean;
 
     @Column(nullable = false)
     @Schema(required = true, description = "是否是（支出/债务）")
     public Boolean isDebt;
-    // declare isDebt: boolean;
-
 
     // // Foreign keys
     // declare CreatedByUserId: number;
@@ -131,8 +147,6 @@ public class Transaction extends PanacheEntityBase {
 
     // // Virtual field
     // declare settlementStatus: TransactionSettlementStatus;
-
-
 
     @CreationTimestamp
     @Schema(description = "when created", required = true)
