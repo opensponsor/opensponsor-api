@@ -18,7 +18,6 @@ import java.time.Instant;
 import java.util.UUID;
 
 public class Transaction extends PanacheEntityBase {
-    // declare id: CreationOptional<number>;
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(unique = true, nullable = false)
@@ -101,12 +100,16 @@ public class Transaction extends PanacheEntityBase {
     public int taxAmount;
 
 
+    /**
+     * 交易创建初始，一次产生多个 transaction，共同使用transactionGroupId
+     * transactionGroupId由系统产生
+     */
     @Column(nullable = false)
     @Schema(required = true, description = "交易组ID")
     @NotNull
     @NotEmpty
     @NotBlank
-    public UUID transactionGroup;
+    public UUID transactionGroupId;
 
 
     @Column(nullable = false)
@@ -117,36 +120,46 @@ public class Transaction extends PanacheEntityBase {
     @Schema(required = true, description = "是否是（支出/债务）")
     public Boolean isDebt;
 
-    // // Foreign keys
-    // declare CreatedByUserId: number;
-    // declare FromCollectiveId: number;
-    // declare CollectiveId: number;
-    // declare HostCollectiveId: number;
+    @OneToOne(optional = false)
+    @Schema(required = true, description = "创建用户")
+    public User user;
+
+    @OneToOne(optional = false)
+    @Schema(required = true, description = "筹款组织")
+    public Organization organization;
+
+    @OneToOne(optional = false)
+    @Schema(required = true, description = "捐款组织")
+    public Organization fromOrganization;
+
+    @OneToOne(optional = false)
+    @Schema(required = true, description = "托管财务主机")
+    public Organization hostOrganization;
+
+    /**
+     * 由订单产生的交易
+     */
+    @OneToOne
+    @Schema(description = "关联的订单")
+    public Order order;
+
+    @Column(nullable = false)
+    @Schema(required = true, description = "关联的退款交易")
+    public Transaction RefundTransaction;
+
+    @Column(nullable = false)
+    @Schema(required = true, description = "关联的退款交易")
+     public PaymentMethod payoutMethod;
+
+    @Column(nullable = false)
+    @Schema(required = true, description = "关联的退款交易")
+     public PaymentMethod paymentMethod;
+
+    @Column(nullable = false)
+    @Schema(required = true, description = "费用")
+    public Expense expense;
+
     // declare UsingGiftCardFromCollectiveId: number;
-    // declare OrderId: number;
-    // declare ExpenseId: number;
-    // declare PayoutMethodId: number;
-    // declare PaymentMethodId: number;
-    // declare RefundTransactionId: number;
-
-    // // Associations
-    // declare createdByUser?: User;
-    // declare fromCollective?: Collective;
-    // declare host?: Collective;
-    // declare usingGiftCardFromCollective?: Collective;
-    // declare collective?: Collective;
-    // declare PaymentMethod?: PaymentMethod;
-    // declare PayoutMethod?: PayoutMethod;
-    // declare Order?: Order;
-
-    // // Getter Methods
-    // declare info?: Partial<Transaction>;
-    // declare merchantId?: string;
-    // declare netAmountInHostCurrency?: number;
-    // declare amountSentToHostInHostCurrency?: number;
-
-    // // Virtual field
-    // declare settlementStatus: TransactionSettlementStatus;
 
     @CreationTimestamp
     @Schema(description = "when created", required = true)
@@ -157,6 +170,5 @@ public class Transaction extends PanacheEntityBase {
     public Instant whenModified;
 
     @SoftDelete
-    @Column()
     public Instant whenDeleted;
 }
