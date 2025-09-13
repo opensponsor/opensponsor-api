@@ -59,6 +59,5 @@ public class Licenses extends PanacheEntityBase {
     public Instant whenModified;
 
     @SoftDelete
-    @Column()
     public Instant whenDeleted;
 }

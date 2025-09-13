@@ -43,6 +43,5 @@ public class Company extends PanacheEntityBase {
     public Instant whenModified;
 
     @SoftDelete
-    @Column()
     public Instant whenDeleted;
 }

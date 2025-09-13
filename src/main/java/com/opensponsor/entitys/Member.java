@@ -50,7 +50,6 @@ public class Member extends PanacheEntityBase {
     public Instant whenModified;
 
     @SoftDelete
-    @Column()
     public Instant whenDeleted;
 
     @PrePersist

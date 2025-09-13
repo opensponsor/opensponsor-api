@@ -145,6 +145,5 @@ public class Order extends PanacheEntityBase {
     public Instant whenModified;
 
     @SoftDelete
-    @Column()
     public Instant whenDeleted;
 }

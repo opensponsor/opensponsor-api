@@ -81,6 +81,5 @@ public class CountryCode extends PanacheEntityBase {
     public Instant whenModified;
 
     @SoftDelete
-    @Column()
     public Instant whenDeleted;
 }

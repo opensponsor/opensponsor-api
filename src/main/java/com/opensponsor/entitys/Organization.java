@@ -138,7 +138,6 @@ public class Organization extends PanacheEntityBase {
     public Instant whenModified;
 
     @SoftDelete
-    @Column()
     @Schema(description = "when deleted")
     public Instant whenDeleted;
 

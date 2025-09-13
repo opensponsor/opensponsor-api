@@ -56,7 +56,6 @@ public class MemberInvitation extends PanacheEntityBase {
     public Instant whenModified;
 
     @SoftDelete
-    @Column()
     public Instant whenDeleted;
 
     @PrePersist
